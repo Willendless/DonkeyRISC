@@ -222,7 +222,7 @@ module SYNC_RAM(q, d, addr, we, clk);
 endmodule // SYNC_RAM
 
 // Single-ported RAM with synchronous read with write byte-enable
-module SYNC_RAM_WBE(q, d, addr, wbe, clk, rst);
+module SYNC_RAM_BYTEADDR(q, d, addr, we, clk);
     parameter DWIDTH = 8;               // Data width
     parameter AWIDTH = 8;               // Address width
     parameter DEPTH = 256;              // Memory depth
@@ -231,7 +231,7 @@ module SYNC_RAM_WBE(q, d, addr, wbe, clk, rst);
     input [DWIDTH-1:0] d;               // Data input
     input [AWIDTH-1:0] addr;            // Address input
     input [DWIDTH/8-1:0] wbe;
-    input clk, rst;
+    input clk;
     output [DWIDTH-1:0] q;
     (* ram_style = "block" *) reg [DWIDTH-1:0] mem [DEPTH-1:0];
 
@@ -250,20 +250,23 @@ module SYNC_RAM_WBE(q, d, addr, wbe, clk, rst);
         end
     end
 
-    reg [DWIDTH-1:0] read_reg_val;
-    always @(posedge clk) begin
-        for (i = 0; i < DWIDTH/8; i = i+1) begin
+    genvar i;
+    generate
+    for (i = 0; i < DWIDTH/8; i = i+1) begin
+        always @(posedge clk) begin
             if (wbe[i])
                 mem[addr][i*8 +: 8] <= d[i*8 +: 8];
         end
-        if (rst)
-            read_reg_val <= 0;
-        else
-            read_reg_val <= mem[addr];
+    end
+    endgenerate
+
+    reg [DWIDTH-1:0] read_reg_val;
+    always @(posedge clk) begin
+        read_reg_val <= mem[addr];
     end
 
     assign q = read_reg_val;
-endmodule // SYNC_RAM_WBE
+endmodule // SYNC_RAM_BYTEADDR
 
 // Xilinx FPGA Dual-ported RAM with synchronous read
 module XILINX_SYNC_RAM_DP(q0, d0, addr0, we0, q1, d1, addr1, we1, clk, rst);
@@ -276,12 +279,12 @@ module XILINX_SYNC_RAM_DP(q0, d0, addr0, we0, q1, d1, addr1, we1, clk, rst);
     input rst;
     input [DWIDTH-1:0] d0;               // Data input
     input [AWIDTH-1:0] addr0;            // Address input
-    input we0;
+    input [DWIDTH/8-1:0] we0;
     output [DWIDTH-1:0] q0;
 
     input [DWIDTH-1:0] d1;               // Data input
     input [AWIDTH-1:0] addr1;            // Address input
-    input we1;
+    input [DWIDTH/8-1:0] we1;
     output [DWIDTH-1:0] q1;
     (* ram_style = "block" *) reg [DWIDTH-1:0] mem [DEPTH-1:0];
 
@@ -326,7 +329,7 @@ module XILINX_SYNC_RAM_DP(q0, d0, addr0, we0, q1, d1, addr1, we1, clk, rst);
 endmodule // XILINX_SYNC_RAM_DP
 
 // Xilinx FPGA Dual-ported RAM with synchronous read with write byte-enable
-module XILINX_SYNC_RAM_DP_WBE(q0, d0, addr0, wbe0, q1, d1, addr1, wbe1, clk, rst);
+module XILINX_SYNC_RAM_DP_BYTEADDR(q0, d0, addr0, we0, q1, d1, addr1, we1, clk, rst);
     parameter DWIDTH = 8;               // Data width
     parameter AWIDTH = 8;               // Address width
     parameter DEPTH = 256;              // Memory depth
@@ -363,22 +366,34 @@ module XILINX_SYNC_RAM_DP_WBE(q0, d0, addr0, wbe0, q1, d1, addr1, wbe1, clk, rst
     reg [DWIDTH-1:0] read0_reg_val;
     reg [DWIDTH-1:0] read1_reg_val;
 
-    always @(posedge clk) begin
-        for (i = 0; i < 4; i = i+1) begin
+    genvar i;
+    generate
+    for (i = 0; i < 4; i = i+1) begin
+        always @(posedge clk) begin
             if (wbe0[i])
                 mem[addr0][i*8 +: 8] <= d0[i*8 +: 8];
         end
+    end
+    endgenerate
+
+    always @(posedge clk) begin
         if (rst)
             read0_reg_val <= 0;
         else
             read0_reg_val <= mem[addr0];
     end
 
-    always @(posedge clk) begin
-        for (i = 0; i < 4; i = i+1) begin
-            if (wbe1[i])
-                mem[addr1][i*8 +: 8] <= d1[i*8 +: 8];
+    genvar j;
+    generate
+    for (j = 0; j < 4; j = j+1) begin
+        always @(posedge clk) begin
+            if (wbe1[j])
+                mem[addr1][j*8 +: 8] <= d1[j*8 +: 8];
         end
+    end
+    endgenerate
+
+    always @(posedge clk) begin
         if (rst)
             read1_reg_val <= 0;
         else
@@ -388,7 +403,7 @@ module XILINX_SYNC_RAM_DP_WBE(q0, d0, addr0, wbe0, q1, d1, addr1, wbe1, clk, rst
     assign q0 = read0_reg_val;
     assign q1 = read1_reg_val;
 
-endmodule // XILINX_SYNC_RAM_DP_WBE
+endmodule // XILINX_SYNC_RAM_BYTEADDR
 
 // Xilinx FPGA Dual-ported RAM with asynchronous read
 module XILINX_ASYNC_RAM_DP(q0, d0, addr0, we0, q1, d1, addr1, we1, clk, rst);
@@ -442,7 +457,7 @@ endmodule // XILINX_SYNC_RAM_DP
 
 // Register File with single-port Write (port 0), dual-port Read (port 1 and 2)
 // Write is synchronous, Read is asynchronous
-module REGFILE_1W2R(d0, addr0, we0, q1, addr1, q2, addr2, clk);
+module REGFILE_1R2W(d0, addr0, we0, q1, addr1, q2, addr2, clk);
     parameter DWIDTH = 8;               // Data width
     parameter AWIDTH = 8;               // Address width
     parameter DEPTH = 256;              // Memory depth
