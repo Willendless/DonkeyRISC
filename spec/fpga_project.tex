@@ -67,7 +67,7 @@ Version \projectSpecVersion
 \section{Introduction}
 The goal of this project is to familiarize EECS151/251A students with the methods and tools of digital design.
 Working alone or in a team of two, you will design and implement a 3-stage pipelined RISC-V CPU with a UART for tethering.
-Afterwards, you will attach the IO circuits you built in the lab to the CPU, and \textbf{TBA}.
+Afterwards, you will attach the IO circuits you built in the lab to the CPU, and design a 2D Convolutional filter accelerator for image processing applications.
 Finally, you will optimize your CPU for performance (maximizing the Iron Law) and cost (FPGA resource utilization).
 
 You will use Verilog to implement this system, targeting the Xilinx PYNQ platform (a PYNQ-Z1 development board with a Zynq 7000-series FPGA).
@@ -87,10 +87,10 @@ The following is a brief description of each checkpoint and approximately how ma
 %The current schedule is summarised at the end of the document in Section \ref{project_timeline}.
 
 \begin{itemize}
-  \item \textbf{\blockDiagramDueDate \space - \blockDiagramTaskName \space (\blockDiagramTimeAlloted)} - Submit a report to Gradescope with the following items: a schematic of your processor's datapath and pipeline stages, and your answers to the checkpoint 1 questions. The TA will give you feedback if applicable. In addition, push all of your IO-circuit Verilog modules that you have implemented in the labs to your assigned Github repository: \verb|debouncer|, \verb|edge_detector|, \verb|synchronizer|, \verb|fifo|, \verb|uart_receiver|, \verb|uart_transmitter|.
+  \item \textbf{\blockDiagramDueDate \space - \blockDiagramTaskName \space (\blockDiagramTimeAlloted)} - Submit a report to Gradescope with the following items: a schematic of your processor's datapath and pipeline stages, and your answers to the checkpoint 1 questions. The TA will give you feedback if applicable. In addition, push all of your IO-circuit Verilog modules that you have implemented in the labs to your assigned Github repository: \verb|debouncer|, \verb|edge_detector|, \verb|synchronizer|, \verb|fifo|, \verb|uart_receiver|, \verb|uart_transmitter|, \verb|display_controller|.
   \item \textbf{\ALUDueDate \space - \ALUTaskName \space (\ALUTimeAlloted)} - Go over your RISC-V microarchitecture with the TA (via Zoom). You should have a working ALU module and a complete instructional decoder by this point, and some basic datapath and control logic. This is mainly for the TA to keep track of your current progress.
   \item \textbf{\baseCPUDueDate \space - \baseCPUTaskName \space (\baseCPUTimeAlloted)} - Implement a fully functional RISC-V processor core in Verilog. Your processor core should pass the assembly tests.
-  \item \textbf{\imageDueDate \space - \imageTaskName \space (\imageTimeAlloted)} - Attach I/O components from lab to your processor (FIFOs, buttons, switches, display), and \textbf{TBA}.
+  \item \textbf{\imageDueDate \space - \imageTaskName \space (\imageTimeAlloted)} - Attach I/O components from lab to your processor (FIFOs, buttons, switches, display), and 2D Convolutional filter. If time permits, interfacing with off-chip DRAMs using AXI4 bus.
   \item \textbf{\finalCheckoffDueDate \space - Final Checkoff + Demo} - Final processor optimization and checkoff
   \item \textbf{\finalReportDueDate \space - Project Report} - Final report due
 \end{itemize}
@@ -167,6 +167,7 @@ We suggest you keep these with the provided source files in \verb|hardware/src| 
   lab6/fifo.v
   lab6/uart_receiver.v
   lab6/uart_transmitter.v
+  lab6/display_controller.v
 \end{minted}
 
 \subsection{Project Skeleton Overview}
@@ -183,14 +184,13 @@ We suggest you keep these with the provided source files in \verb|hardware/src| 
       \item \texttt{sim}
         \begin{itemize}
           \item \verb|assembly_testbench.v|: Starting point for testing your CPU. Works with the software in \texttt{assembly\_tests}.
-          \item More to come.
-          %\item \verb|echo_testbench.v|: Runs the software in \texttt{echo} on your CPU. The software implements the echo test from lab 6, and the testbench controls an off-chip UART to test it.
+          \item \verb|echo_testbench.v|: Runs the software in \texttt{echo} on your CPU. The software implements the echo FSM from lab 5, and the testbench controls an off-chip UART to test it.
         \end{itemize}
     \end{itemize}
   \item \texttt{software}
     \begin{itemize}
       \item \verb|bios151v3|: The BIOS program, which allows us to interact with our CPU via the UART. You need to compile it before creating a bitstream or running a simulation.
-      \item \verb|echo|: The echo program, which emulates the echo test of Lab 6 in software.
+      \item \verb|echo|: The echo program, which emulates the FSM from Lab 5 in software.
       \item \verb|assembly_tests|: Use this as a template to write assembly tests for your processor designed to run in simulation.
       \item \verb|c_example|: Use this as an example to write C programs.
       \item \verb|mmult|: This is a program to be run on the FPGA for Checkpoint 2. It generates 2 matrices and multiplies them. Then it returns a checksum to verify the correct result.
@@ -198,7 +198,7 @@ We suggest you keep these with the provided source files in \verb|hardware/src| 
 \end{itemize}
 
 To compile \texttt{software} go into a program directory and run \texttt{make}.
-To build a bitstream run \texttt{make write-bitstream} in \texttt{hardware}.
+To build a bitstream run \texttt{make impl} in \texttt{hardware}.
 
 \subsection{RISC-V 151 ISA}
 Table \ref{tab:ISA} contains all of the instructions your processor is responsible for supporting.
@@ -374,7 +374,7 @@ This prevents programs from being self-modifying, which would drastically compli
 \subsubsection{Memory Mapped I/O}
 \label{mmio}
 At this stage in the project the only way to interact with your CPU is through the UART.
-The UART from Lab 6 accomplishes the low-level task of sending and receiving bits from the serial lines, but you will need a way for your CPU to send and receive bytes to and from the UART.
+The UART from Lab 5 accomplishes the low-level task of sending and receiving bits from the serial lines, but you will need a way for your CPU to send and receive bytes to and from the UART.
 To accomplish this, we will use memory-mapped I/O, a technique in which registers of I/O devices are assigned memory addresses.
 This enables load and store instructions to access the I/O devices as if they were memory.
 
@@ -464,7 +464,10 @@ There are several files:
 \label{assembly_tests}
 Hand written assembly tests are in \verb|software/assembly_tests/start.s| and the corresponding testbench is in \verb|hardware/sim/assembly_testbench.v|.
 To run the test, run:\\
-\verb|make sim tb=assembly_testbench|
+\verb|make sim/assembly_testbench.fst| (iverilog) or \verb|make sim/assembly_testbench.vpd| (VCS).
+
+If you want to forcibly re-run the test even though you didn't change the Verilog, run:\\
+\verb|make -B sim/assembly_testbench.fst|
 
 \verb|start.s| contains assembly that's compiled and loaded into the BIOS RAM by the testbench.
 \begin{minted}[breaklines]{asm}
@@ -484,8 +487,6 @@ The \verb|assembly_testbench| toggles the clock one cycle at time and waits for 
 Once \verb|x20| contains 1, the testbench inspects the value in \verb|x1| and checks it is 300, which indicates your processor correctly executed the add instruction.
 
 If the testbench times out it means \verb|x20| never became 1, so the processor got stuck somewhere or \verb|x20| was written with another value.
-
-You should add your own tests to verify that your processor can execute different instructions correctly. Modify the file \verb|start.s| to add your assembly code, then rerun the RTL simulation.
 
 \subsection{RISC-V ISA Tests}
 You will need the CSR instructions to work before you can use this test suite, and you should have confidence in your hand-written assembly tests.
@@ -702,7 +703,7 @@ label: addi x2, x1, 4
 \item Where does the BIOS mem go? How about the IMEM (in the memory stage)?
 \end{enumerate}
 
-Commit your block diagram and your report to your team repository under \verb|sp20_teamXX/docs| by \blockDiagramDueDate. Please also remember to push your working IO circuits to your Github repository. The TA will also provide feedback for your block diagram proposal if applicable.
+Submit your block diagram and answers to Gradescope by \blockDiagramDueDate. If you are working in team, only one of you is required to upload the report. Please also remember to push your working IO circuits to your Github repository: the TA will test your circuits. The TA will also provide feedback for your block diagram proposal if applicable.
 
 \subsubsection{\ALUTaskName: Revised RISC-V microarchitecture, Basic Datapath + Control}
 This checkpoint is for TA to keep track of your current progress, and to ensure that your implementation is on the right track. The TA will go over your design with you. You are expected to have a fully-functioning ALU module and a complete Instructional Decoder. Although highly encouraged, it is not required to pass any assembly test for this checkpoint.
@@ -719,7 +720,7 @@ Checkoff will consist of a demonstration of the BIOS functionality, loading a pr
     \toprule
     \textbf{Deliverable} & \textbf{Due Date} & \textbf{Description} \\
     \midrule
-    Block Diagram, RISC-V ISA Questions, IO code & \blockDiagramDueDate & Push your block diagram, your writeup, and IO code to your Github repository.\\
+    Block Diagram, RISC-V ISA Questions, IO code & \blockDiagramDueDate & Submit your diagram and answers to Gradescope. Push your IO code to your Github repository.\\
     \midrule
     Revised Block Diagram, Working ALU, Instructional Decoder, Basic datapath and control & \ALUDueDate \linebreak Check in code to Github & Check in your code to Github. Go over your RISC-V microarchitecture with TA\\
     \midrule
@@ -730,7 +731,7 @@ Checkoff will consist of a demonstration of the BIOS functionality, loading a pr
 
 \pagebreak
 
-\section{Checkpoint 3 - TBA}
+\section{Checkpoint 3 - Hardware-accelerated 2D Convolutional Filter - TBA}
 
 \section{Final Checkpoint - Optimization - TBA}
 %This optimization checkpoint is lumped with the final checkoff.
@@ -1041,7 +1042,7 @@ To do this, simply cd to the \verb|software/bios151v3| directory and make the .h
 “make”. This should generate the .hex file using the compiler tailored to our ISA. The
 block RAM will be instantiated with the contents of the .hex file.
 When you get your design to synthesize and impact to the board, open up screen using the
-same command from Lab 6:
+same command from Lab 5:
 
 \verb|screen $SERIALTTY 115200|
 
