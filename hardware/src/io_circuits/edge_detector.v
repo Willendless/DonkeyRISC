@@ -18,8 +18,8 @@ module edge_detector #(
       genvar j;
       generate
       for (j = 0; j < WIDTH; j = j + 1) begin
-      REGISTER_R_CE #(1) reg1(.rst(signal_reset[j]), .clk(clk), .q(signal_reg1[j]), .d(signal_in[j]), .ce(signal_in[j]));
-      REGISTER_R_CE #(1) reg2(.rst(signal_reset[j]), .clk(clk), .q(signal_reg2[j]), .d(signal_reg1[j]), .ce(signal_reg1[j]));
+        REGISTER_R_CE #(1) reg1(.rst(signal_reset[j]), .clk(clk), .q(signal_reg1[j]), .d(signal_in[j]), .ce(signal_in[j]));
+        REGISTER_R_CE #(1) reg2(.rst(signal_reset[j]), .clk(clk), .q(signal_reg2[j]), .d(signal_reg1[j]), .ce(signal_reg1[j]));
       end
       endgenerate
       
