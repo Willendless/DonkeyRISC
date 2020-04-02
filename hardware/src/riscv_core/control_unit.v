@@ -26,7 +26,7 @@ wire u_type_signal = (inst == 7'b0010011);
 wire s_type_signal = (inst == 7'b0100011);//sw
 wire j_type_signal = (inst == 7'b0110111);
 
-assign control_jump = b_type_signal || l_type_signal;
+assign control_jump = b_type_signal;
 
 assign control_wr_mux = r_type_signal ? 2'b01: //add r-type inst
                       l_type_signal ? 2'b10: //lw l-type inst
@@ -37,7 +37,7 @@ assign control_uart = (l_type_signal || s_type_signal);
 
 assign control_dmem = l_type_signal;
 
-assign control_forward = r_type_signal;
+assign control_forward = r_type_signal ? 1 : 0;
 
 
 alu_control(.imm(imm), .imm30(imm30), .aluOp(aluOp), .aluCtrl(aluCtrl));

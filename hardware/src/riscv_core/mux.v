@@ -19,10 +19,13 @@ endmodule
 module mux_pc(
     input [31:0] pc_plus,
     input [31:0] jal_addr,
-    input jump_judge,
+    input [31:0] branch_addr,
+    input [1:0] jump_judge,
     output [31:0] pc_in
 )
-assign pc_in = (jump_judge == 1) ? jar_addr : pc_plus;
+assign pc_in = (jump_judge == 2'b10) ? jal_addr:
+               (jump_judge == 2'b11) ? branch_addr:
+               pc_plus;
 
 endmodule
 
@@ -48,4 +51,16 @@ assign aluin2 = (reg2_judge == 2'b00) ? reg_output2 :
                 (reg2_judge == 2'b01) ? wb_data :
                 imm;
 endmodule
+
+module mux_imem_read(
+    input [31:0] imem_out,
+    input [31:0] bios_out,
+    output [31:0] imem_out,
+
+    input pc30
+)
+
+assign imem_out = (pc30 == 1) ? imem_out : bios_out;
+endmodule
+
 
