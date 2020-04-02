@@ -1,4 +1,4 @@
-
+`include "alu.v"
 module Riscv151 #(
     parameter CPU_CLOCK_FREQ    = 50_000_000,
     parameter RESET_PC          = 32'h4000_0000,
