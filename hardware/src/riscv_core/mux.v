@@ -19,13 +19,10 @@ endmodule
 module mux_pc(
     input [31:0] pc_plus,
     input [31:0] jal_addr,
-    input [31:0] branch_addr,
-    input [1:0] jump_judge,
+    input jump_judge,
     output [31:0] pc_in
 );
-assign pc_in = (jump_judge == 2'b10) ? jal_addr:
-               (jump_judge == 2'b11) ? branch_addr:
-               pc_plus;
+assign pc_in = (jump_judge == 0) ? jal_addr: pc_plus;
 
 endmodule
 

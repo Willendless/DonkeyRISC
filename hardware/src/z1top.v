@@ -1,5 +1,6 @@
 `timescale 1ns/1ns
 `include "riscv_core/Riscv151.v"
+`include "io_circuits/button_parser.v"
 module z1top (
     input  CLK_125MHZ_FPGA,
     input  [3:0] BUTTONS,
