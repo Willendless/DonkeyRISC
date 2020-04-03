@@ -220,7 +220,7 @@ module Riscv151
 
 //----------------execute stage------------//
     wire control_forward;
-    wire control_jump;
+    wire [1:0] control_jump;
     wire [3:0] aluCtrl;
     wire control_uart;
     wire [1:0] control_dmem;
