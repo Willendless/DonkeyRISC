@@ -8,13 +8,12 @@
 `include "jump_unit.v"
 
 module Riscv151
-/*
 #(
     parameter CPU_CLOCK_FREQ    = 50_000_000,
     parameter RESET_PC          = 32'h4000_0000,
     parameter BAUD_RATE         = 115200,
     parameter BIOS_MEM_HEX_FILE = "bios151v3.mif"
-)*/ 
+)
 (
     input  clk,
     input  rst,
@@ -22,10 +21,11 @@ module Riscv151
     output FPGA_SERIAL_TX,
     output [31:0] csr
 );
+/*
     parameter CPU_CLOCK_FREQ    = 50_000_000;
     parameter RESET_PC          = 32'h4000_0000;
     parameter BAUD_RATE         = 115200;
-    parameter BIOS_MEM_HEX_FILE = "bios151v3.mif";
+    parameter BIOS_MEM_HEX_FILE = "bios151v3.mif";*/
     // Memories
     //-----------first stage----------------//
     localparam BIOS_AWIDTH = 12;
@@ -38,13 +38,11 @@ module Riscv151
     wire [31:0] pc_in;
     wire [31:0] pc_plus;
     wire [31:0] jal_addr;
-    wire [31:0] branch_addr;
-    wire [1:0] jump_judge;
+    wire jump_judge;
 
     mux_pc mux_pc(
         .pc_plus(pc_plus),
         .jal_addr(jal_addr),
-        .branch_addr(branch_addr),
         .jump_judge(jump_judge),
         .pc_in(pc_in));
 
@@ -222,7 +220,7 @@ module Riscv151
 
 //----------------execute stage------------//
     wire control_forward;
-    wire control_jump;
+    wire [1:0] control_jump;
     wire [3:0] aluCtrl;
     wire control_uart;
     wire [1:0] control_dmem;

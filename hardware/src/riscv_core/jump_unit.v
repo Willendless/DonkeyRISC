@@ -1,12 +1,12 @@
 module jump_unit(
-    input control_jump,
+    input [1:0] control_jump,
     input branch_judge,
-    output [1:0] jump_judge
+    output jump_judge
 );
-
-wire is_branch = control_jump && branch_judge;
-assign jump_judge[0] = is_branch;
-assign jump_judge[1] = control_jump;
+//control_jump[0] stand for jal or jalr
+//control_jump[1] stand for branch
+wire is_branch = control_jump[1] && branch_judge;
+assign jump_judge = is_branch || control_jump[0];
 
 endmodule
 
