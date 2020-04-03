@@ -1,5 +1,5 @@
 `include "alu.v"
-`include "../EECS151,v"
+`include "../EECS151.v"
 `include "mux.v"
 `include "alu_control.v"
 `include "control_unit.v"
@@ -7,25 +7,32 @@
 `include "imm_gen.v"
 `include "jump_unit.v"
 
-module Riscv151 #(
+module Riscv151
+/*
+#(
     parameter CPU_CLOCK_FREQ    = 50_000_000,
     parameter RESET_PC          = 32'h4000_0000,
     parameter BAUD_RATE         = 115200,
     parameter BIOS_MEM_HEX_FILE = "bios151v3.mif"
-) (
+)*/ 
+(
     input  clk,
     input  rst,
     input  FPGA_SERIAL_RX,
     output FPGA_SERIAL_TX,
     output [31:0] csr
 );
+    parameter CPU_CLOCK_FREQ    = 50_000_000;
+    parameter RESET_PC          = 32'h4000_0000;
+    parameter BAUD_RATE         = 115200;
+    parameter BIOS_MEM_HEX_FILE = "bios151v3.mif";
     // Memories
     //-----------first stage----------------//
     localparam BIOS_AWIDTH = 12;
-    localparam BIOS_DWITH  = 32;
+    localparam BIOS_DWIDTH  = 32;
     localparam BIOS_DEPTH  = 4096;
 
-    wire [BIOS_AWIDTH-1:0] bios_addra, bios_addra;
+    wire [BIOS_AWIDTH-1:0] bios_addra, bios_addrb;
     wire [BIOS_DWIDTH-1:0] bios_douta, bios_doutb;
 
     wire [31:0] pc_in;
@@ -47,14 +54,14 @@ module Riscv151 #(
     REGISTER #(.N(32)) pc_reg(
         .clk(clk),
         .q(pc_store),
-        .d(pc_output));
+        .d(pc_in));
 
     // BIOS Memory
     // Synchronous read: read takes one cycle
     // Synchronous write: write takes one cycle
     XILINX_SYNC_RAM_DP #(
         .AWIDTH(BIOS_AWIDTH),
-        .DWIDTH(BIOS_DWIDTH)
+        .DWIDTH(BIOS_DWIDTH),
         .DEPTH(BIOS_DEPTH),
         .MEM_INIT_HEX_FILE(BIOS_MEM_HEX_FILE)
     ) bios_mem(
@@ -81,24 +88,26 @@ module Riscv151 #(
     // Synchronous read: read takes one cycle
     // Synchronous write: write takes one cycle
     // Byte addressable: select which of the four bytes to write
-    XILINX_SYNC_RAM_DP_BYTEADDR #(
+    XILINX_SYNC_RAM_DP #(
         .AWIDTH(IMEM_AWIDTH),
-        .DWIDTH(IMEM_DWIDTH)
+        .DWIDTH(IMEM_DWIDTH),
         .DEPTH(IMEM_DEPTH)
     ) imem (
         .q0(imem_douta),    // output
         .d0(imem_dina),     // input
         .addr0(imem_addra), // input
-        .wbe0(imem_wea),    // input
+        .we0(imem_wea),    // input
         .q1(imem_doutb),    // output
         .d1(imem_dinb),     // input
         .addr1(imem_addrb), // input
-        .wbe1(imem_web),    // input
+        .we1(imem_web),    // input
         .clk(clk), .rst(rst));
 
     assign bios_addra = pc_in;
     assign imem_addra = pc_in;
     assign pc_store = pc_in;
+    
+    wire if_flush = jump_judge;
 
 //-----------second stage----------------//
     wire [32:0] inst_output;
@@ -106,13 +115,13 @@ module Riscv151 #(
     mux_imem_read mux_imem_read(
         .imem_out(imem_douta),
         .bios_out(bios_douta),
-        .pc30(pc_output[30]),
+        .pc30(1),
         .inst_output(inst_output));
     
     wire [31:0] imm_out;
     
     imm_gen imm_gen(
-        .inst_origin(inst_output[31:20]),
+        .inst_origin(inst_output),
         .imm(imm_out));
     
     wire rf_we;
@@ -121,7 +130,7 @@ module Riscv151 #(
     wire [31:0] rf_rd1, rf_rd2;
     // Asynchronous read: read data is available in the same cycle
     // Synchronous write: write takes one cycle
-    REGFILE_1R2W # (
+    REGFILE_1W2R # (
         .AWIDTH(5),
         .DWIDTH(32),
         .DEPTH(32)
@@ -135,24 +144,25 @@ module Riscv151 #(
         .addr2(rf_ra2), // input
         .clk(clk));
     
+    wire [4:0] wb_addr;
     assign rf_ra1 = inst_output[19:15];
     assign rf_ra2 = inst_output[24:20];
-    assign rf_wa = wb_inst_addr[11:7];
+    assign rf_wa = wb_addr;
     assign rf_we = 1'b1;
     
-    wire [31:0] imm_shift_in;
+    wire [31:0] imm_ex;
 
     REGISTER_R #(.N(32)) imm_shift(
-        .q(imm_shift_in),
+        .q(imm_ex),
         .d(imm_out),
         .clk(clk),
-        .rst(if_fulsh));
+        .rst(if_flush));
 
     wire [31:0] reg1_output;
 
     REGISTER_R #(.N(32)) reg1_store(
         .clk(clk),
-        .rst(if_fulsh),
+        .rst(if_flush),
         .q(reg1_output),
         .d(rf_rd1));
     
@@ -160,7 +170,7 @@ module Riscv151 #(
 
     REGISTER_R #(.N(32)) reg2_store(
         .clk(clk),
-        .rst(if_fulsh),
+        .rst(if_flush),
         .q(reg2_output),
         .d(rf_rd2));
 
@@ -189,14 +199,31 @@ module Riscv151 #(
     wire [4:0] wb_addr_ex;
     REGISTER_R #(.N(5)) reg0_addr_store(
         .clk(clk),
-        .rst(if_fulsh),
+        .rst(if_flush),
         .d(inst_output[11:7]),
         .q(wb_addr_ex));
+    
+    assign pc_output = pc_store + 4;
+    assign pc_plus = pc_output;
+
+    wire [31:0] pc_plus_ex;
+    REGISTER_R #(.N(32)) store_pc_plus(
+        .clk(clk),
+        .rst(if_flush),
+        .q(pc_plus_ex),
+        .d(pc_output));
+    
+    wire [31:0] pc_ex;
+    REGISTER_R #(.N(32)) store_pc(
+        .clk(clk),
+        .rst(if_flush),
+        .q(pc_ex),
+        .d(pc_store));    
 
 //----------------execute stage------------//
     wire control_forward;
     wire control_jump;
-    wire aluCtrl;
+    wire [3:0] aluCtrl;
     wire control_uart;
     wire [1:0] control_dmem;
     wire control_wr_mux;
@@ -204,7 +231,6 @@ module Riscv151 #(
     wire reg1_judge;
     wire [1:0] reg2_judge;
 
-    wire [4:0] wb_addr;
     forwarding_unit forwarding_unit(
         .reg1_addr(rf1_forward),
         .reg2_addr(rf2_forward),
@@ -215,23 +241,83 @@ module Riscv151 #(
 
     control_unit control_unit(
         .inst(inst_control),
-        .imm30(imm_shift_in[30]),
-        .imm(imm_shift_in[14:12]),
+        .imm30(imm_ex[30]),
+        .imm(imm_ex[14:12]),
         .control_forward(control_forward),
         .control_dmem(control_dmem),
         .control_jump(control_jump),
         .control_uart(control_uart),
-        .control_unit(control_unit),
+        .aluCtrl(aluCtrl),
         .control_wr_mux(control_wr_mux));
     
-    wire [31:0] alu_input1;
-    wire [31:0] alu_input2;
+    wire [31:0] aluin1;
+    wire [31:0] aluin2;
+    wire [31:0] wb_data;
+    
+    mux_reg1 mux_reg1(
+        .wb_data(wb_data),
+        .reg1_output(reg1_output),
+        .reg1_judge(reg1_judge),
+        .aluin1(aluin1));
+    
+    mux_reg2 mux_reg2(
+        .wb_data(wb_data),
+        .reg2_output(reg1_output),
+        .imm(imm_ex),
+        .reg2_judge(reg2_judge),
+        .aluin2(aluin2));
+
+    wire aluout;
+    wire branch_judge;
+
+    alu alu(
+        .aluin1(aluin1),
+        .aluin2(aluin2),
+        .aluCtrl(aluCtrl),
+        .aluout(aluout),
+        .branch_judge(branch_judge));
+    
+    jump_unit jump_unit(
+        .control_jump(control_jump),
+        .branch_judge(branch_judge),
+        .jump_judge(jump_judge));
+    
+    wire [31:0] rtype_output;
+
+    REGISTER #(.N(32)) store_alu(
+        .q(rtype_output),
+        .clk(clk),
+        .d(aluout));
+
+    REGISTER #(.N(5)) store_addr(
+        .q(wb_addr),
+        .clk(clk),
+        .d(wb_addr_ex));
+    
+    wire [1:0] control_data;
+    
+    REGISTER #(.N(32)) store_control(
+        .q(control_data),
+        .clk(clk),
+        .d(control_wr_mux));
+    
+    wire [31:0] pc_plus_wb;
+
+    REGISTER # (.N(32)) store_pc_wb(
+        .q(pc_plus_wb),
+        .clk(clk),
+        .d(pc_plus_ex));
+
+    assign jal_addr = pc_ex + imm_ex;
+
+    
+    //-----------wb stage---------------/
     // UART Receiver
     wire [7:0] uart_rx_data_out;
     wire uart_rx_data_out_valid;
     wire uart_rx_data_out_ready;
 
-    localparam DMEM_AWIDTH = 14;
+    localparam DMEM_AWIDTH = 32;
     localparam DMEM_DWIDTH = 32;
     localparam DMEM_DEPTH = 16384;
 
@@ -239,13 +325,16 @@ module Riscv151 #(
     wire [DMEM_DWIDTH-1:0] dmem_dina, dmem_douta;
     wire [3:0] dmem_wea;
 
+    assign dmem_wea = control_dmem;
+    assign dmem_dina = aluin2;
+
     // Data Memory
     // Synchronous read: read takes one cycle
     // Synchronous write: write takes one cycle
     // Byte addressable: select which of the four bytes to write
-    SYNC_RAM_BYTEADDR #(
+    SYNC_RAM_WBE #(
         .AWIDTH(DMEM_AWIDTH),
-        .DWIDTH(DMEM_DWIDTH)
+        .DWIDTH(DMEM_DWIDTH),
         .DEPTH(DMEM_DEPTH)
     ) dmem (
         .q(dmem_douta),    // output
@@ -254,6 +343,22 @@ module Riscv151 #(
         .wbe(dmem_wea),    // input
         .clk(clk), .rst(rst));
 
+    assign dmem_addra = aluout;
+    assign imem_addrb = aluout;
+    assign bios_addrb = aluout;
+
+    mux_dmem(
+        .dmem_output(dmem_douta),
+        .bios_output(bios_doutb),
+        .pc_output(pc_plus_wb),
+        .rtype_output(rtype_output),
+        .control_data(control_data),
+        .addr(rtype_output[31:28]),
+        .wb_data(wb_data));
+
+    assign rf_wd = wb_data;
+
+/*
     uart_receiver #(
         .CLOCK_FREQ(CPU_CLOCK_FREQ),
         .BAUD_RATE(BAUD_RATE)) uart_rx (
@@ -281,7 +386,7 @@ module Riscv151 #(
         .serial_out(FPGA_SERIAL_TX)            // output
     );
 
-
+*/
     // Construct your datapath, add as many modules as you want
 
 endmodule
