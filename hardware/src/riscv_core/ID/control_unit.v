@@ -1,4 +1,4 @@
-`include "alu_control.v"
+
 module control_unit (
     input [6:0] inst,
     output control_forward,
