@@ -1,6 +1,12 @@
 `ifndef DEFINES
 `define DEFINES
 
+// data
+`define WORD_WIDTH      32
+`define WORD_BUS        31:0
+`define HALF_WORD_WIDTH 16
+`define HALF_WORD_BUS   15:0
+
 // inst field
 `define INST_WIDTH      32
 `define INST_BUS        31:0
