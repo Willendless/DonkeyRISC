@@ -22,8 +22,8 @@ module imm_gen (
             `OPC_LUI_5,
             `OPC_AUIPC_5: imm = {inst_i[31], inst_i[30:20], inst_i[19:12], {12{0}}};
             // R-type
-            `OPC_ARI_RTYPE_5,
-            default:; 
+            `OPC_ARI_RTYPE_5: ;
+            default: ; 
         endcase
     end
 

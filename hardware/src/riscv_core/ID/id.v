@@ -22,10 +22,10 @@ module id (
     // reg addr to regfile
     output wire[`REG_ABUS] reg1_addr_o,
     output wire[`REG_ABUS] reg2_addr_o,
-    // reg data to id_ex
+
+    // data to id_ex
     output wire[`REG_DBUS] reg1_data_o,
     output wire[`REG_DBUS] reg2_data_o,
-
     output wire wb_en_o, //*
     output wire[`IMM_BUS] imm_o,
     output wire[`REG_DBUS] wb_addr_o
