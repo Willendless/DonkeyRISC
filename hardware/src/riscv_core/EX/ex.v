@@ -43,6 +43,9 @@ module ex (
     
 );
 
+    // write back control signal
+    assign wb_addr_o = wb_addr_i;
+    assign control_wr_mux_o = control_wr_mux_i;
     // pc
     assign pc_plus_o = pc_plus_i;
 

@@ -136,27 +136,50 @@ module Riscv151
     assign rf_wa = wb_addr;
     assign rf_we = 1'b1;
 
+    wire [`REG_DBUS] reg1_data_reg;
+    wire [`REG_ABUS] reg1_addr_reg;
+    wire [`REG_DBUS] reg2_data_reg;
+    wire [`REG_ABUS] reg2_addr_reg;
+
+    wire inst_alu30_reg;
+    wire [2:0] inst_alu_reg;
+
+    wire [`REG_DBUS]    pc_data_reg;
+    wire [`REG_DBUS]    pc_plus_reg;
+
+    wire [1:0] control_forward_reg;
+    wire control_dmem_reg;
+    wire [1:0] control_jump_reg;    
+    wire [1:0] aluOp_reg;
+    wire control_uart_reg;
+    wire [1:0] control_wr_mux_reg;
+
+    wire[`WORD_BUS] branch_offset;
+
     id ID (
         .inst_i(inst_output),
-        .pc_data_i(),
-        .reg1_data_i(),
-        .reg2_data_i(),
-        .reg1_addr_o(),
-        .reg2_addr_o(),
-        .pc_data_o(),
-        .pc_plus_o(),
+        .pc_data_i(pc_output),
+        .reg1_data_i(rf_rd1),
+        .reg2_data_i(rf_rd2),
+        .reg1_addr_o(rf_ra1),
+        .reg2_addr_o(rf_ra2),
+        .funct3_o(inst_alu_reg),
+        .inst_alu30_o(inst_alu30_reg),
+        .pc_data_o(pc_data_reg),
+        .pc_plus_o(pc_plus_reg),
         .imm_o(imm_out),
-        .wb_addr_o(),
-        .rs1_addr_o(rf_ra1),
-        .rs2_addr_o(rf_ra2),
-        .reg1_data_o(),
-        .reg2_data_o(),
-        .control_forwar_o(),
-        .control_jump_o(),
-        .alu_op_o(),
-        .control_uart_o(),
-        .control_dmem_o(),
-        .control_wr_mux_o()
+        .branch_addr_o(branch_addr),    // branch addr
+        .rd_addr_o(rd_addr_reg),
+        .rs1_addr_o(reg1_addr_reg),
+        .rs2_addr_o(reg2_addr_reg),
+        .reg1_data_o(reg1_data_reg),
+        .reg2_data_o(reg2_data_reg),
+        .control_forwar_o(control_forward_reg),
+        .control_jump_o(control_jum_reg),
+        .alu_op_o(aluOp_reg),
+        .control_uart_o(control_uart_reg),
+        .control_dmem_o(control_dmem_reg),
+        .control_wr_mux_o(control_wr_mux_reg)
     );
 
     // Asynchronous read: read data is available in the same cycle
@@ -175,98 +198,15 @@ module Riscv151
         .addr2(rf_ra2), // input
         .clk(clk));
     
-    id_ex ID_EX (
-
-    );
-
-    
     wire [31:0] imm_ex;
-
-    REGISTER_R #(.N(32)) imm_shift(
-        .q(imm_ex),
-        .d(imm_out),
-        .clk(clk),
-        .rst(if_flush));
-
     wire [31:0] reg1_output;
-
-    REGISTER_R #(.N(32)) reg1_store(
-        .clk(clk),
-        .rst(if_flush),
-        .q(reg1_output),
-        .d(rf_rd1));
-    
     wire [31:0] reg2_output;
-
-    REGISTER_R #(.N(32)) reg2_store(
-        .clk(clk),
-        .rst(if_flush),
-        .q(reg2_output),
-        .d(rf_rd2));
-
-    wire [6:0] inst_control;
-
-    REGISTER_R #(.N(7)) reg_inst_store(
-        .clk(clk),
-        .rst(if_flush),
-        .q(inst_control),
-        .d(inst_output[6:0]));
-    
     wire [4:0] rf1_forward;
     wire [4:0] rf2_forward;
-
-    REGISTER_R #(.N(5)) reg1_addr_store(
-        .clk(clk),
-        .rst(if_flush),
-        .q(rf1_forward),
-        .d(rf_ra1));
-    REGISTER_R #(.N(5)) reg2_addr_store(
-        .clk(clk),
-        .rst(if_flush),
-        .q(rf2_forward),
-        .d(rf_ra2));
-
     wire [4:0] wb_addr_ex;
-    REGISTER_R #(.N(5)) reg0_addr_store(
-        .clk(clk),
-        .rst(if_flush),
-        .d(inst_output[11:7]),
-        .q(wb_addr_ex));
-    
-    assign pc_output = pc_store + 4;
-    assign pc_plus = pc_output;
 
-    wire [31:0] pc_plus_ex;
-    REGISTER_R #(.N(32)) store_pc_plus(
-        .clk(clk),
-        .rst(if_flush),
-        .q(pc_plus_ex),
-        .d(pc_output));
-    
-    wire [31:0] pc_ex;
-    REGISTER_R #(.N(32)) store_pc(
-        .clk(clk),
-        .rst(if_flush),
-        .q(pc_ex),
-        .d(pc_store));
-
-    assign branch_addr = pc_store + imm_out;
-
-    wire [1:0] control_forward_reg;
-    wire control_dmem_reg;
-    wire [1:0] control_jump_reg;
-    wire [1:0] aluOp_reg;
-    wire control_uart_reg;
-    wire [1:0] control_wr_mux_reg;
-
-    control_unit control_unit(
-        .opcode(inst_output[6:0]),
-        .control_forward(control_forward_reg),
-        .control_dmem(control_dmem_reg),
-        .control_jump(control_jum_reg),
-        .control_uart(control_uart_reg),
-        .alu_op(aluOp_reg),
-        .control_wr_mux(control_wr_mux_reg));
+    wire [`REG_DBUS]    pc_ex;
+    wire [`REG_DBUS]    pc_plus_ex;
 
     wire [1:0] control_forward;
     wire [1:0] control_jump;
@@ -275,54 +215,80 @@ module Riscv151
     wire control_dmem;
     wire [1:0] control_wr_mux;
 
-    REGISTER_R #(.N(2)) forward_reg(
-        .clk(clk),
-        .rst(if_flush),
-        .q(control_forward),
-        .d(control_forward_reg));
-    
-    REGISTER_R #(.N(2)) alu_reg(
-        .clk(clk),
-        .rst(if_flush),
-        .q(aluOp),
-        .d(aluOp_reg));
-    
-    REGISTER_R #(.N(2)) jump_reg(
-        .clk(clk),
-        .rst(if_flush),
-        .q(control_jump),
-        .d(control_jump_reg));
-    
-    REGISTER_R #(.N(1)) uart_reg(
-        .clk(clk),
-        .rst(if_flush),
-        .q(control_uart),
-        .d(control_uart_reg));
-    
-    REGISTER_R #(.N(1)) dmem_reg(
-        .clk(clk),
-        .rst(if_flush),
-        .q(control_dmem),
-        .d(control_dmem_reg));
-
-    REGISTER_R #(.N(2)) wr_mux_reg(
-        .clk(clk),
-        .rst(if_flush),
-        .q(control_wr_mux),
-        .d(control_wr_mux_reg));
-    
     wire [2:0] inst_alu;
     wire inst_alu30;
 
-    REGISTER_R #(.N(4)) inst_alu_reg(
+    id_ex ID_EX (
         .clk(clk),
-        .rst(if_flush),
-        .q({inst_alu, inst_alu30}),
-        .d({inst_output[14:12], inst_output}));
-
+        .rst(rst),
+        .pc_data_i(pc_data_reg),
+        .pc_plus_i(pc_plus_reg),
+        .reg1_data_i(reg1_data_reg),
+        .reg2_data_i(reg2_data_reg),
+        .rd_addr_i(rd_addr_reg),
+        .reg1_addr_i(reg1_addr_reg),
+        .reg2_addr_i(reg2_addr_reg),
+        .imm_i(imm_out),
+        .funct3_i(inst_alu_reg),
+        .inst_alu30_i(inst_alu30_reg),
+        .control_forward_i(control_forward_reg),
+        .control_jump_i(control_jump_reg),
+        .alu_op_i(aluOp_reg),
+        .control_uart_i(control_uart_reg),
+        .control_dmem_i(control_dmem_reg),
+        .control_wr_mux_i(control_wr_mux_reg),
+        .pc_data_o(pc_ex),
+        .pc_plus_o(pc_plus_ex),
+        .reg1_data_o(reg1_output),
+        .reg2_data_o(reg2_output),
+        .rd_addr_o(wb_addr_ex),
+        .reg1_addr_o(rf1_forward),
+        .reg2_addr_o(rf2_forward),
+        .imm_o(imm_ex),
+        .control_forward_o(control_forward),
+        .control_jump_o(control_jump),
+        .alu_op_o(aluOp),
+        .control_uart_o(control_uart), // TODO
+        .control_dmem_o(control_dmem),
+        .control_wr_mux_o(control_wr_mux),
+        .funct3_o(inst_alu),
+        .inst_alu30_o(inst_alu30)
+    );
 
 //----------------execute stage------------//
-    wire [3:0] aluCtrl;
+
+    wire [`WORD_BUS] alu_result_reg;
+    wire [`REG_ABUS] wb_addr_reg;
+    wire [1:0] control_wr_mux_reg2;
+    wire [`REG_DBUS] pc_plus_reg2;
+
+    ex EX (
+        .wb_data(),     // DATA from write back stage
+        .pc_data_i(pc_ex),
+        .pc_plus_i(pc_plus_ex),
+        .reg1_data_i(reg1_output),
+        .reg2_data_i(reg2_output),
+        .wb_addr_i(wb_addr_ex),
+        .reg1_addr_i(rf1_forward),
+        .reg2_addr_i(rf2_forward),
+        .imm_i(imm_ex),
+        .funct3_i(inst_alu),
+        .inst_alu30_i(inst_alu30),
+        .control_forward_i(control_forward),
+        .control_jump_i(control_jump),
+        .alu_op_i(aluOp),
+        .control_uart_i(control_uart),  //TODO
+        .control_dmem_i(control_dmem),
+        .control_wr_mux_i(control_wr_mux),
+        .alu_result_o(alu_result_reg),
+        .wb_addr_o(wb_addr_reg),
+        .control_wr_mux_o(control_wr_mux_reg2),
+        .pc_plus_o(pc_plux_reg2)
+    );
+
+    ex_wb EX_WB (
+
+    );
 
     alu_control alu_control(
         .inst_alu(inst_alu),
@@ -330,41 +296,40 @@ module Riscv151
         .aluOp(aluOp),
         .aluCtrl(aluCtrl));
         
-    wire [1:0] reg1_judge;
-    wire [1:0] reg2_judge;
+    // wire [1:0] reg1_judge;
+    // wire [1:0] reg2_judge;
 
-    forwarding_unit forwarding_unit(
-        .reg1_addr(rf1_forward),
-        .reg2_addr(rf2_forward),
-        .wb_addr(wb_addr),
-        .control_forward(control_forward),
-        .reg1_judge(reg1_judge),
-        .reg2_judge(reg2_judge));
+    // forwarding_unit forwarding_unit(
+    //     .reg1_addr(rf1_forward),
+    //     .reg2_addr(rf2_forward),
+    //     .wb_addr(wb_addr),
+    //     .control_forward(control_forward),
+    //     .reg1_judge(reg1_judge),
+    //     .reg2_judge(reg2_judge));
 
-    wire [31:0] aluin1;
-    wire [31:0] aluin2;
-    wire [31:0] wb_data;
+    // wire [31:0] aluin1;
+    // wire [31:0] aluin2;
+    // wire [31:0] wb_data;
     
-    mux_reg1 mux_reg1(
-        .wb_data(wb_data),
-        .reg1_output(reg1_output),
-        .reg1_judge(reg1_judge),
-        .aluin1(aluin1));
+    // mux_reg1 mux_reg1(
+    //     .wb_data(wb_data),
+    //     .reg1_output(reg1_output),
+    //     .reg1_judge(reg1_judge),
+    //     .aluin1(aluin1));
     
-    mux_reg2 mux_reg2(
-        .wb_data(wb_data),
-        .reg2_output(reg2_output),
-        .imm(imm_ex),
-        .reg2_judge(reg2_judge),
-        .aluin2(aluin2));
+    // mux_reg2 mux_reg2(
+    //     .wb_data(wb_data),
+    //     .reg2_output(reg2_output),
+    //     .imm(imm_ex),
+    //     .reg2_judge(reg2_judge),
+    //     .aluin2(aluin2));
 
-    wire [31:0] aluout;
 
-    alu alu(
-        .aluin1(aluin1),
-        .aluin2(aluin2),
-        .aluCtrl(aluCtrl),
-        .aluout(aluout));
+    // alu alu(
+    //     .aluin1(aluin1),
+    //     .aluin2(aluin2),
+    //     .aluCtrl(aluCtrl),
+    //     .aluout(aluout));
     
     wire [31:0] rtype_output;
 
@@ -439,6 +404,21 @@ module Riscv151
         .wb_data(wb_data));
 
     assign rf_wd = wb_data;
+
+    wb WB (
+    // from ex_wb
+    input wire[`WORD_BUS]       alu_result_i,
+    input wire[`REG_ABUS]       wb_addr_i,
+    input wire[1:0]             control_wr_mux_i,
+    input wire[`REG_DBUS]       pc_plus_i,
+    // from mem
+    input wire[`DMEM_DBUS]      dmem_douta_i,
+    input wire[`BIOS_DBUS]      bios_doutb_i,          
+    output wire[`REG_ABUS]      wb_addr_o,
+    output wire[`REG_DBUS]      wb_data_o,
+    )
+
+
 
 /*
     uart_receiver #(

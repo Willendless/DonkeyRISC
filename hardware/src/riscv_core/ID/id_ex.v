@@ -25,10 +25,7 @@
     output control_dmem_o,
     output [1:0] control_wr_mux_o
 */
-module id_ex #(
-    parameter RESET_PC = 32'h4000_0000
-    )
-(
+module id_ex (
     input wire rst,
     input wire clk,
 
@@ -39,14 +36,14 @@ module id_ex #(
 
     input wire[`REG_DBUS]   reg1_data_i,
     input wire[`REG_DBUS]   reg2_data_i,
-    input wire[`REG_ABUS]   wb_addr_i,
+    input wire[`REG_ABUS]   rd_addr_i,
     input wire[`REG_ABUS]   reg1_addr_i,
     input wire[`REG_ABUS]   reg2_addr_i,
     input wire[`IMM32_BUS]    imm_i,
 
     output wire[`REG_DBUS]   reg1_data_o,
     output wire[`REG_DBUS]   reg2_data_o,
-    output wire[`REG_ABUS]   wb_addr_o,
+    output wire[`REG_ABUS]   rd_addr_o,
     output wire[`REG_ABUS]   reg1_addr_o,
     output wire[`REG_ABUS]   reg2_addr_o,
     output wire[`IMM32_BUS]    imm_o,
@@ -88,7 +85,7 @@ module id_ex #(
 
 );
     // pc & pc + 4
-    REGISTER_R #(.N(`REG_DWIDTH), .INIT()) pc_data_reg ( 
+    REGISTER_R #(.N(`REG_DWIDTH)) pc_data_reg ( 
         .clk(clk),
         .rst(rst),
         .q(pc_data_o),
@@ -125,11 +122,11 @@ module id_ex #(
         .rst(rst),
         .d(reg2_addr_i));
 
-    REGISTER_R #(.N(`REG_AWIDTH)) reg_wb_addr (
-        .q(wb_addr_o),
+    REGISTER_R #(.N(`REG_AWIDTH)) rd_addr_store (
+        .q(rd_addr_i),
         .clk(clk),
         .rst(rst),
-        .d(wb_addr_i));
+        .d(rd_addr_o));
 
     REGISTER_R #(.N(`IMM32_WIDTH)) imm_data (
         .q(imm_o),

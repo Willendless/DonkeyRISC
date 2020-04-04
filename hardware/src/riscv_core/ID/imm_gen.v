@@ -4,7 +4,7 @@
 module imm_gen (
     input wire[`INST_BUS] opcode_i,
     output reg[`IMM32_BUS] imm,
-    output reg[`HALF_WORD_BUS] branch_offset
+    output reg[`IMM32_BUS] branch_offset
 );
     always @(*) begin
         imm = `IMM32_WIDTH'b0;

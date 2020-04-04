@@ -24,13 +24,17 @@ module id (
     output wire[`REG_ABUS] reg1_addr_o,
     output wire[`REG_ABUS] reg2_addr_o,
 
+    output wire[`WORD_BUS]     branch_addr_o,
+
 // data to id_ex
+    output wire                 inst_alu30_o,
+    output wire                 funct3_o,
 
     output wire[`REG_DBUS]      pc_data_o,
     output wire[`REG_DBUS]      pc_plus_o,
 
     output wire[`IMM32_BUS]     imm_o,
-    output wire[`REG_ABUS]      wb_addr_o,
+    output wire[`REG_ABUS]      rd_addr_o,
     output wire[`REG_ABUS]      rs1_addr_o,
     output wire[`REG_ABUS]      rs2_addr_o,
     output wire[`REG_DBUS]      reg1_data_o,
@@ -54,9 +58,13 @@ module id (
             inst_rs2    = inst_i[`FIELD_RS2],
             inst_opcode = inst_i[`FIELD_OPCODE];
 
+    assign  funct3_o        = inst_i[`FIELD_FUNCT3],
+            inst_alu30_o    = inst_i[30]; 
+
     assign  rs1_addr_o   = inst_rs1,
             rs2_addr_o   = inst_rs2,
-            wb_addr_o    = inst_rd;
+            rd_addr_o    = inst_rd;
+        
 
     // next pc
 
@@ -75,7 +83,7 @@ module id (
 
     // control_unit
     control_unit control (
-        .inst(inst_opcode),
+        .opcode(inst_opcode),
         .control_forward(control_forward_o),
         .alu_op(alu_op),
         .control_uart(control_uart),
@@ -86,6 +94,8 @@ module id (
     imm_gen imm (
         .inst_origin(inst_i),
         .imm(imm_o),
-        .branch_offset());
+        .branch_offset(branch_offset_o));
+
+    assign branch_addr_o = branch_offset_o + pc_plus_o;
 
 endmodule
