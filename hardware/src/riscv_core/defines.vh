@@ -21,7 +21,8 @@
 `define DMEM_AWIDTH  32
 `define DMEM_DWIDTH  32
 
-`define ALUOP_RTYPE 3'b000
-`define ALUOP_
+`define ALUOP_RTYPE 2'b00
+`define ALUOP_ISTYPE 2'b01
+`define ALUOP_OTHER 2'b10
 
 `endif

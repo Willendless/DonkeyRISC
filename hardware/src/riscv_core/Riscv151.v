@@ -21,6 +21,8 @@ module Riscv151
     output FPGA_SERIAL_TX,
     output [31:0] csr
 );
+
+
 /*
     parameter CPU_CLOCK_FREQ    = 50_000_000;
     parameter RESET_PC          = 32'h4000_0000;

@@ -1,4 +1,5 @@
 `include "Opcode.vh"
+`include "deinfe.vh"
 module imm_gen(
     input [31:0] inst_origin,
     output [31:0] imm
@@ -24,4 +25,5 @@ assign imm = (i_type_signal == 1) ? i_imm:
              (u_type_signal == 1) ? u_imm:
              (j_type_signal == 1) ? j_imm:
              0;
+
 endmodule
