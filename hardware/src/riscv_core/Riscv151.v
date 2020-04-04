@@ -101,14 +101,14 @@ module Riscv151
         .we1(imem_web),    // input
         .clk(clk), .rst(rst));
 
-    assign bios_addra = pc_in;
-    assign imem_addra = pc_in;
+    assign bios_addra = pc_in[11:0];
+    assign imem_addra = pc_in[13:0];
     assign pc_store = pc_in;
     
     wire if_flush = jump_judge;
 
 //-----------second stage----------------//
-    wire [32:0] inst_output;
+    wire [31:0] inst_output;
 
     mux_imem_read mux_imem_read(
         .imem_out(imem_douta),
@@ -216,16 +216,85 @@ module Riscv151
         .clk(clk),
         .rst(if_flush),
         .q(pc_ex),
-        .d(pc_store));    
+        .d(pc_store));
 
-//----------------execute stage------------//
+    wire control_forward_reg;
+    wire control_dmem_reg;
+    wire [1:0] control_jump_reg;
+    wire [1:0] aluOp_reg;
+    wire control_uart_reg;
+    wire [1:0] control_wr_mux_reg;
+
+    control_unit control_unit(
+        .inst(inst_output),
+        .control_forward(control_forward_reg),
+        .control_dmem(control_dmem_reg),
+        .control_jump(control_jum_reg),
+        .control_uart(control_uart_reg),
+        .aluCtrl(aluCtrl_reg),
+        .control_wr_mux(control_wr_mux_reg));
+
     wire control_forward;
     wire [1:0] control_jump;
-    wire [3:0] aluCtrl;
+    wire [1:0] aluOp;
     wire control_uart;
-    wire [1:0] control_dmem;
-    wire control_wr_mux;
+    wire control_dmem;
+    wire [1:0] control_wr_mux;
 
+    REGISTER_R #(.N(1)) forward_reg(
+        .clk(clk),
+        .rst(if_flush),
+        .q(control_forward),
+        .d(control_forward_reg));
+    
+    REGISTER_R #(.N(2)) alu_reg(
+        .clk(clk),
+        .rst(if_flush),
+        .q(aluOp),
+        .d(aluOp_reg));
+    
+    REGISTER_R #(.N(2)) jump_reg(
+        .clk(clk),
+        .rst(if_flush),
+        .q(control_jump),
+        .d(control_jump_reg));
+    
+    REGISTER_R #(.N(1)) uart_reg(
+        .clk(clk),
+        .rst(if_flush),
+        .q(control_uart),
+        .d(control_uart_reg));
+    
+    REGISTER_R #(.N(1)) dmem_reg(
+        .clk(clk),
+        .rst(if_flush),
+        .q(control_dmem),
+        .d(control_dmem_reg));
+
+    REGISTER_R #(.N(2)) wr_mux_reg(
+        .clk(clk),
+        .rst(if_flush),
+        .q(control_wr_mux),
+        .d(control_wr_mux_reg));
+    
+    wire [2:0] inst_alu;
+    wire inst_alu30;
+
+    REGISTER_R #(.N(4)) inst_alu_reg(
+        .clk(clk),
+        .rst(if_flush),
+        .q({inst_alu, inst)alu30}),
+        .d({inst_output[14:12], inst_output}));
+
+
+//----------------execute stage------------//
+
+    alu_control alu_control(
+        .inst_alu(inst_alu),
+        .inst_alu30(inst_alu30),
+        .aluOp(aluOp),
+        .aluCtrl(aluCtrl));
+        
     wire reg1_judge;
     wire [1:0] reg2_judge;
 
@@ -237,17 +306,6 @@ module Riscv151
         .reg1_judge(reg1_judge),
         .reg2_judge(reg2_judge));
 
-    control_unit control_unit(
-        .inst(inst_control),
-        .imm30(imm_ex[30]),
-        .imm(imm_ex[14:12]),
-        .control_forward(control_forward),
-        .control_dmem(control_dmem),
-        .control_jump(control_jump),
-        .control_uart(control_uart),
-        .aluCtrl(aluCtrl),
-        .control_wr_mux(control_wr_mux));
-    
     wire [31:0] aluin1;
     wire [31:0] aluin2;
     wire [31:0] wb_data;

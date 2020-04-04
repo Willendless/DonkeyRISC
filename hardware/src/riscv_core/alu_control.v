@@ -1,6 +1,6 @@
 module alu_control(
-    input [2:0] imm,
-    input imm30,
+    input [2:0] inst_alu,
+    input inst_alu30,
     input [1:0] aluOp,
     output [3:0] aluCtrl
 );
