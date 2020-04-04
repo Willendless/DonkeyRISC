@@ -1,5 +1,5 @@
-`include "defines.vh"
-`include "Opcode.vh"
+`include "../defines.vh"
+`include "../Opcode.vh"
 module alu_control(
     input [2:0] inst_alu,
     input inst_alu30,

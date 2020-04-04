@@ -27,7 +27,7 @@ module id (
     output wire[`REG_DBUS] reg1_data_o,
     output wire[`REG_DBUS] reg2_data_o,
     output wire wb_en_o, //*
-    output wire[`IMM_BUS] imm_o,
+    output wire[`IMM32_BUS] imm_o,
     output wire[`REG_DBUS] wb_addr_o
 );
 
@@ -67,7 +67,8 @@ module id (
     // imm_gen
     imm_gen imm (
         .inst_origin(inst_i),
-        .imm(imm_o)
+        .imm(imm_o),
+        .branch_offset()
     );
 
 

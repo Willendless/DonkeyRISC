@@ -20,12 +20,28 @@ module id_ex (
     input wire[`REG_DBUS]   reg1_data_i,
     input wire[`REG_DBUS]   reg2_data_i,
     input wire[`REG_ABUS]   wb_addr_i,
-    input wire[`IMM_BUS]    imm_i,
+    input wire[`IMM32_BUS]    imm_i,
+
+    //aluop
+
+    input wire              alu_src1_sel_i,
+    input wire              alu_src2_sel_i,
+    input wire              mem_read_i,
+    input wire              mem_write_i,
+    input wire              wb_enable_i,
+    //input wire pc_sel
 
     output wire[`REG_DBUS]  reg1_data_o,
     output wire[`REG_DBUS]  reg2_data_o,
     output wire[`REG_ABUS]  wb_addr_o,
-    output wire[`IMM_BUS]   imm_o
+    output wire[`IMM32_BUS]   imm_o,
+
+    output wire             alu_src1_sel_o,
+    output wire             alu_src2_sel_o,
+    output wire             mem_read_o,
+    output wire             mem_write_o,
+    output wire             wb_enable_o
+    //output pc_sel
 
 );
     wire[`REG_DBUS] reg_data_i [0:1];
@@ -51,20 +67,45 @@ module id_ex (
     endgenerate
 
 
-    REGISTER_R #(.N(`REG_AWIDTH)) reg_wb_addr(
+    REGISTER_R #(.N(`REG_AWIDTH)) reg_wb_addr (
         .q(wb_addr_o),
         .clk(clk),
         .rst(rst),
         .d(wb_addr_i)
     );
 
-    REGISTER_R #(.N(`IMM_WIDTH)) imm_data(
+    REGISTER_R #(.N(`IMM32_WIDTH)) imm_data (
         .q(imm_o),
         .clk(clk),
         .rst(rst),
         .d(imm_i)
     );
 
+    // mux signal
+    wire mux_signals_next [0:5];
+    wire mux_signals_val  [0:5];
+    assign  mux_signals_next[0] = alu_src1_sel_i,
+            mux_signals_next[1] = alu_src2_sel_i,
+            mux_signals_next[2] = mem_read_i,
+            mux_signals_next[3] = mem_write_i,
+            mux_signals_next[4] = wb_enable_i;
+    //TODO: pc_sel
+    assign  alu_src1_sel_o  = mux_signals_val[0],
+            alu_src2_sel_o  = mux_signals_val[1],
+            mem_read_o      = mux_signals_val[2],
+            mem_write_o     = mux_signals_val[3],
+            wb_enable_o     = mux_signals_val[4];
+
+    generate
+        for (i = 0; i < 5; i = i + 1) begin
+           REGISTER_R #(.N(1)) mux_sel (
+               .q(mux_signals_val[i]),
+               .clk(clk),
+               .rst(rst),
+               .d(mux_signals_next[i])
+           ); 
+        end
+    endgenerate
 
 
 endmodule // id_ex
