@@ -73,4 +73,18 @@
 `define ALUCTRL_SUB     4'b1000
 `define ALUCTRL_SRA     4'b1101
 
+//-----judgement of forwarding unit and mux
+`define REG1_MUX_REG    2'b01
+`define REG1_MUX_WB     2'b00
+`define REG1_MUX_PC     2'b11
+`define REG2_MUX_REG    2'b01 
+`define REG2_MUX_WB     2'b00
+`define REG2_MUX_IMM    2'b11
+
+`define FORWARD_PC1     1'b1
+`define FORWARD_REG1    1'b0
+
+`define FORWARD_REG2    1'b0
+`define FORWARD_IMM     1'b1
+
 `endif
