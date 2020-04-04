@@ -54,9 +54,10 @@ module mux_reg2(
     output [31:0] aluin2
 );
 
-assign aluin2 = (reg2_judge == 2'b00) ? reg2_output :
-                (reg2_judge == 2'b01) ? wb_data :
-                imm;
+assign aluin2 = (reg2_judge == `REG2_MUX_REG) ? reg2_output :
+                (reg2_judge == `REG2_MUX_WB) ? wb_data :
+                (reg2_judge == `REG2_MUX_IMM) ? imm : 
+                32'b0;
 endmodule
 
 module mux_imem_read(

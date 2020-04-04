@@ -52,10 +52,11 @@ module Riscv151
     wire [31:0] pc_store;
     wire [31:0] pc_output;
 
-    REGISTER #(.N(32)) pc_reg(
+    REGISTER_R #(.N(32), .INIT(RESET_PC)) pc_reg(
         .clk(clk),
         .q(pc_store),
-        .d(pc_in));
+        .d(pc_in),
+        .rst(rst));
 
     // BIOS Memory
     // Synchronous read: read takes one cycle
@@ -106,7 +107,6 @@ module Riscv151
 
     assign bios_addra = pc_in[11:0];
     assign imem_addra = pc_in[13:0];
-    assign pc_store = pc_in;
     
     wire if_flush = jump_judge;
 
@@ -121,14 +121,44 @@ module Riscv151
     
     wire [31:0] imm_out;
     
-    imm_gen imm_gen(
-        .opcode_i(inst_output),
-        .imm(imm_out));
-    
+    // imm_gen imm_gen(
+    //     .opcode_i(inst_output),
+    //     .imm(imm_out));
+
     wire rf_we;
     wire [4:0]  rf_ra1, rf_ra2, rf_wa;
     wire [31:0] rf_wd;
     wire [31:0] rf_rd1, rf_rd2;
+
+    wire [4:0] wb_addr;
+    // assign rf_ra1 = inst_output[19:15];
+    // assign rf_ra2 = inst_output[24:20];
+    assign rf_wa = wb_addr;
+    assign rf_we = 1'b1;
+
+    id ID (
+        .inst_i(inst_output),
+        .pc_data_i(),
+        .reg1_data_i(),
+        .reg2_data_i(),
+        .reg1_addr_o(),
+        .reg2_addr_o(),
+        .pc_data_o(),
+        .pc_plus_o(),
+        .imm_o(imm_out),
+        .wb_addr_o(),
+        .rs1_addr_o(rf_ra1),
+        .rs2_addr_o(rf_ra2),
+        .reg1_data_o(),
+        .reg2_data_o(),
+        .control_forwar_o(),
+        .control_jump_o(),
+        .alu_op_o(),
+        .control_uart_o(),
+        .control_dmem_o(),
+        .control_wr_mux_o()
+    );
+
     // Asynchronous read: read data is available in the same cycle
     // Synchronous write: write takes one cycle
     REGFILE_1W2R # (
@@ -145,11 +175,10 @@ module Riscv151
         .addr2(rf_ra2), // input
         .clk(clk));
     
-    wire [4:0] wb_addr;
-    assign rf_ra1 = inst_output[19:15];
-    assign rf_ra2 = inst_output[24:20];
-    assign rf_wa = wb_addr;
-    assign rf_we = 1'b1;
+    id_ex ID_EX (
+
+    );
+
     
     wire [31:0] imm_ex;
 
@@ -293,6 +322,7 @@ module Riscv151
 
 
 //----------------execute stage------------//
+    wire [3:0] aluCtrl;
 
     alu_control alu_control(
         .inst_alu(inst_alu),
@@ -300,7 +330,7 @@ module Riscv151
         .aluOp(aluOp),
         .aluCtrl(aluCtrl));
         
-    wire reg1_judge;
+    wire [1:0] reg1_judge;
     wire [1:0] reg2_judge;
 
     forwarding_unit forwarding_unit(
@@ -323,7 +353,7 @@ module Riscv151
     
     mux_reg2 mux_reg2(
         .wb_data(wb_data),
-        .reg2_output(reg1_output),
+        .reg2_output(reg2_output),
         .imm(imm_ex),
         .reg2_judge(reg2_judge),
         .aluin2(aluin2));

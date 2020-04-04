@@ -22,9 +22,9 @@ assign alu_add = aluin1 + aluin2;
 assign alu_sub = aluin1 - aluin2;
 assign alu_or = aluin1 | aluin2;
 assign alu_and = aluin1 & aluin2;
-assign alu_sll = aluin1 << aluin2;
-assign alu_sra = aluin1 >> aluin2;//how?
-assign alu_srl = aluin1 >>> aluin2;
+assign alu_sll = aluin1 << aluin2[4:0];
+assign alu_sra = aluin1 >> aluin2[4:0];//how?
+assign alu_srl = aluin1 >>> aluin2[4:0];
 assign alu_xor = aluin1 ^ aluin2;
 assign alu_slt = (aluin1 < aluin2) ? 1 : 0;
 

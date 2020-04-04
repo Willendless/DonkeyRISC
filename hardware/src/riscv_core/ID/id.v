@@ -14,7 +14,8 @@
 *   
 */
 module id (
-    input wire[`IMEM_DBUS] inst_i,
+    input wire[`IMEM_DBUS]      inst_i,
+    input wire[`REG_DBUS]       pc_data_i,     
 
     // reg data from regfile
     input wire[`REG_DBUS] reg1_data_i,
@@ -23,12 +24,25 @@ module id (
     output wire[`REG_ABUS] reg1_addr_o,
     output wire[`REG_ABUS] reg2_addr_o,
 
-    // data to id_ex
-    output wire[`REG_DBUS] reg1_data_o,
-    output wire[`REG_DBUS] reg2_data_o,
-    output wire wb_en_o, //*
-    output wire[`IMM32_BUS] imm_o,
-    output wire[`REG_DBUS] wb_addr_o
+// data to id_ex
+
+    output wire[`REG_DBUS]      pc_data_o,
+    output wire[`REG_DBUS]      pc_plus_o,
+
+    output wire[`IMM32_BUS]     imm_o,
+    output wire[`REG_ABUS]      wb_addr_o,
+    output wire[`REG_ABUS]      rs1_addr_o,
+    output wire[`REG_ABUS]      rs2_addr_o,
+    output wire[`REG_DBUS]      reg1_data_o,
+    output wire[`REG_DBUS]      reg2_data_o,
+
+    output reg [1:0] control_forward_o,
+    output [1:0] control_jump_o,
+    output [1:0] alu_op_o,
+    output control_uart_o, //TODO
+    output control_dmem_o,
+    output [1:0] control_wr_mux_o
+    // output wire wb_en_o, //*
 );
 
     // decocde
@@ -40,10 +54,15 @@ module id (
             inst_rs2    = inst_i[`FIELD_RS2],
             inst_opcode = inst_i[`FIELD_OPCODE];
 
+    assign  rs1_addr_o   = inst_rs1,
+            rs2_addr_o   = inst_rs2,
+            wb_addr_o    = inst_rd;
+
     // next pc
 
-    // write back addr
-    assign  wb_addr_o = inst_rd;
+    assign pc_data_o = pc_data_i;
+    assign pc_plus_o = pc_data_i + 4;
+
 
     // reg_file
 
@@ -57,19 +76,16 @@ module id (
     // control_unit
     control_unit control (
         .inst(inst_opcode),
-        .control_forward(),
-        .aluOp(),
-        .control_uart(),
-        .control_dmem(),
-        .control_wr_mux()
-    );
+        .control_forward(control_forward_o),
+        .alu_op(alu_op),
+        .control_uart(control_uart),
+        .control_dmem(control_dmem),
+        .control_wr_mux(control_wr_mux));
 
     // imm_gen
     imm_gen imm (
         .inst_origin(inst_i),
         .imm(imm_o),
-        .branch_offset()
-    );
-
+        .branch_offset());
 
 endmodule

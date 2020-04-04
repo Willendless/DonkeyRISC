@@ -60,7 +60,7 @@
 */          
 
 module control_unit (
-    input [`INST_BUS] opcode,
+    input [`FIELD_OPCODE] opcode,
 
     output reg [1:0] control_forward,
     output [1:0] control_jump,
@@ -109,9 +109,9 @@ wire j_type_signal = (opcode == 7'b1101111);//jal
 wire opc_lui_signal = (opcode == 7'b0110111);
 wire opc_auipc_signal = (opcode == 7'b0010111);
 
-assign alu_op = (i_type_signal_lw || s_type_signal) ? 2'b00://lw and sw type
-                   (b_type_signal) ? 2'b01 ://branch type
-                   (r_type_signal);//calculate type
+assign alu_op = (i_type_signal_lw || s_type_signal) ? `ALUOP_ISTYPE ://lw and sw type
+                r_type_signal ? `ALUOP_RTYPE ://branch type
+                2'b11;//calculate type
 
 assign control_jump[0] = i_type_signal_jalr || j_type_signal;
 assign control_jump[1] = b_type_signal;
