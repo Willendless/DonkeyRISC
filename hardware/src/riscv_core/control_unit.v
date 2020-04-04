@@ -36,6 +36,6 @@ assign control_dmem = s_type_signal;//write enable data used for sw inst
 assign control_forward = r_type_signal ? 1 : 0;
 
 
-alu_control(.imm(imm), .imm30(imm30), .aluOp(aluOp), .aluCtrl(aluCtrl));
+alu_control alu_control(.imm(imm), .imm30(imm30), .aluOp(aluOp), .aluCtrl(aluCtrl));
 
 endmodule
