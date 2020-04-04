@@ -62,23 +62,25 @@
 module control_unit (
     input [`INST_BUS] opcode,
 
-    output control_forward,
+    output reg [1:0] control_forward,
     output [1:0] control_jump,
     output [1:0] alu_op,
     output control_uart, //TODO
     output control_dmem,
-    output [1:0] control_wr_mux,
+    output [1:0] control_wr_mux
 
 // modification
-    output reg alu_src1_sel_o,
-    output reg alu_src2_sel_o,
-    output reg mem_read_o,
-    output reg mem_write_o,
-    output reg wb_enable_o
-    //output pc_sel
+/*
+    output alu_src1_sel_o,
+    output alu_src2_sel_o,
+    output mem_read_o,
+    output mem_write_o,
+    output wb_enable_o
+    //output pc_sel*/
 
 );
 
+/*
     always @(*) begin
         alu_src1_sel_o = 1'b0;
         alu_src2_sel_o = 1'b0;
@@ -93,28 +95,23 @@ module control_unit (
         endcase
         
     end
+*/
 
 
+wire r_type_signal = (opcode == 7'b0110011);//add,sub
+wire i_type_signal_lw = (opcode == 7'b0000011);//lw etc
+wire b_type_signal = (opcode == 7'b1100011);//branch
+wire i_type_signal_addi = (opcode == 7'b0010011);//addi etc
+wire i_type_signal_jalr = (opcode == 7'b1100111);//jalr
+wire s_type_signal = (opcode == 7'b0100011);//sw
+wire j_type_signal = (opcode == 7'b1101111);//jal
 
-
-
-
+wire opc_lui_signal = (opcode == 7'b0110111);
+wire opc_auipc_signal = (opcode == 7'b0010111);
 
 assign alu_op = (i_type_signal_lw || s_type_signal) ? 2'b00://lw and sw type
                    (b_type_signal) ? 2'b01 ://branch type
                    (r_type_signal);//calculate type
-                   
-
-wire r_type_signal = (inst == 7'b0110011);//add,sub
-wire i_type_signal_lw = (inst == 7'b0000011);//lw etc
-wire b_type_signal = (inst == 7'b1100011);//branch
-wire i_type_signal_addi = (inst == 7'b0010011);//addi
-wire i_type_signal_jalr = (inst == 7'b1100111);//jalr
-wire s_type_signal = (inst == 7'b0100011);//sw
-wire j_type_signal = (inst == 7'b1101111);//jal
-
-wire opc_lui_signal = (inst == 7'b0110111);
-wire opc_auipc_signal = (inst == 7'b0010111);
 
 assign control_jump[0] = i_type_signal_jalr || j_type_signal;
 assign control_jump[1] = b_type_signal;
@@ -124,10 +121,22 @@ assign control_wr_mux = r_type_signal ? 2'b01: //add r-type inst
                       (i_type_signal_jalr || j_type_signal) ? 2'b11: //jar jalr
                       3'b00;
 
-assign control_uart = (i_type_signal || s_type_signal);//read from uart
+assign control_uart = (i_type_signal_lw || s_type_signal);//read from uart
 
 assign control_dmem = s_type_signal;//write enable data used for sw inst
 
-assign control_forward = r_type_signal ? 1 : 0;
+always @(*) begin
+    case(opcode)
+    `OPC_STORE: control_forward = `FORWARD_REG1;
+    `OPC_LOAD: control_forward = `FORWARD_REG1;
+    `OPC_BRANCH: control_forward = `FORWARD_REG1;
+    `OPC_JAL: control_forward = `FORWARD_PC1;
+    `OPC_JALR: control_forward = `FORWARD_PC1;
+    `OPC_ARI_RTYPE: control_forward = `FORWARD_REG1;
+    `OPC_ARI_ITYPE: control_forward = `FORWARD_IMM;
+    default: control_forward = `FORWARD_REG1;
+    endcase
+end
+
 
 endmodule

@@ -4,7 +4,7 @@ module forwarding_unit(
     input [4:0] reg2_addr,
     input [4:0] wb_addr,
     input [1:0] control_forward,
-    output reg1_judge,
+    output [1:0] reg1_judge,
     output [1:0] reg2_judge
 );
 

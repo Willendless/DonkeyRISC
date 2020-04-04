@@ -1,10 +1,10 @@
-`include "alu.v"
+`include "EX/alu.v"
 `include "../EECS151.v"
 `include "mux.v"
-`include "alu_control.v"
-`include "control_unit.v"
+`include "EX/alu_control.v"
+`include "ID/control_unit.v"
 `include "forwarding_unit.v"
-`include "imm_gen.v"
+`include "ID/imm_gen.v"
 `include "jump_unit.v"
 
 module Riscv151
@@ -40,10 +40,12 @@ module Riscv151
     wire [31:0] pc_plus;
     wire [31:0] jal_addr;
     wire jump_judge;
+    wire [31:0] branch_addr;
 
     mux_pc mux_pc(
         .pc_plus(pc_plus),
         .jal_addr(jal_addr),
+        .branch_addr(branch_addr),
         .jump_judge(jump_judge),
         .pc_in(pc_in));
 
@@ -120,7 +122,7 @@ module Riscv151
     wire [31:0] imm_out;
     
     imm_gen imm_gen(
-        .inst_origin(inst_output),
+        .opcode_i(inst_output),
         .imm(imm_out));
     
     wire rf_we;
@@ -219,7 +221,9 @@ module Riscv151
         .q(pc_ex),
         .d(pc_store));
 
-    wire control_forward_reg;
+    assign branch_addr = pc_store + imm_out;
+
+    wire [1:0] control_forward_reg;
     wire control_dmem_reg;
     wire [1:0] control_jump_reg;
     wire [1:0] aluOp_reg;
@@ -227,22 +231,22 @@ module Riscv151
     wire [1:0] control_wr_mux_reg;
 
     control_unit control_unit(
-        .inst(inst_output),
+        .opcode(inst_output[6:0]),
         .control_forward(control_forward_reg),
         .control_dmem(control_dmem_reg),
         .control_jump(control_jum_reg),
         .control_uart(control_uart_reg),
-        .aluCtrl(aluCtrl_reg),
+        .alu_op(aluOp_reg),
         .control_wr_mux(control_wr_mux_reg));
 
-    wire control_forward;
+    wire [1:0] control_forward;
     wire [1:0] control_jump;
     wire [1:0] aluOp;
     wire control_uart;
     wire control_dmem;
     wire [1:0] control_wr_mux;
 
-    REGISTER_R #(.N(1)) forward_reg(
+    REGISTER_R #(.N(2)) forward_reg(
         .clk(clk),
         .rst(if_flush),
         .q(control_forward),
@@ -284,7 +288,7 @@ module Riscv151
     REGISTER_R #(.N(4)) inst_alu_reg(
         .clk(clk),
         .rst(if_flush),
-        .q({inst_alu, inst)alu30}),
+        .q({inst_alu, inst_alu30}),
         .d({inst_output[14:12], inst_output}));
 
 
@@ -324,20 +328,13 @@ module Riscv151
         .reg2_judge(reg2_judge),
         .aluin2(aluin2));
 
-    wire aluout;
-    wire branch_judge;
+    wire [31:0] aluout;
 
     alu alu(
         .aluin1(aluin1),
         .aluin2(aluin2),
         .aluCtrl(aluCtrl),
-        .aluout(aluout),
-        .branch_judge(branch_judge));
-    
-    jump_unit jump_unit(
-        .control_jump(control_jump),
-        .branch_judge(branch_judge),
-        .jump_judge(jump_judge));
+        .aluout(aluout));
     
     wire [31:0] rtype_output;
 
@@ -364,8 +361,6 @@ module Riscv151
         .q(pc_plus_wb),
         .clk(clk),
         .d(pc_plus_ex));
-
-    assign jal_addr = pc_ex + imm_ex;
 
     
     //-----------wb stage---------------/
@@ -404,7 +399,7 @@ module Riscv151
     assign imem_addrb = aluout;
     assign bios_addrb = aluout;
 
-    mux_dmem(
+    mux_dmem mux_dmem(
         .dmem_output(dmem_douta),
         .bios_output(bios_doutb),
         .pc_output(pc_plus_wb),
