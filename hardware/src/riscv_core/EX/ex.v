@@ -40,9 +40,18 @@ module ex (
     output wire[`REG_DBUS]      mem_write_o,      
     output wire[`REG_ABUS]      wb_addr_o,
     output wire[1:0]            control_wr_mux_o,
-    output wire[`REG_DBUS]      pc_plus_o
+    output wire[`REG_DBUS]      pc_plus_o,
+    output wire [3:0]           dmem_we
     
 );
+    wire [31:0] aluout;
+    assign alu_result_o = aluout;
+    dmem_wr dmem_wr (
+        .funct3_i(funct3_i),
+        .control_dmem(control_dmem_i),
+        .addr_offset(aluout[1:0]),
+        .dmem_we(dmem_we)
+    );
 
     // write back control signal
     assign wb_addr_o = wb_addr_i;
@@ -74,7 +83,11 @@ module ex (
     wire [31:0] aluin2;
 
     // memory wirte data
-    assign mem_write_o = aluin2;
+    change_mem_wr change_mem_wr(
+        .dmem_we(dmem_we),
+        .in_data(reg2_data_i),
+        .out_data(mem_write_o)
+    );
     
     mux_reg1 mux_reg1(
         .wb_data(forward_data),
@@ -93,6 +106,6 @@ module ex (
         .aluin1(aluin1),
         .aluin2(aluin2),
         .aluCtrl(alu_ctrl),
-        .aluout(alu_result_o));
+        .aluout(aluout));
 
 endmodule // ex 

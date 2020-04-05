@@ -342,17 +342,17 @@ module Riscv151_testbench();
 
         INST_ADDR       = 14'h0000;
 
-        DATA_ADDR0      = (CPU.rf.mem[2]  + IMM0[11:0]) >> 2;
+        DATA_ADDR0      = (CPU.rf.mem[2]  + IMM0[11:0])>>2;
 
-        DATA_ADDR1      = (CPU.rf.mem[3]  + IMM0[11:0]) >> 2;
-        DATA_ADDR2      = (CPU.rf.mem[4]  + IMM1[11:0]) >> 2;
-        DATA_ADDR3      = (CPU.rf.mem[5]  + IMM2[11:0]) >> 2;
-        DATA_ADDR4      = (CPU.rf.mem[6]  + IMM3[11:0]) >> 2;
+        DATA_ADDR1      = (CPU.rf.mem[3]  + IMM0[11:0])>>2;
+        DATA_ADDR2      = (CPU.rf.mem[4]  + IMM1[11:0])>>2;
+        DATA_ADDR3      = (CPU.rf.mem[5]  + IMM2[11:0])>>2;
+        DATA_ADDR4      = (CPU.rf.mem[6]  + IMM3[11:0])>>2;
 
-        DATA_ADDR5      = (CPU.rf.mem[7]  + IMM0[11:0]) >> 2;
-        DATA_ADDR6      = (CPU.rf.mem[8]  + IMM1[11:0]) >> 2;
-        DATA_ADDR7      = (CPU.rf.mem[9]  + IMM2[11:0]) >> 2;
-        DATA_ADDR8      = (CPU.rf.mem[10] + IMM3[11:0]) >> 2;
+        DATA_ADDR5      = (CPU.rf.mem[7]  + IMM0[11:0])>>2;
+        DATA_ADDR6      = (CPU.rf.mem[8]  + IMM1[11:0])>>2;
+        DATA_ADDR7      = (CPU.rf.mem[9]  + IMM2[11:0])>>2;
+        DATA_ADDR8      = (CPU.rf.mem[10] + IMM3[11:0])>>2;
 
         CPU.imem.mem[INST_ADDR + 0] = {IMM0[11:5], 5'd1, 5'd2,  `FNC_SW, IMM0[4:0], `OPC_STORE};
 
@@ -378,6 +378,7 @@ module Riscv151_testbench();
         check_result_dmem(DATA_ADDR0, 32'h12345678, "S-Type SW");
 
         check_result_dmem(DATA_ADDR1, 32'h00005678, "S-Type SH 1");
+        
         check_result_dmem(DATA_ADDR2, 32'h00567800, "S-Type SH 2");
         check_result_dmem(DATA_ADDR3, 32'h56780000, "S-Type SH 3");
         check_result_dmem(DATA_ADDR4, 32'h56780000, "S-Type SH 4");
