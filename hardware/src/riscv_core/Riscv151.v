@@ -52,7 +52,8 @@ module Riscv151
         .jal_addr(jal_addr),
         .branch_addr(branch_addr),
         .jump_judge(jump_judge),
-        .pc_in(pc_in));
+        .pc_o(pc_in));
+
 
     wire [31:0] pc_store;
     wire [31:0] pc_output;
@@ -159,6 +160,7 @@ module Riscv151
     wire [1:0] control_wr_mux_reg;
 
     wire[`WORD_BUS] branch_offset;
+    wire[`REG_ABUS] rd_addr_reg;
 
     id ID (
         .inst_i(inst_output),

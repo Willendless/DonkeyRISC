@@ -25,10 +25,10 @@ module mux_pc(
     input [31:0] jal_addr,
     input [31:0] branch_addr,
     input [1:0] jump_judge,
-    output [31:0] pc_in
+    output [31:0] pc_o
 );
 //define the input of jump signal
-assign pc_in = pc_plus;
+assign pc_o = pc_plus;
 
 endmodule
 

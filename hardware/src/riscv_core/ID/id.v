@@ -28,7 +28,7 @@ module id (
 
 // data to id_ex
     output wire                 inst_alu30_o,
-    output wire                 funct3_o,
+    output wire [2:0]                funct3_o,
 
     output wire[`REG_DBUS]      pc_data_o,
     output wire[`REG_DBUS]      pc_plus_o,
