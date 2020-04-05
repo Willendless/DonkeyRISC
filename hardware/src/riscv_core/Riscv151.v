@@ -42,13 +42,15 @@ module Riscv151
     wire [BIOS_DWIDTH-1:0] bios_douta, bios_doutb;
 
     wire [31:0] pc_in;
-    wire [31:0] pc_plus;
     wire [31:0] jal_addr;
-    wire jump_judge;
+    wire [1:0] jump_judge;
     wire [31:0] branch_addr;
 
+    wire [`REG_DBUS]    pc_data_reg;
+    wire [`REG_DBUS]    pc_plus_reg;
+
     mux_pc mux_pc(
-        .pc_plus(pc_plus),
+        .pc_plus(pc_plus_reg),
         .jal_addr(jal_addr),
         .branch_addr(branch_addr),
         .jump_judge(jump_judge),
@@ -90,7 +92,8 @@ module Riscv151
     wire [IMEM_AWIDTH-1:0] imem_addra, imem_addrb;
     wire [IMEM_DWIDTH-1:0] imem_douta, imem_doutb;
     wire [IMEM_DWIDTH-1:0] imem_dina, imem_dinb;
-    wire [3:0] imem_wea, imem_web;
+    wire imem_wea = 1;
+    wire imem_web = 1;
 
     // Instruction Memory
     // Synchronous read: read takes one cycle
@@ -114,7 +117,7 @@ module Riscv151
     assign bios_addra = pc_in[11:0];
     assign imem_addra = pc_in[13:0];
     
-    wire if_flush = jump_judge;
+    wire if_flush = 0;
 
 //-----------second stage----------------//
     wire [31:0] inst_output;
@@ -122,7 +125,7 @@ module Riscv151
     mux_imem_read mux_imem_read(
         .imem_out(imem_douta),
         .bios_out(bios_douta),
-        .pc30(1),
+        .pc30(1'b1),
         .inst_output(inst_output));
     
     wire [31:0] imm_out;
@@ -149,9 +152,6 @@ module Riscv151
     wire inst_alu30_reg;
     wire [2:0] inst_alu_reg;
 
-    wire [`REG_DBUS]    pc_data_reg;
-    wire [`REG_DBUS]    pc_plus_reg;
-
     wire [1:0] control_forward_reg;
     wire control_dmem_reg;
     wire [1:0] control_jump_reg;    
@@ -160,7 +160,11 @@ module Riscv151
     wire [1:0] control_wr_mux_reg;
 
     wire[`WORD_BUS] branch_offset;
+<<<<<<< HEAD
     wire[`REG_ABUS] rd_addr_reg;
+=======
+    wire [4:0] rd_addr_reg;
+>>>>>>> 8c3589ec21ae7dae49b77c2d6519fe4f0255573d
 
     id ID (
         .inst_i(inst_output),
@@ -181,7 +185,7 @@ module Riscv151
         .reg1_data_o(reg1_data_reg),
         .reg2_data_o(reg2_data_reg),
         .control_forward_o(control_forward_reg),
-        .control_jump_o(control_jum_reg),
+        .control_jump_o(control_jump_reg),
         .alu_op_o(aluOp_reg),
         .control_uart_o(control_uart_reg),
         .control_dmem_o(control_dmem_reg),
@@ -269,6 +273,8 @@ module Riscv151
     wire [`REG_DBUS]    pc_plus_reg2;
     wire [`REG_DBUS]    mem_write_reg;   
 
+    wire [31:0] wb_data;
+
     ex EX (
         .forward_data(wb_data),     // DATA from write back stage
         .pc_data_i(pc_ex),
@@ -291,7 +297,7 @@ module Riscv151
         .alu_result_o(alu_result_reg),
         .wb_addr_o(wb_addr_reg),
         .control_wr_mux_o(control_wr_mux_reg2),
-        .pc_plus_o(pc_plux_reg2)
+        .pc_plus_o(pc_plus_reg2)
     );
 
     wire [31:0] rtype_output;
@@ -302,7 +308,7 @@ module Riscv151
         .rst(rst),
         .alu_result_i(alu_result_reg),
         .wb_addr_i(wb_addr_reg),
-        .control_wr_mux_i(control_wr_reg2),
+        .control_wr_mux_i(control_wr_mux_reg2),
         .pc_plus_i(pc_plus_reg2),
         .alu_result_o(rtype_output),
         .wb_addr_o(wb_addr),
@@ -346,7 +352,7 @@ module Riscv151
     wb WB (
         .alu_result_i(rtype_output),
         .wb_addr_i(wb_addr),
-        .control_wr_mux_i(contro_data),
+        .control_wr_mux_i(control_data),
         .pc_plus_i(pc_plus_wb),
         .dmem_douta_i(dmem_douta),
         .wb_addr_o(rf_wa),
