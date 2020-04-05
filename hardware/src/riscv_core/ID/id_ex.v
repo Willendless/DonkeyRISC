@@ -58,6 +58,7 @@ module id_ex (
     input wire control_uart_i, //TODO
     input wire control_dmem_i,
     input wire[1:0] control_wr_mux_i,
+    input wire control_csr_we_i,
 
     output 
     
@@ -67,6 +68,7 @@ module id_ex (
     output control_uart_o, //TODO
     output control_dmem_o,
     output [1:0] control_wr_mux_o,
+    output wire control_csr_we_o,
 
     output wire[2:0]         funct3_o,
     output wire              inst_alu30_o
@@ -188,6 +190,12 @@ module id_ex (
         .rst(rst),
         .q(control_wr_mux_o),
         .d(control_wr_mux_i));
+
+    REGISTER_R #(.N(1)) csr_we_reg(
+        .clk(clk),
+        .rst(rst),
+        .q(control_csr_ce_o),
+        .d(control_csr_ce_i));
 
 
 

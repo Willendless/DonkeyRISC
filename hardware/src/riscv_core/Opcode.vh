@@ -24,6 +24,9 @@
 `define OPC_ARI_RTYPE   7'b0110011
 `define OPC_ARI_ITYPE   7'b0010011
 
+// CSR instructions
+`define OPC_CSR         7'b1110011
+
 // ***** 5-bit Opcodes *****
 `define OPC_LUI_5       5'b01101
 `define OPC_AUIPC_5     5'b00101
@@ -34,6 +37,7 @@
 `define OPC_LOAD_5      5'b00000
 `define OPC_ARI_RTYPE_5 5'b01100
 `define OPC_ARI_ITYPE_5 5'b00100
+`define OPC_CSR_5       5'b11100
 
 // ***** Function codes *****
 

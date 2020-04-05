@@ -34,6 +34,7 @@ module ex (
     input wire control_uart_i, //TODO
     input wire control_dmem_i,
     input wire[1:0] control_wr_mux_i,
+    input wire control_csr_we_i,
 
 
     output wire[`WORD_BUS]      alu_result_o,
@@ -41,7 +42,9 @@ module ex (
     output wire[`REG_ABUS]      wb_addr_o,
     output wire[1:0]            control_wr_mux_o,
     output wire[`REG_DBUS]      pc_plus_o,
-    output wire [3:0]           dmem_we
+    output wire [3:0]           dmem_we,
+    output wire                 control_csr_we_o,
+    output wire[`REG_DBUS]      csr_data_o
     
 );
     wire [31:0] aluout;
@@ -52,6 +55,12 @@ module ex (
         .addr_offset(aluout[1:0]),
         .dmem_we(dmem_we)
     );
+
+    // csr control signal
+    assign control_csr_we_o = control_csr_we_i;
+    assign csr_data_o = funct3_i == 3'b001 ? reg1_data_i : 
+                        funct3_i == 3'b101 ? imm_i : 32'b0;
+
 
     // write back control signal
     assign wb_addr_o = wb_addr_i;
@@ -109,7 +118,6 @@ module ex (
         .aluCtrl(alu_ctrl),
         .aluout(aluout));
     
-    wire 
     jb_unit jb_unit(
         .control_jump(control_jump_i),
         .branch_comp_result(branch_comp_result),

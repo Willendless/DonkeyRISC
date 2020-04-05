@@ -140,6 +140,7 @@ module Riscv151
     wire [1:0] aluOp_reg;
     wire control_uart_reg;
     wire [1:0] control_wr_mux_reg;
+    wire control_csr_we_reg;
 
     wire[`WORD_BUS] branch_offset;
     wire[`REG_ABUS] rd_addr_reg;
@@ -149,6 +150,7 @@ module Riscv151
         .pc_data_i(pc_store),
         .reg1_data_i(rf_rd1),
         .reg2_data_i(rf_rd2),
+
         .reg1_addr_o(rf_ra1),
         .reg2_addr_o(rf_ra2),
         .funct3_o(inst_alu_reg),
@@ -167,7 +169,8 @@ module Riscv151
         .alu_op_o(aluOp_reg),
         .control_uart_o(control_uart_reg),
         .control_dmem_o(control_dmem_reg),
-        .control_wr_mux_o(control_wr_mux_reg)
+        .control_wr_mux_o(control_wr_mux_reg),
+        .control_csr_we_o(control_csr_we_reg)
     );
 
     // Asynchronous read: read data is available in the same cycle
@@ -202,6 +205,7 @@ module Riscv151
     wire control_uart;
     wire control_dmem;
     wire [1:0] control_wr_mux;
+    wire control_csr_we;
 
     wire [2:0] inst_alu;
     wire inst_alu30;
@@ -225,6 +229,7 @@ module Riscv151
         .control_uart_i(control_uart_reg),
         .control_dmem_i(control_dmem_reg),
         .control_wr_mux_i(control_wr_mux_reg),
+        .control_csr_we_i(control_csr_we_reg),
 
         .pc_data_o(pc_ex),
         .pc_plus_o(pc_plus_ex),
@@ -240,6 +245,7 @@ module Riscv151
         .control_uart_o(control_uart), // TODO
         .control_dmem_o(control_dmem),
         .control_wr_mux_o(control_wr_mux),
+        .control_csr_we_o(control_csr_we),
         .funct3_o(inst_alu),
         .inst_alu30_o(inst_alu30)
     );
@@ -252,8 +258,11 @@ module Riscv151
     wire [`REG_DBUS]    pc_plus_reg2;
     wire [`REG_DBUS]    mem_write_reg;   
 
-    wire [31:0] wb_data;
-    wire [3:0] dmem_wea;
+    wire [31:0]         wb_data;
+    wire [3:0]          dmem_wea;
+
+    wire                csr_we;
+    wire [`REG_DBUS]    csr_din;
 
     ex EX (
         .forward_data(wb_data),     // DATA from write back stage
@@ -273,13 +282,16 @@ module Riscv151
         .control_uart_i(control_uart),  //TODO
         .control_dmem_i(control_dmem),
         .control_wr_mux_i(control_wr_mux),
+        .control_csr_we_i(control_csr_we),
 
         .mem_write_o(mem_write_reg),
         .alu_result_o(alu_result_reg),
         .wb_addr_o(wb_addr_reg),
         .control_wr_mux_o(control_wr_mux_reg2),
+        .control_csr_we_o(csr_we),
         .pc_plus_o(pc_plus_reg2),
-        .dmem_we(dmem_wea)
+        .dmem_we(dmem_wea),
+        .csr_data_o(csr_din)
     );
 
     assign jump_addr = alu_result_reg;
@@ -310,6 +322,7 @@ module Riscv151
     localparam DMEM_AWIDTH = 32;
     localparam DMEM_DWIDTH = 32;
     localparam DMEM_DEPTH = 16384;
+    localparam CSR_ADDR = 12'h51e;
 
     wire [DMEM_AWIDTH-1:0] dmem_addra;
     wire [DMEM_DWIDTH-1:0] dmem_dina, dmem_douta;
@@ -331,6 +344,15 @@ module Riscv151
         .addr(dmem_addra), // input
         .wbe(dmem_wea),    // input
         .clk(clk), .rst(rst));
+
+    REGISTER_R_CE #(.N(32)) csr_reg (
+        .q(csr),
+        .d(csr_din),
+        .ce(csr_we),
+        .clk(clk), .rst(rst)
+    );
+
+    
 
     //-----------wb stage---------------/
     wb WB (

@@ -22,6 +22,8 @@ module imm_gen (
             // U-type
             `OPC_LUI_5,
             `OPC_AUIPC_5: imm = {opcode_i[31], opcode_i[30:20], opcode_i[19:12], {12{1'b0}}};
+            // CSR_type
+            `OPC_CSR_5: imm = {27'b0 ,opcode_i[19:15]};
             // R-type
             `OPC_ARI_RTYPE_5: ;
             default: ; 

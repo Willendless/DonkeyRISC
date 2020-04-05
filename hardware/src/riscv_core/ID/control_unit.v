@@ -67,7 +67,8 @@ module control_unit (
     output [1:0] alu_op,
     output control_uart, //TODO
     output [3:0] control_dmem,
-    output [1:0] control_wr_mux
+    output [1:0] control_wr_mux,
+    output wire control_csr_we
 
 // modification
 /*
@@ -106,10 +107,14 @@ wire i_type_signal_jalr = (opcode == 7'b1100111);//jalr
 wire s_type_signal = (opcode == 7'b0100011);//sw
 wire j_type_signal = (opcode == 7'b1101111);//jal
 
+wire csr_type_signal = (opcode == `OPC_CSR);
+
 wire opc_lui_signal = (opcode == 7'b0110111);
 wire opc_auipc_signal = (opcode == 7'b0010111);
 
-assign alu_op = (i_type_signal_lw || s_type_signal || j_type_signal || i_type_signal_jalr) ? `ALUOP_ISJTYPE ://lw and sw type
+assign alu_op = (i_type_signal_lw || s_type_signal || 
+                j_type_signal || i_type_signal_jalr ||
+                csr_type_signal) ? `ALUOP_ISJTYPE ://lw and sw type
                 r_type_signal ? `ALUOP_RTYPE ://branch type
                 2'b11;//calculate type
 
@@ -124,6 +129,8 @@ assign control_wr_mux = r_type_signal ? 2'b01: //add r-type inst
 assign control_uart = (i_type_signal_lw || s_type_signal);//read from uart
 
 assign control_dmem = s_type_signal;//write enable data used for sw inst
+
+assign control_csr_we = csr_type_signal;
 
 always @(*) begin
     case(opcode)

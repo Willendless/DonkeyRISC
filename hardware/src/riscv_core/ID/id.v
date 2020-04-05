@@ -45,7 +45,8 @@ module id (
     output [1:0] alu_op_o,
     output control_uart_o, //TODO
     output control_dmem_o,
-    output [1:0] control_wr_mux_o
+    output [1:0] control_wr_mux_o,
+    output control_csr_we_o
     // output wire wb_en_o, //*
 );
 
@@ -88,7 +89,8 @@ module id (
         .alu_op(alu_op_o),
         .control_uart(control_uart_o),
         .control_dmem(control_dmem_o),
-        .control_wr_mux(control_wr_mux_o));
+        .control_wr_mux(control_wr_mux_o),
+        .control_csr_we(control_csr_we_o));
 
     // imm_gen
     wire [31:0] branch_offset_o;
