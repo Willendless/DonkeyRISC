@@ -29,7 +29,6 @@ module ex (
 
     // control signal
     input wire[1:0] control_forward_i,
-    input wire[1:0] control_jump_i,
     input wire[1:0] alu_op_i,
     input wire control_uart_i, //TODO
     input wire control_dmem_i,
@@ -109,12 +108,6 @@ module ex (
         .aluCtrl(alu_ctrl),
         .aluout(aluout));
     
-    wire 
-    jb_unit jb_unit(
-        .control_jump(control_jump_i),
-        .branch_comp_result(branch_comp_result),
-        .jump_judge(jump_judge),
-        .if_flush(if_flush)
-    );
+
 
 endmodule // ex 

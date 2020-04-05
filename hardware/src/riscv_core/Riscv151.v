@@ -37,12 +37,13 @@ module Riscv151
 
     wire [`REG_DBUS]    pc_data_reg;
     wire [`REG_DBUS]    pc_plus_reg;
-
+    //wire branch_judge;
     mux_pc mux_pc(
         .pc_plus(pc_plus_reg),
         .jal_addr(jal_addr),
         .branch_addr(branch_addr),
         .jump_judge(jump_judge),
+        //.branch_judge(),
         .pc_o(pc_in));
 
 
@@ -206,6 +207,7 @@ module Riscv151
     wire [2:0] inst_alu;
     wire inst_alu30;
 
+
     id_ex ID_EX (
         .clk(clk),
         .rst(rst),
@@ -268,7 +270,6 @@ module Riscv151
         .funct3_i(inst_alu),
         .inst_alu30_i(inst_alu30),
         .control_forward_i(control_forward),
-        .control_jump_i(control_jump),
         .alu_op_i(aluOp),
         .control_uart_i(control_uart),  //TODO
         .control_dmem_i(control_dmem),
@@ -282,7 +283,8 @@ module Riscv151
         .dmem_we(dmem_wea)
     );
 
-    assign jump_addr = alu_result_reg;
+    assign jal_addr = alu_result_reg;
+    assign jump_judge = control_jump;
 
     wire [31:0] rtype_output;
     wire [1:0] control_data;

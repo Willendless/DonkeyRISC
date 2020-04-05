@@ -84,6 +84,7 @@ module id (
     // control_unit
     control_unit control (
         .opcode(inst_opcode),
+        .control_jump(control_jump_o),
         .control_forward(control_forward_o),
         .alu_op(alu_op_o),
         .control_uart(control_uart_o),
