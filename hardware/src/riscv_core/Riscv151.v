@@ -254,6 +254,8 @@ module Riscv151
         .inst_alu30_o(inst_alu30)
     );
 
+    assign jump_judge = control_jump;
+
 //----------------execute stage------------//
 
     wire [`WORD_BUS]    alu_result_reg;
@@ -298,7 +300,7 @@ module Riscv151
         .csr_data_o(csr_din)
     );
 
-    assign jump_addr = alu_result_reg;
+    assign jal_addr = alu_result_reg>>2;
 
     wire [31:0] rtype_output;
     wire [1:0] control_data;

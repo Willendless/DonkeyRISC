@@ -89,6 +89,7 @@ module id (
         .opcode(inst_opcode),
         .control_forward(control_forward_o),
         .alu_op(alu_op_o),
+        .control_jump(control_jump_o),
         .control_uart(control_uart_o),
         .control_dmem(control_dmem_o),
         .control_branch(control_branch),

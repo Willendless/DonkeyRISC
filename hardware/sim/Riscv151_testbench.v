@@ -424,6 +424,7 @@ module Riscv151_testbench();
         check_result_rf(5'd7, 700, "J-Type JAL");
 
         // Test I-Type JALR Insts ---------------------------------------------
+        
         reset();
 
         CPU.rf.mem[1] = 32'h1000_0100;

@@ -118,11 +118,5 @@ module ex (
         .aluCtrl(alu_ctrl),
         .aluout(aluout));
     
-    jb_unit jb_unit(
-        .control_jump(control_jump_i),
-        .branch_comp_result(branch_comp_result),
-        .jump_judge(jump_judge),
-        .if_flush(if_flush)
-    );
 
 endmodule // ex 
