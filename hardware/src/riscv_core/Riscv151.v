@@ -38,11 +38,14 @@ module Riscv151
     wire [`REG_DBUS]    pc_data_reg;
     wire [`REG_DBUS]    pc_plus_reg;
 
+    wire branch_judge;
+    
     mux_pc mux_pc(
         .pc_plus(pc_plus_reg),
         .jal_addr(jal_addr),
         .branch_addr(branch_addr),
         .jump_judge(jump_judge),
+        .branch_judge(branch_judge),
         .pc_o(pc_in));
 
 
@@ -170,7 +173,8 @@ module Riscv151
         .control_uart_o(control_uart_reg),
         .control_dmem_o(control_dmem_reg),
         .control_wr_mux_o(control_wr_mux_reg),
-        .control_csr_we_o(control_csr_we_reg)
+        .control_csr_we_o(control_csr_we_reg),
+        .branch_judge(branch_judge)
     );
 
     // Asynchronous read: read data is available in the same cycle
