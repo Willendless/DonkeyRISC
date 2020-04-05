@@ -28,7 +28,7 @@ module ex_wb (
         .rst(rst),
         .d(wb_addr_i));
     
-    REGISTER_R #(.N(32)) store_control(
+    REGISTER_R #(.N(2)) store_control(
         .q(control_wr_mux_o),
         .clk(clk),
         .rst(rst),

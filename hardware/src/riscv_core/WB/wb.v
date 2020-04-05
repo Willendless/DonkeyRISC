@@ -3,10 +3,10 @@
 
 module wb (
     // from ex_wb
-    input wire[3:0]             alu_result_i,
-    input wire[1:0]             wb_addr_i,
-    input wire[1:0]             control_wr_mux_i,
-    input wire[1:0]             pc_plus_i,
+    input wire[31:0]             alu_result_i,
+    input wire[31:0]             wb_addr_i,
+    input wire[31:0]             control_wr_mux_i,
+    input wire[31:0]             pc_plus_i,
 
     //from mem
     input wire[`DMEM_DBUS]      dmem_douta_i,

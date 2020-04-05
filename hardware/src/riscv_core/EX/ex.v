@@ -59,7 +59,7 @@ module ex (
         .aluOp(alu_op_i),
         .aluCtrl(alu_ctrl));
         
-    wire reg1_judge;
+    wire [1:0] reg1_judge;
     wire [1:0] reg2_judge;
 
     forwarding_unit forwarding_unit(
@@ -85,7 +85,7 @@ module ex (
     mux_reg2 mux_reg2(
         .wb_data(forward_data),
         .reg2_output(reg2_data_i),
-        .imm(imm_ex),
+        .imm(imm_i),
         .reg2_judge(reg2_judge),
         .aluin2(aluin2));
 

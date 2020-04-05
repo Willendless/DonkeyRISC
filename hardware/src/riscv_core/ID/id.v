@@ -28,7 +28,7 @@ module id (
 
 // data to id_ex
     output wire                 inst_alu30_o,
-    output wire                 funct3_o,
+    output wire [2:0]           funct3_o,
 
     output wire[`REG_DBUS]      pc_data_o,
     output wire[`REG_DBUS]      pc_plus_o,
@@ -85,12 +85,13 @@ module id (
     control_unit control (
         .opcode(inst_opcode),
         .control_forward(control_forward_o),
-        .alu_op(alu_op),
+        .alu_op(alu_op_o),
         .control_uart(control_uart),
         .control_dmem(control_dmem),
-        .control_wr_mux(control_wr_mux));
+        .control_wr_mux(control_wr_mux_o));
 
     // imm_gen
+    wire [31:0] branch_offset_o;
     imm_gen imm (
         .opcode_i(inst_i),
         .imm(imm_o),
