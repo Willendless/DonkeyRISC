@@ -27,7 +27,7 @@
 `define BIOS_AWIDTH     12
 `define BIOS_DWIDTH     32
 `define BIOS_ABUS       11:0
-`define BIOS_DWIDTH     31:0
+`define BIOS_DBUS       31:0
 // REGFILE
 `define REG_AWIDTH      5 
 `define REG_DWIDTH      32

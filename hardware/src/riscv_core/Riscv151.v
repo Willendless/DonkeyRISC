@@ -1,12 +1,10 @@
-`include "mux.v"
-`include "EX/alu_control.v"
-`include "ID/control_unit.v"
-`include "forwarding_unit.v"
-`include "ID/imm_gen.v"
-`include "jump_unit.v"
-`include "WB/wb.v"
+`include "defines.vh"
+`include "Opcode.vh"
+`include "EX/ex_wb.v"
+`include "EX/ex.v"
 `include "../EECS151.v"
-
+`include "WB/wb.v"
+`include "EX/alu_control.v"
 module Riscv151
 #(
     parameter CPU_CLOCK_FREQ    = 50_000_000,
@@ -173,7 +171,7 @@ module Riscv151
         .rs2_addr_o(reg2_addr_reg),
         .reg1_data_o(reg1_data_reg),
         .reg2_data_o(reg2_data_reg),
-        .control_forwar_o(control_forward_reg),
+        .control_forward_o(control_forward_reg),
         .control_jump_o(control_jum_reg),
         .alu_op_o(aluOp_reg),
         .control_uart_o(control_uart_reg),
@@ -335,35 +333,18 @@ module Riscv151
         .wbe(dmem_wea),    // input
         .clk(clk), .rst(rst));
 
-/*
-    assign dmem_addra = aluout;
-    assign imem_addrb = aluout;
-    assign bios_addrb = aluout;
-
-    mux_dmem mux_dmem(
-        .dmem_output(dmem_douta),
-        .bios_output(bios_doutb),
-        .pc_output(pc_plus_wb),
-        .rtype_output(rtype_output),
-        .control_data(control_data),
-        .addr(rtype_output[31:28]),
-        .wb_data(wb_data));
-
-    assign rf_wd = wb_data;
-*/
     //-----------wb stage---------------/
-
     wb WB (
-    .alu_result_i(rtype_output),
-    .wb_addr_i(wb_addr),
-    .control_wr_mux_i(control_data),
-    .pc_plus_i(pc_plus_wb),
-    .dmem_douta_i(dmem_douta),
-    .bios_doutb_i(bios_doutb),          
-    .wb_addr_o(rf_wa),
-    .wb_data_o(wb_data)
-    );
+        .alu_result_i(rtype_output),
+        .wb_addr_i(wb_addr),
+        .control_wr_mux_i(contro_data),
+        .pc_plus_i(pc_plus_wb),
+        .dmem_douta_i(dmem_douta),
+        .wb_addr_o(rf_wa),
+        .bios_doutb_i(bios_doutb),
+        .wb_data_o(wb_data)               
 
+    );
 
 
 /*
