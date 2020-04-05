@@ -93,6 +93,7 @@ module ex (
         .wb_data(forward_data),
         .reg1_output(reg1_data_i),
         .reg1_judge(reg1_judge),
+        .pc_output(pc_data_i),
         .aluin1(aluin1));
     
     mux_reg2 mux_reg2(
@@ -107,5 +108,13 @@ module ex (
         .aluin2(aluin2),
         .aluCtrl(alu_ctrl),
         .aluout(aluout));
+    
+    wire 
+    jb_unit jb_unit(
+        .control_jump(control_jump_i),
+        .branch_comp_result(branch_comp_result),
+        .jump_judge(jump_judge),
+        .if_flush(if_flush)
+    );
 
 endmodule // ex 

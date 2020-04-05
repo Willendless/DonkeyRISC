@@ -282,6 +282,8 @@ module Riscv151
         .dmem_we(dmem_wea)
     );
 
+    assign jump_addr = alu_result_reg;
+
     wire [31:0] rtype_output;
     wire [1:0] control_data;
     wire [31:0] pc_plus_wb;

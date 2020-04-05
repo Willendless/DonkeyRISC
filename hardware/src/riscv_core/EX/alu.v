@@ -51,7 +51,7 @@ assign aluout = (aluCtrl == `ALUCTRL_ADD) ? alu_add:
                 (aluCtrl == `ALUCTRL_AND) ? alu_and:
                 (aluCtrl == `ALUCTRL_SRL) ? alu_srl:
                 (aluCtrl == `ALUCTRL_SRA) ? alu_sra:
-                0;
+                32'b0;
 
 endmodule
 

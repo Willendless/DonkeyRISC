@@ -109,7 +109,7 @@ wire j_type_signal = (opcode == 7'b1101111);//jal
 wire opc_lui_signal = (opcode == 7'b0110111);
 wire opc_auipc_signal = (opcode == 7'b0010111);
 
-assign alu_op = (i_type_signal_lw || s_type_signal) ? `ALUOP_ISTYPE ://lw and sw type
+assign alu_op = (i_type_signal_lw || s_type_signal || j_type_signal || i_type_signal_jalr) ? `ALUOP_ISJTYPE ://lw and sw type
                 r_type_signal ? `ALUOP_RTYPE ://branch type
                 2'b11;//calculate type
 
@@ -131,7 +131,7 @@ always @(*) begin
     `OPC_LOAD: control_forward = `FORWARD_REG1;
     `OPC_BRANCH: control_forward = `FORWARD_REG1;
     `OPC_JAL: control_forward = `FORWARD_PC1;
-    `OPC_JALR: control_forward = `FORWARD_PC1;
+    `OPC_JALR: control_forward = `FORWARD_IMM;
     `OPC_ARI_RTYPE: control_forward = `FORWARD_REG1;
     `OPC_ARI_ITYPE: control_forward = `FORWARD_IMM;
     default: control_forward = `FORWARD_REG1;
