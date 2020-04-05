@@ -41,7 +41,7 @@ assign alu_sltu = (input_sign1 == 1 && input_sign2 == 0) ? 0 :
                   (input_sign1 == 0 && input_sign2 == 0 && alu_sign1 >= alu_sign2) ? 0 :
                   1;
                 
-assign aluout = (aluCtrl == `ALUCTRL_AD) ? alu_add:
+assign aluout = (aluCtrl == `ALUCTRL_ADD) ? alu_add:
                 (aluCtrl == `ALUCTRL_OR) ? alu_or:
                 (aluCtrl == `ALUCTRL_SLL) ? alu_sll:
                 (aluCtrl == `ALUCTRL_SUB) ? alu_sub:

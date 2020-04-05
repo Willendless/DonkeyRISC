@@ -61,14 +61,12 @@ assign aluin2 = (reg2_judge == `REG2_MUX_REG) ? reg2_output :
 endmodule
 
 module mux_imem_read(
+    input pc30,
     input [31:0] imem_out,
     input [31:0] bios_out,
-    output [31:0] inst_output,
-
-    input pc30
+    output [31:0] inst_output
 );
-
-assign inst_output = (pc30 == 1) ? imem_out : bios_out;
+    assign inst_output = (pc30 == 1'b1) ? imem_out : bios_out;
 endmodule
 
 

@@ -69,7 +69,7 @@ module id (
     // next pc
 
     assign pc_data_o = pc_data_i;
-    assign pc_plus_o = pc_data_i + 4;
+    assign pc_plus_o = pc_data_i + 1;
 
 
     // reg_file
@@ -86,8 +86,8 @@ module id (
         .opcode(inst_opcode),
         .control_forward(control_forward_o),
         .alu_op(alu_op_o),
-        .control_uart(control_uart),
-        .control_dmem(control_dmem),
+        .control_uart(control_uart_o),
+        .control_dmem(control_dmem_o),
         .control_wr_mux(control_wr_mux_o));
 
     // imm_gen

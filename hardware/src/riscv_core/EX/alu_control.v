@@ -10,10 +10,10 @@ module alu_control(
 wire [3:0] func_imm;
 
 assign aluCtrl = (aluOp == `ALUOP_RTYPE) ? func_imm:
-                 (aluOp == `ALUOP_ISTYPE) ? `ALUCTRL_AD:
+                 (aluOp == `ALUOP_ISTYPE) ? `ALUCTRL_ADD:
                  4'b1111;
 
-assign func_imm = (inst_alu == `FNC_ADD_SUB && inst_alu30 == `FNC2_ADD) ? `ALUCTRL_AD:
+assign func_imm = (inst_alu == `FNC_ADD_SUB && inst_alu30 == `FNC2_ADD) ? `ALUCTRL_ADD:
                   (inst_alu == `FNC_ADD_SUB && inst_alu30 == `FNC2_SUB) ? `ALUCTRL_SUB:
                   (inst_alu == `FNC_SLL) ? `ALUCTRL_SLL:
                   (inst_alu == `FNC_SLT) ? `ALUCTRL_SLT:

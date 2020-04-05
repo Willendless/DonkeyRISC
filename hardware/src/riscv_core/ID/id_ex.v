@@ -103,14 +103,14 @@ module id_ex (
     REGISTER_R #(.N(`REG_DWIDTH)) reg1_store(
         .clk(clk),
         .rst(rst),
-        .q(reg1_data_i),
-        .d(reg1_data_o));
+        .q(reg1_data_o),
+        .d(reg1_data_i));
 
     REGISTER_R #(.N(`REG_DWIDTH)) reg2_store(
         .clk(clk),
         .rst(rst),
-        .q(reg2_data_i),
-        .d(reg2_data_o));
+        .q(reg2_data_o),
+        .d(reg2_data_i));
 
     REGISTER_R #(.N(`REG_AWIDTH)) reg1_addr_store(
         .q(reg1_addr_o),
@@ -125,10 +125,10 @@ module id_ex (
         .d(reg2_addr_i));
 
     REGISTER_R #(.N(`REG_AWIDTH)) rd_addr_store (
-        .q(rd_addr_i),
+        .q(rd_addr_o),
         .clk(clk),
         .rst(rst),
-        .d(rd_addr_o));
+        .d(rd_addr_i));
 
     REGISTER_R #(.N(`IMM32_WIDTH)) imm_data (
         .q(imm_o),
@@ -189,32 +189,6 @@ module id_ex (
         .q(control_wr_mux_o),
         .d(control_wr_mux_i));
 
-
-    // // mux signal
-    // wire mux_signals_next [0:5];
-    // wire mux_signals_val  [0:5];
-    // assign  mux_signals_next[0] = alu_src1_sel_i,
-    //         mux_signals_next[1] = alu_src2_sel_i,
-    //         mux_signals_next[2] = mem_read_i,
-    //         mux_signals_next[3] = mem_write_i,
-    //         mux_signals_next[4] = wb_enable_i;
-    // //TODO: pc_sel
-    // assign  alu_src1_sel_o  = mux_signals_val[0],
-    //         alu_src2_sel_o  = mux_signals_val[1],
-    //         mem_read_o      = mux_signals_val[2],
-    //         mem_write_o     = mux_signals_val[3],
-    //         wb_enable_o     = mux_signals_val[4];
-
-    // generate
-    //     for (i = 0; i < 5; i = i + 1) begin
-    //        REGISTER_R #(.N(1)) mux_sel (
-    //            .q(mux_signals_val[i]),
-    //            .clk(clk),
-    //            .rst(rst),
-    //            .d(mux_signals_next[i])
-    //        ); 
-    //     end
-    // endgenerate
 
 
 endmodule // id_ex

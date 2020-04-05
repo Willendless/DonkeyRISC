@@ -1,16 +1,5 @@
 `include "defines.vh"
 `include "Opcode.vh"
-`include "EX/ex_wb.v"
-`include "EX/ex.v"
-`include "../EECS151.v"
-`include "WB/wb.v"
-`include "EX/alu_control.v"
-`include "EX/forwarding_unit.v"
-`include "EX/alu.v"
-`include "ID/control_unit.v"
-`include "ID/id_ex.v"
-`include "ID/imm_gen.v"
-`include "ID/id.v"
 
 module Riscv151
 #(
@@ -58,9 +47,8 @@ module Riscv151
 
 
     wire [31:0] pc_store;
-    wire [31:0] pc_output;
 
-    REGISTER_R #(.N(32), .INIT(RESET_PC)) pc_reg(
+    REGISTER_R #(.N(32), .INIT(RESET_PC - 1)) pc_reg(
         .clk(clk),
         .q(pc_store),
         .d(pc_in),
@@ -92,8 +80,8 @@ module Riscv151
     wire [IMEM_AWIDTH-1:0] imem_addra, imem_addrb;
     wire [IMEM_DWIDTH-1:0] imem_douta, imem_doutb;
     wire [IMEM_DWIDTH-1:0] imem_dina, imem_dinb;
-    wire imem_wea = 1;
-    wire imem_web = 1;
+    wire imem_wea = 0;
+    wire imem_web = 0;
 
     // Instruction Memory
     // Synchronous read: read takes one cycle
@@ -114,8 +102,8 @@ module Riscv151
         .we1(imem_web),    // input
         .clk(clk), .rst(rst));
 
-    assign bios_addra = pc_in[11:0];
-    assign imem_addra = pc_in[13:0];
+    assign bios_addra = pc_in[BIOS_AWIDTH-1:0];
+    assign imem_addra = pc_in[IMEM_AWIDTH-1:0];
     
     wire if_flush = 0;
 
@@ -130,18 +118,12 @@ module Riscv151
     
     wire [31:0] imm_out;
     
-    // imm_gen imm_gen(
-    //     .opcode_i(inst_output),
-    //     .imm(imm_out));
-
     wire rf_we;
     wire [4:0]  rf_ra1, rf_ra2, rf_wa;
     wire [31:0] rf_wd;
     wire [31:0] rf_rd1, rf_rd2;
 
     wire [4:0] wb_addr;
-    // assign rf_ra1 = inst_output[19:15];
-    // assign rf_ra2 = inst_output[24:20];
     assign rf_we = 1'b1;
 
     wire [`REG_DBUS] reg1_data_reg;
@@ -160,15 +142,11 @@ module Riscv151
     wire [1:0] control_wr_mux_reg;
 
     wire[`WORD_BUS] branch_offset;
-<<<<<<< HEAD
     wire[`REG_ABUS] rd_addr_reg;
-=======
-    wire [4:0] rd_addr_reg;
->>>>>>> 8c3589ec21ae7dae49b77c2d6519fe4f0255573d
 
     id ID (
         .inst_i(inst_output),
-        .pc_data_i(pc_output),
+        .pc_data_i(pc_store),
         .reg1_data_i(rf_rd1),
         .reg2_data_i(rf_rd2),
         .reg1_addr_o(rf_ra1),
@@ -247,6 +225,7 @@ module Riscv151
         .control_uart_i(control_uart_reg),
         .control_dmem_i(control_dmem_reg),
         .control_wr_mux_i(control_wr_mux_reg),
+
         .pc_data_o(pc_ex),
         .pc_plus_o(pc_plus_ex),
         .reg1_data_o(reg1_output),
@@ -293,6 +272,7 @@ module Riscv151
         .control_uart_i(control_uart),  //TODO
         .control_dmem_i(control_dmem),
         .control_wr_mux_i(control_wr_mux),
+
         .mem_write_o(mem_write_reg),
         .alu_result_o(alu_result_reg),
         .wb_addr_o(wb_addr_reg),
@@ -310,6 +290,7 @@ module Riscv151
         .wb_addr_i(wb_addr_reg),
         .control_wr_mux_i(control_wr_mux_reg2),
         .pc_plus_i(pc_plus_reg2),
+
         .alu_result_o(rtype_output),
         .wb_addr_o(wb_addr),
         .control_wr_mux_o(control_data),

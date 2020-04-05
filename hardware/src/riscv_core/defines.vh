@@ -61,7 +61,7 @@
 
 //r_type function define
 
-`define ALUCTRL_AD      4'b0000
+`define ALUCTRL_ADD     4'b0000
 `define ALUCTRL_SLL     4'b0001
 `define ALUCTRL_SLT     4'b0010
 `define ALUCTRL_SLTU    4'b0011
