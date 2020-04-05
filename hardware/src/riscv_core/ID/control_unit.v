@@ -127,7 +127,7 @@ assign control_dmem = s_type_signal;//write enable data used for sw inst
 
 always @(*) begin
     case(opcode)
-    `OPC_STORE: control_forward = `FORWARD_REG1;
+    `OPC_STORE: control_forward = `FORWARD_IMM;
     `OPC_LOAD: control_forward = `FORWARD_REG1;
     `OPC_BRANCH: control_forward = `FORWARD_REG1;
     `OPC_JAL: control_forward = `FORWARD_PC1;
