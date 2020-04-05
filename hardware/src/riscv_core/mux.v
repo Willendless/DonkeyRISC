@@ -28,7 +28,8 @@ module mux_pc(
     output [31:0] pc_o
 );
 //define the input of jump signal
-assign pc_o = pc_plus;
+assign pc_o = (jump_judge > 0) ? jal_addr :
+              pc_plus;
 
 endmodule
 
