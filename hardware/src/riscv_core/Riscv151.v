@@ -347,7 +347,7 @@ module Riscv151
     wb WB (
         .alu_result_i(rtype_output),
         .wb_addr_i(wb_addr),
-        .control_wr_mux_i(contro_data),
+        .control_wr_mux_i(control_data),
         .pc_plus_i(pc_plus_wb),
         .dmem_douta_i(dmem_douta),
         .wb_addr_o(rf_wa),

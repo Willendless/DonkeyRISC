@@ -4,8 +4,8 @@
 module wb (
     // from ex_wb
     input wire[31:0]             alu_result_i,
-    input wire[31:0]             wb_addr_i,
-    input wire[31:0]             control_wr_mux_i,
+    input wire[4:0]              wb_addr_i,
+    input wire[1:0]             control_wr_mux_i,
     input wire[31:0]             pc_plus_i,
 
     //from mem
@@ -14,7 +14,7 @@ module wb (
     output wire[`REG_ABUS]      wb_addr_o,
     output wire[`REG_DBUS]      wb_data_o
 );
-        assign wb_addr_o = wb_addr_i;
+    assign wb_addr_o = wb_addr_i;
     mux_dmem mux_dmem(
         .dmem_output(dmem_douta_i),
         .bios_output(bios_doutb_i),
