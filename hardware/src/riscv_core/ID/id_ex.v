@@ -59,7 +59,7 @@ module id_ex (
     input wire control_dmem_i,
     input wire[1:0] control_wr_mux_i,
 
-    output reg[1:0] control_forward_o,
+    output [1:0] control_forward_o,
     output [1:0] control_jump_o,
     output [1:0] alu_op_o,
     output control_uart_o, //TODO

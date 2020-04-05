@@ -5,6 +5,13 @@
 `include "../EECS151.v"
 `include "WB/wb.v"
 `include "EX/alu_control.v"
+`include "EX/forwarding_unit.v"
+`include "EX/alu.v"
+`include "ID/control_unit.v"
+`include "ID/id_ex.v"
+`include "ID/imm_gen.v"
+`include "ID/id.v"
+
 module Riscv151
 #(
     parameter CPU_CLOCK_FREQ    = 50_000_000,

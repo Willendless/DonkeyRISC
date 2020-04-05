@@ -14,8 +14,7 @@ module wb (
     output wire[`REG_ABUS]      wb_addr_o,
     output wire[`REG_DBUS]      wb_data_o
 );
-    assign wb_addr_o = wb_addr_i;
-
+        assign wb_addr_o = wb_addr_i;
     mux_dmem mux_dmem(
         .dmem_output(dmem_douta_i),
         .bios_output(bios_doutb_i),

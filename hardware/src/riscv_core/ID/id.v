@@ -40,7 +40,7 @@ module id (
     output wire[`REG_DBUS]      reg1_data_o,
     output wire[`REG_DBUS]      reg2_data_o,
 
-    output reg [1:0] control_forward_o,
+    output [1:0] control_forward_o,
     output [1:0] control_jump_o,
     output [1:0] alu_op_o,
     output control_uart_o, //TODO
@@ -92,7 +92,7 @@ module id (
 
     // imm_gen
     imm_gen imm (
-        .inst_origin(inst_i),
+        .opcode_i(inst_i),
         .imm(imm_o),
         .branch_offset(branch_offset_o));
 
