@@ -283,7 +283,7 @@ module Riscv151
         .dmem_we(dmem_wea)
     );
 
-    assign jal_addr = alu_result_reg;
+    assign jal_addr = alu_result_reg>>2;
     assign jump_judge = control_jump;
 
     wire [31:0] rtype_output;
