@@ -29,7 +29,6 @@ module ex (
 
     // control signal
     input wire[1:0] control_forward_i,
-    input wire[1:0] control_jump_i,
     input wire[1:0] alu_op_i,
     input wire control_uart_i, //TODO
     input wire control_dmem_i,

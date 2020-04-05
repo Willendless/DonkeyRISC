@@ -167,7 +167,7 @@ module id_ex (
         .q(alu_op_o),
         .d(alu_op_i));
     
-    REGISTER_R #(.N(2)) jump_reg(
+    REGISTER_R #(.N(2), .INIT(2'b0)) jump_reg(
         .clk(clk),
         .rst(rst),
         .q(control_jump_o),
@@ -194,8 +194,8 @@ module id_ex (
     REGISTER_R #(.N(1)) csr_we_reg(
         .clk(clk),
         .rst(rst),
-        .q(control_csr_ce_o),
-        .d(control_csr_ce_i));
+        .q(control_csr_we_o),
+        .d(control_csr_we_i));
 
 
 
