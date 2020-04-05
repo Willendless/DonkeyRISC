@@ -10,7 +10,7 @@
 
 module ex (
     //  write_back data
-    input wire [31:0] wb_data,
+    input wire [31:0] forward_data,
 
     // pc & pc+4
     input wire[`REG_DBUS]      pc_data_i,
@@ -37,8 +37,9 @@ module ex (
 
 
     output wire[`WORD_BUS]      alu_result_o,
+    output wire[`REG_DBUS]      mem_write_o,      
     output wire[`REG_ABUS]      wb_addr_o,
-    output wire[1:0] control_wr_mux_o,
+    output wire[1:0]            control_wr_mux_o,
     output wire[`REG_DBUS]      pc_plus_o
     
 );
@@ -71,15 +72,18 @@ module ex (
 
     wire [31:0] aluin1;
     wire [31:0] aluin2;
+
+    // memory wirte data
+    assign mem_write_o = aluin2;
     
     mux_reg1 mux_reg1(
-        .wb_data(wb_data),
+        .wb_data(forward_data),
         .reg1_output(reg1_data_i),
         .reg1_judge(reg1_judge),
         .aluin1(aluin1));
     
     mux_reg2 mux_reg2(
-        .wb_data(wb_data),
+        .wb_data(forward_data),
         .reg2_output(reg2_data_i),
         .imm(imm_ex),
         .reg2_judge(reg2_judge),
