@@ -194,8 +194,8 @@ module id_ex (
     REGISTER_R #(.N(1)) csr_we_reg(
         .clk(clk),
         .rst(rst),
-        .q(control_csr_ce_o),
-        .d(control_csr_ce_i));
+        .q(control_csr_we_o),
+        .d(control_csr_we_i));
 
 
 
