@@ -68,7 +68,8 @@ module control_unit (
     output control_uart, //TODO
     output [3:0] control_dmem,
     output [1:0] control_wr_mux,
-    output wire control_csr_we
+    output wire control_csr_we,
+    output control_branch
 
 // modification
 /*
@@ -131,6 +132,8 @@ assign control_uart = (i_type_signal_lw || s_type_signal);//read from uart
 assign control_dmem = s_type_signal;//write enable data used for sw inst
 
 assign control_csr_we = csr_type_signal;
+
+assign control_branch = b_type_signal;
 
 always @(*) begin
     case(opcode)

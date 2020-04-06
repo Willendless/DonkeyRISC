@@ -88,4 +88,10 @@
 
 //------branch and jal and jalr jump unit signal
 
+`define BGE 3'b101 
+`define BEQ 3'b000 
+`define BGEU 3'b111 
+`define BLT 3'b100 
+`define BLTU 3'b110 
+`define BNE 3'b001
 `endif
