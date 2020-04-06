@@ -1,5 +1,6 @@
 `timescale 1ns/1ns
-
+`include "riscv_core/Riscv151.v"
+`include "io_circuits/button_parser.v"
 module z1top (
     input  CLK_125MHZ_FPGA,
     input  [3:0] BUTTONS,
@@ -48,6 +49,7 @@ module z1top (
     );
 
     wire reset = (buttons_pressed[0] & SWITCHES[1]);
+    wire [31:0] csr;
 
     Riscv151 #(
         .CPU_CLOCK_FREQ(CPU_CLOCK_FREQ)
@@ -55,9 +57,10 @@ module z1top (
         .clk(cpu_clk),
         .rst(reset),
         .FPGA_SERIAL_TX(FPGA_SERIAL_TX),
-        .FPGA_SERIAL_RX(FPGA_SERIAL_RX)
+        .FPGA_SERIAL_RX(FPGA_SERIAL_RX),
+        .csr(csr)
     );
 
-    assign LEDS[5:0] = 6'b111111;
+    assign LEDS[5:0] = csr[5:0];
 
 endmodule
