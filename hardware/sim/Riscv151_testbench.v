@@ -126,7 +126,7 @@ module Riscv151_testbench();
             current_test_id   = current_test_id + 1;
             current_test_type = test_type;
             current_result    = result;
-            while (CPU.rf.mem[rf_wa] != result) begin
+            while (CPU.rf.mem[rf_wa] !== result) begin
                 current_output = CPU.rf.mem[rf_wa];
                 @(posedge clk);
             end
@@ -147,7 +147,7 @@ module Riscv151_testbench();
             current_test_id   = current_test_id + 1;
             current_test_type = test_type;
             current_result    = result;
-            while (CPU.dmem.mem[addr] != result) begin
+            while (CPU.dmem.mem[addr] !== result) begin
                 current_output = CPU.dmem.mem[addr];
                 @(posedge clk);
             end
@@ -434,7 +434,7 @@ module Riscv151_testbench();
 
         IMM       = 32'hFFFF_FFF0;
         INST_ADDR = 14'h0000;
-        JUMP_ADDR = (CPU.rf.mem[1] + IMM[11:0]) >> 2;
+        JUMP_ADDR = (CPU.rf.mem[1] + IMM) >> 2;
 
         CPU.imem.mem[INST_ADDR + 0]   = {IMM[11:0],          5'd1, 3'b000, 5'd5, `OPC_JALR};
         CPU.imem.mem[INST_ADDR + 1]   = {`FNC7_0, 5'd2, 5'd1, `FNC_ADD_SUB, 5'd6, `OPC_ARI_RTYPE};
@@ -533,7 +533,7 @@ module Riscv151_testbench();
         INST_ADDR = 14'h0000;
 
         CPU.imem.mem[INST_ADDR + 0]   = {12'h51e, 5'd1, 3'b001, 5'd0, `OPC_CSR};
-        CPU.imem.mem[INST_ADDR + 1]   = {12'h51e, IMM,  3'b101, 5'd0, `OPC_CSR};
+        CPU.imem.mem[INST_ADDR + 1]   = {12'h51e, IMM[4:0],  3'b101, 5'd0, `OPC_CSR};
 
         current_test_id = current_test_id + 1;
         done = 0;
