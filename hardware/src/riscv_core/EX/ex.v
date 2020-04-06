@@ -20,7 +20,7 @@ module ex (
     //
     input wire[`REG_DBUS]   reg1_data_i,
     input wire[`REG_DBUS]   reg2_data_i,
-    input wire[`REG_DBUS]   rd_addr_i,
+    input wire[`REG_ABUS]   rd_addr_i,
     input wire[`REG_ABUS]   reg1_addr_i,
     input wire[`REG_ABUS]   reg2_addr_i,
     input wire[`IMM32_BUS]    imm_i,
