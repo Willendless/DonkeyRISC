@@ -134,14 +134,14 @@ assign control_csr_we = csr_type_signal;
 
 always @(*) begin
     case(opcode)
-    `OPC_STORE: control_forward = `FORWARD_IMM;
-    `OPC_LOAD: control_forward = `FORWARD_REG1;
-    `OPC_BRANCH: control_forward = `FORWARD_REG1;
+    `OPC_STORE: control_forward = `FORWARD_STORE;
+    `OPC_LOAD: control_forward = `FORWARD_REG;
+    `OPC_BRANCH: control_forward = `FORWARD_REG;
     `OPC_JAL: control_forward = `FORWARD_PC1;
     `OPC_JALR: control_forward = `FORWARD_IMM;
-    `OPC_ARI_RTYPE: control_forward = `FORWARD_REG1;
+    `OPC_ARI_RTYPE: control_forward = `FORWARD_REG;
     `OPC_ARI_ITYPE: control_forward = `FORWARD_IMM;
-    default: control_forward = `FORWARD_REG1;
+    default: control_forward = `FORWARD_REG;
     endcase
 end
 

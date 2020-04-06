@@ -15,7 +15,7 @@ module mux_dmem(
 //writeback mux
 assign wb_data = (control_data == 2'b01) ? rtype_output://choose the result of alu
                  (control_data == 2'b11) ? pc_output://choose the result of jal / jalr
-                 (control_data == 2'b10 && addr == 4'b00x1) ? dmem_output://choose the result of dmem
+                 (control_data == 2'b10 && (addr == 4'b0001 || addr == 4'b0011)) ? dmem_output://choose the result of dmem
                  (control_data == 2'b10 && addr == 4'b0100) ? bios_output://choose bios memory
                  32'b0;
 endmodule

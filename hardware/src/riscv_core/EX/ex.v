@@ -9,8 +9,9 @@
 `include "../mux.v"
 
 module ex (
-    //  write_back data
+    //  forward data
     input wire [31:0] forward_data,
+    input wire[`REG_ABUS]   wb_addr_i,
 
     // pc & pc+4
     input wire[`REG_DBUS]      pc_data_i,
@@ -19,7 +20,7 @@ module ex (
     //
     input wire[`REG_DBUS]   reg1_data_i,
     input wire[`REG_DBUS]   reg2_data_i,
-    input wire[`REG_ABUS]   wb_addr_i,
+    input wire[`REG_DBUS]   rd_addr_i,
     input wire[`REG_ABUS]   reg1_addr_i,
     input wire[`REG_ABUS]   reg2_addr_i,
     input wire[`IMM32_BUS]    imm_i,
@@ -62,7 +63,7 @@ module ex (
 
 
     // write back control signal
-    assign wb_addr_o = wb_addr_i;
+    assign wb_addr_o = rd_addr_i;
     assign control_wr_mux_o = control_wr_mux_i;
     // pc
     assign pc_plus_o = pc_plus_i;
@@ -76,8 +77,9 @@ module ex (
         .aluOp(alu_op_i),
         .aluCtrl(alu_ctrl));
         
-    wire [1:0] reg1_judge;
-    wire [1:0] reg2_judge;
+    wire [1:0]  reg1_judge;
+    wire [1:0]  reg2_judge;
+    wire        mem_waddr_judge; 
 
     forwarding_unit forwarding_unit(
         .reg1_addr(reg1_addr_i),
@@ -85,15 +87,19 @@ module ex (
         .wb_addr(wb_addr_i),
         .control_forward(control_forward_i),
         .reg1_judge(reg1_judge),
-        .reg2_judge(reg2_judge));
+        .reg2_judge(reg2_judge),
+        .mem_wdata_judge(mem_wdata_judge));
 
     wire [31:0] aluin1;
     wire [31:0] aluin2;
 
+    wire [`REG_DBUS]    mem_wdata;
+    assign mem_wdata = mem_wdata_judge == 1'b0 ? reg2_data_i : forward_data;
+
     // memory wirte data
     change_mem_wr change_mem_wr(
         .dmem_we(dmem_we),
-        .in_data(reg2_data_i),
+        .in_data(mem_wdata),
         .out_data(mem_write_o)
     );
     

@@ -82,9 +82,8 @@
 `define REG2_MUX_IMM    2'b11
 
 `define FORWARD_PC1     2'b01
-`define FORWARD_REG1    2'b00
-
-`define FORWARD_REG2    2'b00
+`define FORWARD_REG     2'b00
+`define FORWARD_STORE   2'b10
 `define FORWARD_IMM     2'b11
 
 //------branch and jal and jalr jump unit signal

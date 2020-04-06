@@ -192,9 +192,9 @@ module Riscv151_testbench();
         repeat (10) @(posedge clk);
         rst = 0;
 
-        // Test R-Type Insts --------------------------------------------------
-        // - ADD, SUB, SLL, SLT, SLTU, XOR, OR, AND, SRL, SRA
-        // - SLLI, SRLI, SRAI
+        // // Test R-Type Insts --------------------------------------------------
+        // // - ADD, SUB, SLL, SLT, SLTU, XOR, OR, AND, SRL, SRA
+        // // - SLLI, SRLI, SRAI
         reset();
 
         // We can also use $random to generate random values for testing
