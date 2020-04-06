@@ -1,6 +1,7 @@
 `include "defines.vh"
 `include "Opcode.vh"
-`timescale 1ns/1ns
+
+
 module Riscv151
 #(
     parameter CPU_CLOCK_FREQ    = 50_000_000,
@@ -370,9 +371,9 @@ module Riscv151
         .dmem_douta_i(dmem_douta),
         .wb_addr_o(rf_wa),
         .bios_doutb_i(bios_doutb),
-        .wb_data_o(wb_data)               
-
+        .wb_data_o(wb_data)              
     );
+    assign rf_wd = wb_data;
 
 
 /*
