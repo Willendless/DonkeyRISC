@@ -1,5 +1,10 @@
 `include "defines.vh"
 `include "Opcode.vh"
+`include "id.v"
+`include "id_ex.v"
+`include "ex.v"
+`include "ex_wb.v"
+`include "wb.v"
 
 module Riscv151
 #(

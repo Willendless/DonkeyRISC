@@ -1,4 +1,4 @@
-`include "../../lib/EECS151.v"
+`include "../EECS151.v"
 
 module synchronizer #(parameter WIDTH = 1) (
     input [WIDTH-1:0] async_signal,

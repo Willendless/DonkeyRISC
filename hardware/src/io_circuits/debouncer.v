@@ -1,4 +1,4 @@
-`include "../../lib/EECS151.v"
+`include "../EECS151.v"
 
 module debouncer #(
     parameter WIDTH              = 1,
