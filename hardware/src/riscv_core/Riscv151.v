@@ -1,6 +1,6 @@
 `include "defines.vh"
 `include "Opcode.vh"
-
+`timescale 1ns/1ns
 module Riscv151
 #(
     parameter CPU_CLOCK_FREQ    = 50_000_000,
