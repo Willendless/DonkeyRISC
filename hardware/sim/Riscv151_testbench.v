@@ -432,7 +432,7 @@ module Riscv151_testbench();
         CPU.rf.mem[3] = 300;
         CPU.rf.mem[4] = 400;
 
-        IMM       = 32'h0000_0FF0;
+        IMM       = 32'hFFFF_FFF0;
         INST_ADDR = 14'h0000;
         JUMP_ADDR = (CPU.rf.mem[1] + IMM[11:0]) >> 2;
 

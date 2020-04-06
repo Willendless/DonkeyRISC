@@ -66,7 +66,7 @@ module control_unit (
     output [1:0] control_jump,
     output [1:0] alu_op,
     output control_uart, //TODO
-    output [3:0] control_dmem,
+    output control_dmem,
     output [1:0] control_wr_mux,
     output wire control_csr_we,
     output control_branch
