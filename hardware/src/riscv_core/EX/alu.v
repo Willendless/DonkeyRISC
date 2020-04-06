@@ -18,7 +18,7 @@ wire [31:0] alu_xor;
 wire [31:0] alu_srl;
 wire [31:0] alu_sra;
 
-assign alu_add = aluin1 + aluin2;
+assign alu_add = ($signed(aluin1)) + ($signed(aluin2));
 assign alu_sub = aluin1 - aluin2;
 assign alu_or = aluin1 | aluin2;
 assign alu_and = aluin1 & aluin2;
