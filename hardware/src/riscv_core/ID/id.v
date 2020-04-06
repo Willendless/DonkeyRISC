@@ -107,10 +107,10 @@ module id (
         .is_branch(control_branch),
         .a(reg1_data_i),
         .b(reg2_data_i),
-        .branch_judge_sign(branch_judge),
-        .branch_type(funct3_o)
+        .branch_type(funct3_o),
+        .branch_judge(branch_judge)
     );
 
-    assign branch_addr_o = branch_offset_o + pc_plus_o;
+    assign branch_addr_o = branch_offset_o[31:2] + pc_data_o;
 
 endmodule
