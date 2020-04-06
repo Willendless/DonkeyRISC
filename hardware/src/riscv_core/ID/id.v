@@ -100,6 +100,7 @@ module id (
     wire [31:0] branch_offset_o;
     imm_gen imm (
         .opcode_i(inst_i),
+        .funct_i(inst_i[14:12]),
         .imm(imm_o),
         .branch_offset(branch_offset_o));
     

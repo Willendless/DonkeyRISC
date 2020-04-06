@@ -116,13 +116,13 @@ wire opc_auipc_signal = (opcode == 7'b0010111);
 assign alu_op = (i_type_signal_lw || s_type_signal || 
                 j_type_signal || i_type_signal_jalr ||
                 csr_type_signal) ? `ALUOP_ISJTYPE ://lw and sw type
-                r_type_signal ? `ALUOP_RTYPE ://branch type
+                (r_type_signal || i_type_signal_addi) ? `ALUOP_RTYPE ://branch type
                 2'b11;//calculate type
 
 assign control_jump[0] = i_type_signal_jalr;
 assign control_jump[1] = j_type_signal;
 
-assign control_wr_mux = r_type_signal ? 2'b01: //add r-type inst
+assign control_wr_mux = r_type_signal || i_type_signal_addi ? 2'b01: //add r-type inst
                       i_type_signal_lw ? 2'b10: //lw l-type inst
                       (i_type_signal_jalr || j_type_signal) ? 2'b11: //jar jalr
                       3'b00;
