@@ -46,7 +46,8 @@ module id (
     output control_uart_o, //TODO
     output control_dmem_o,
     output [1:0] control_wr_mux_o,
-    output control_csr_we_o
+    output control_csr_we_o,
+    output [2:0] control_load_o
     // output wire wb_en_o, //*
 );
 
@@ -85,13 +86,15 @@ module id (
     // control_unit
     control_unit control (
         .opcode(inst_opcode),
+        .funct3_i(inst_i[`FIELD_FUNCT3]),
         .control_jump(control_jump_o),
         .control_forward(control_forward_o),
         .alu_op(alu_op_o),
         .control_uart(control_uart_o),
         .control_dmem(control_dmem_o),
         .control_wr_mux(control_wr_mux_o),
-        .control_csr_we(control_csr_we_o));
+        .control_csr_we(control_csr_we_o),
+        .control_load(control_load_o));
 
     // imm_gen
     wire [31:0] branch_offset_o;

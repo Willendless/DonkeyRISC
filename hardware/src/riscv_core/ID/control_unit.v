@@ -61,6 +61,7 @@
 
 module control_unit (
     input [`FIELD_OPCODE] opcode,
+    input [2:0] funct3_i,
 
     output reg [1:0] control_forward,
     output [1:0] control_jump,
@@ -68,7 +69,8 @@ module control_unit (
     output control_uart, //TODO
     output [3:0] control_dmem,
     output [1:0] control_wr_mux,
-    output wire control_csr_we
+    output wire control_csr_we,
+    output [2:0] control_load
 
 // modification
 /*
@@ -97,7 +99,9 @@ module control_unit (
         
     end
 */
-
+initial begin
+    control_forward = 2'b0;
+end
 
 wire r_type_signal = (opcode == 7'b0110011);//add,sub
 wire i_type_signal_lw = (opcode == 7'b0000011);//lw etc
@@ -145,5 +149,11 @@ always @(*) begin
     endcase
 end
 
+assign control_load = (i_type_signal_lw && (funct3_i === `FNC_LB)) ? `DMEM_LB :
+                      (i_type_signal_lw && (funct3_i === `FNC_LH)) ? `DMEM_LH :
+                      (i_type_signal_lw && (funct3_i === `FNC_LW)) ? `DMEM_LW :
+                      (i_type_signal_lw && (funct3_i === `FNC_LBU)) ? `DMEM_LBU :
+                      (i_type_signal_lw && (funct3_i === `FNC_LHU)) ? `DMEM_LHU :
+                      3'b000;
 
 endmodule

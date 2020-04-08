@@ -59,16 +59,16 @@ module id_ex (
     input wire control_dmem_i,
     input wire[1:0] control_wr_mux_i,
     input wire control_csr_we_i,
+    input wire [2:0] control_load_i,
 
-    output 
-    
-    [1:0] control_forward_o,
+    output [1:0] control_forward_o,
     output [1:0] control_jump_o,
     output [1:0] alu_op_o,
     output control_uart_o, //TODO
     output control_dmem_o,
     output [1:0] control_wr_mux_o,
     output wire control_csr_we_o,
+    output wire [2:0] control_load_o,
 
     output wire[2:0]         funct3_o,
     output wire              inst_alu30_o
@@ -137,6 +137,13 @@ module id_ex (
         .clk(clk),
         .rst(rst),
         .d(imm_i)
+    );
+
+    REGISTER_R #(.N(`IMM32_WIDTH)) load_sign (
+        .q(control_dmem_o),
+        .clk(clk),
+        .rst(rst),
+        .d(control_dmem_i)
     );
 
 

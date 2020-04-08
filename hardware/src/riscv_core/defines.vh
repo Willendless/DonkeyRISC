@@ -87,6 +87,13 @@
 `define FORWARD_REG2    2'b00
 `define FORWARD_IMM     2'b11
 
+//----judgement of load bit type
+`define DMEM_LW         3'b001 
+`define DMEM_LH         3'b010 
+`define DMEM_LB         3'b101
+`define DMEM_LHU        3'b011 
+`define DMEM_LBU        3'b100
+
 //------branch and jal and jalr jump unit signal
 
 `endif

@@ -146,6 +146,7 @@ module Riscv151
     wire[`WORD_BUS] branch_offset;
     wire[`REG_ABUS] rd_addr_reg;
 
+    wire [2:0] control_load_reg;
     id ID (
         .inst_i(inst_output),
         .pc_data_i(pc_store),
@@ -171,7 +172,8 @@ module Riscv151
         .control_uart_o(control_uart_reg),
         .control_dmem_o(control_dmem_reg),
         .control_wr_mux_o(control_wr_mux_reg),
-        .control_csr_we_o(control_csr_we_reg)
+        .control_csr_we_o(control_csr_we_reg),
+        .control_load_o(control_load_reg)
     );
 
     // Asynchronous read: read data is available in the same cycle
@@ -211,6 +213,7 @@ module Riscv151
     wire [2:0] inst_alu;
     wire inst_alu30;
 
+    wire [2:0] control_load_ex;
 
     id_ex ID_EX (
         .clk(clk),
@@ -232,6 +235,7 @@ module Riscv151
         .control_dmem_i(control_dmem_reg),
         .control_wr_mux_i(control_wr_mux_reg),
         .control_csr_we_i(control_csr_we_reg),
+        .control_load_i(control_load_reg),
 
         .pc_data_o(pc_ex),
         .pc_plus_o(pc_plus_ex),
@@ -249,7 +253,8 @@ module Riscv151
         .control_wr_mux_o(control_wr_mux),
         .control_csr_we_o(control_csr_we),
         .funct3_o(inst_alu),
-        .inst_alu30_o(inst_alu30)
+        .inst_alu30_o(inst_alu30),
+        .control_load_o(control_load_ex)
     );
 
 //----------------execute stage------------//
@@ -301,6 +306,8 @@ module Riscv151
     wire [31:0] rtype_output;
     wire [1:0] control_data;
     wire [31:0] pc_plus_wb;
+    wire [2:0] control_load;
+
     ex_wb EX_WB (
         .clk(clk),
         .rst(rst),
@@ -308,11 +315,13 @@ module Riscv151
         .wb_addr_i(wb_addr_reg),
         .control_wr_mux_i(control_wr_mux_reg2),
         .pc_plus_i(pc_plus_reg2),
+        .control_load_i(control_load_ex),
 
         .alu_result_o(rtype_output),
         .wb_addr_o(wb_addr),
         .control_wr_mux_o(control_data),
-        .pc_plus_o(pc_plus_wb)
+        .pc_plus_o(pc_plus_wb),
+        .control_load_o(control_load)
     );
 
     
@@ -358,6 +367,7 @@ module Riscv151
 
     //-----------wb stage---------------/
     wb WB (
+        .control_load_i(control_load),
         .alu_result_i(rtype_output),
         .wb_addr_i(wb_addr),
         .control_wr_mux_i(control_data),
