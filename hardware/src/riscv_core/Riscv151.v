@@ -52,7 +52,7 @@ module Riscv151
 
     wire [31:0] pc_store;
 
-    REGISTER_R #(.N(32), .INIT(RESET_PC - 1)) pc_reg(
+    REGISTER_R #(.N(32), .INIT(RESET_PC-4)) pc_reg(
         .clk(clk),
         .q(pc_store),
         .d(pc_in),
@@ -107,7 +107,8 @@ module Riscv151
         .clk(clk), .rst(rst));
 
     assign bios_addra = pc_in[BIOS_AWIDTH-1:0];
-    assign imem_addra = pc_in[IMEM_AWIDTH-1:0];
+    wire [31:0] pc_in1 = pc_in>>2;
+    assign imem_addra = pc_in1[IMEM_AWIDTH-1:0];
     
     wire if_flush = 0;
 
@@ -150,6 +151,7 @@ module Riscv151
     wire[`REG_ABUS] rd_addr_reg;
 
     wire [2:0] control_load_reg;
+    wire control_wb_reg;
     id ID (
         .inst_i(inst_output),
         .pc_data_i(pc_store),
@@ -177,7 +179,8 @@ module Riscv151
         .control_wr_mux_o(control_wr_mux_reg),
         .control_csr_we_o(control_csr_we_reg),
         .control_load_o(control_load_reg),
-        .branch_judge(branch_judge)
+        .branch_judge(branch_judge),
+        .control_wb_o(control_wb_reg)
     );
 
     // Asynchronous read: read data is available in the same cycle
@@ -218,7 +221,7 @@ module Riscv151
     wire inst_alu30;
 
     wire [2:0] control_load_ex;
-
+    wire control_wb_ex;
     id_ex ID_EX (
         .clk(clk),
         .rst(rst),
@@ -240,6 +243,7 @@ module Riscv151
         .control_wr_mux_i(control_wr_mux_reg),
         .control_csr_we_i(control_csr_we_reg),
         .control_load_i(control_load_reg),
+        .control_wb_i(control_wb_reg),
 
         .pc_data_o(pc_ex),
         .pc_plus_o(pc_plus_ex),
@@ -258,7 +262,8 @@ module Riscv151
         .control_csr_we_o(control_csr_we),
         .funct3_o(inst_alu),
         .inst_alu30_o(inst_alu30),
-        .control_load_o(control_load_ex)
+        .control_load_o(control_load_ex),
+        .control_wb_o(control_wb_ex)
     );
 
     assign jump_judge = control_jump;
@@ -276,7 +281,7 @@ module Riscv151
 
     wire                csr_we;
     wire [`REG_DBUS]    csr_din;
-
+    wire                control_wb;
     ex EX (
         .forward_data(wb_data),     // DATA from write back stage
         .pc_data_i(pc_ex),
@@ -296,6 +301,7 @@ module Riscv151
         .control_dmem_i(control_dmem),
         .control_wr_mux_i(control_wr_mux),
         .control_csr_we_i(control_csr_we),
+        .control_wb_i(control_wb_ex),
 
         .mem_write_o(mem_write_reg),
         .alu_result_o(alu_result_reg),
@@ -304,7 +310,8 @@ module Riscv151
         .control_csr_we_o(csr_we),
         .pc_plus_o(pc_plus_reg2),
         .dmem_we(dmem_wea),
-        .csr_data_o(csr_din)
+        .csr_data_o(csr_din),
+        .control_wb_o(control_wb)
     );
 
     assign jal_addr = alu_result_reg>>2;
@@ -323,13 +330,15 @@ module Riscv151
         .control_wr_mux_i(control_wr_mux_reg2),
         .pc_plus_i(pc_plus_reg2),
         .control_load_i(control_load_ex),
+        .control_wb_i(control_wb),
 
         .alu_result_o(rtype_output),
         .wb_addr_o(wb_addr),
         .control_wr_mux_o(control_data),
         .pc_plus_o(pc_plus_wb),
         .control_load_o(control_load),
-        .addr_offset(addr_offset)
+        .addr_offset(addr_offset),
+        .control_wb_o(rf_we)
     );
 
     

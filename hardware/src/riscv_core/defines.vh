@@ -47,6 +47,7 @@
 `define ALUOP_RTYPE 2'b00
 `define ALUOP_ISJTYPE 2'b01
 `define ALUOP_ADTYPE 2'b10
+`define ALUOP_UTYPE  2'b11
 
 //load and store function are all defined as add function
 

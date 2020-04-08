@@ -71,7 +71,8 @@ module control_unit (
     output [1:0] control_wr_mux,
     output wire control_csr_we,
     output [2:0] control_load,
-    output control_branch
+    output control_branch,
+    output control_wb
 
 // modification
 /*
@@ -104,13 +105,15 @@ initial begin
     control_forward = 2'b0;
 end
 
-wire r_type_signal = (opcode == 7'b0110011);//add,sub
-wire i_type_signal_lw = (opcode == 7'b0000011);//lw etc
-wire b_type_signal = (opcode == 7'b1100011);//branch
-wire i_type_signal_addi = (opcode == 7'b0010011);//addi etc
-wire i_type_signal_jalr = (opcode == 7'b1100111);//jalr
-wire s_type_signal = (opcode == 7'b0100011);//sw
-wire j_type_signal = (opcode == 7'b1101111);//jal
+wire r_type_signal = (opcode === 7'b0110011);//add,sub
+wire i_type_signal_lw = (opcode === 7'b0000011);//lw etc
+wire b_type_signal = (opcode === 7'b1100011);//branch
+wire i_type_signal_addi = (opcode === 7'b0010011);//addi etc
+wire i_type_signal_jalr = (opcode === 7'b1100111);//jalr
+wire s_type_signal = (opcode === 7'b0100011);//sw
+wire j_type_signal = (opcode === 7'b1101111);//jal
+wire u_type_signal = (opcode === 7'b0010111);
+wire l_type_signal = (opcode === 7'b0110111);
 
 wire csr_type_signal = (opcode == `OPC_CSR);
 
@@ -119,7 +122,7 @@ wire opc_auipc_signal = (opcode == 7'b0010111);
 
 assign alu_op = (i_type_signal_lw || s_type_signal || 
                 j_type_signal || i_type_signal_jalr ||
-                csr_type_signal) ? `ALUOP_ISJTYPE ://lw and sw type
+                csr_type_signal || u_type_signal) ? `ALUOP_ISJTYPE ://lw and sw type
                 (r_type_signal) ? `ALUOP_RTYPE :
                 (i_type_signal_addi) ? `ALUOP_ADTYPE ://branch type
                 2'b11;//calculate type
@@ -127,7 +130,8 @@ assign alu_op = (i_type_signal_lw || s_type_signal ||
 assign control_jump[0] = i_type_signal_jalr;
 assign control_jump[1] = j_type_signal;
 
-assign control_wr_mux = r_type_signal || i_type_signal_addi ? 2'b01: //add r-type inst
+assign control_wr_mux = (r_type_signal || i_type_signal_addi
+                        || u_type_signal || l_type_signal) ? 2'b01: //add r-type inst
                       i_type_signal_lw ? 2'b10: //lw l-type inst
                       (i_type_signal_jalr || j_type_signal) ? 2'b11: //jar jalr
                       3'b00;
@@ -149,6 +153,8 @@ always @(*) begin
     `OPC_JALR: control_forward = `FORWARD_IMM;
     `OPC_ARI_RTYPE: control_forward = `FORWARD_REG;
     `OPC_ARI_ITYPE: control_forward = `FORWARD_IMM;
+    `OPC_LUI: control_forward = `FORWARD_IMM;
+    `OPC_AUIPC: control_forward = `FORWARD_PC1;
     default: control_forward = `FORWARD_REG;
     endcase
 end
@@ -159,5 +165,7 @@ assign control_load = (i_type_signal_lw && (funct3_i === `FNC_LB)) ? `DMEM_LB :
                       (i_type_signal_lw && (funct3_i === `FNC_LBU)) ? `DMEM_LBU :
                       (i_type_signal_lw && (funct3_i === `FNC_LHU)) ? `DMEM_LHU :
                       3'b000;
+
+assign control_wb = (b_type_signal || s_type_signal) ? 1'b0 : 1'b1;
 
 endmodule

@@ -15,7 +15,7 @@
 */
 module id (
     input wire[`IMEM_DBUS]      inst_i,
-    input wire[`REG_DBUS]       pc_data_i,     
+    input wire[`REG_DBUS]       pc_data_i,    
 
     // reg data from regfile
     input wire[`REG_DBUS] reg1_data_i,
@@ -48,7 +48,8 @@ module id (
     output [1:0] control_wr_mux_o,
     output control_csr_we_o,
     output [2:0] control_load_o,
-    output branch_judge
+    output branch_judge,
+    output control_wb_o
     // output wire wb_en_o, //*
 );
 
@@ -70,9 +71,8 @@ module id (
         
 
     // next pc
-
     assign pc_data_o = pc_data_i;
-    assign pc_plus_o = pc_data_i + 1;
+    assign pc_plus_o = pc_data_i + 4;
 
 
     // reg_file
@@ -97,7 +97,8 @@ module id (
         .control_branch(control_branch),
         .control_wr_mux(control_wr_mux_o),
         .control_csr_we(control_csr_we_o),
-        .control_load(control_load_o));
+        .control_load(control_load_o),
+        .control_wb(control_wb_o));
 
     // imm_gen
     wire [31:0] branch_offset_o;

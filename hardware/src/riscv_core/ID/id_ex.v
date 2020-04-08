@@ -60,6 +60,7 @@ module id_ex (
     input wire[1:0] control_wr_mux_i,
     input wire control_csr_we_i,
     input wire [2:0] control_load_i,
+    input wire control_wb_i,
 
     output [1:0] control_forward_o,
     output [1:0] control_jump_o,
@@ -69,6 +70,7 @@ module id_ex (
     output [1:0] control_wr_mux_o,
     output wire control_csr_we_o,
     output wire [2:0] control_load_o,
+    output wire control_wb_o,
 
     output wire[2:0]         funct3_o,
     output wire              inst_alu30_o
@@ -88,6 +90,11 @@ module id_ex (
     //output pc_sel
 
 );
+    REGISTER_R #(.N(`REG_DWIDTH)) control_wb_reg ( 
+        .clk(clk),
+        .rst(rst),
+        .q(control_wb_o),
+        .d(control_wb_i));
     // pc & pc + 4
     REGISTER_R #(.N(`REG_DWIDTH)) pc_data_reg ( 
         .clk(clk),

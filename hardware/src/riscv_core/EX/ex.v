@@ -35,6 +35,7 @@ module ex (
     input wire control_dmem_i,
     input wire[1:0] control_wr_mux_i,
     input wire control_csr_we_i,
+    input wire control_wb_i,
 
 
     output wire[`WORD_BUS]      alu_result_o,
@@ -44,7 +45,8 @@ module ex (
     output wire[`REG_DBUS]      pc_plus_o,
     output wire [3:0]           dmem_we,
     output wire                 control_csr_we_o,
-    output wire[`REG_DBUS]      csr_data_o
+    output wire[`REG_DBUS]      csr_data_o,
+    output wire                 control_wb_o
     
 );
     wire [31:0] aluout;
@@ -85,11 +87,14 @@ module ex (
         .reg1_addr(reg1_addr_i),
         .reg2_addr(reg2_addr_i),
         .wb_addr(wb_addr_i),
+        .is_wb(control_wb_i),
         .control_forward(control_forward_i),
         .reg1_judge(reg1_judge),
         .reg2_judge(reg2_judge),
         .mem_wdata_judge(mem_wdata_judge));
 
+    assign control_wb_o = control_wb_i;
+    
     wire [31:0] aluin1;
     wire [31:0] aluin2;
 
