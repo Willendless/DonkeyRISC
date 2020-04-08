@@ -18,15 +18,15 @@ wire [31:0] alu_xor;
 wire [31:0] alu_srl;
 wire [31:0] alu_sra;
 
-assign alu_add = aluin1 + aluin2;
+assign alu_add = ($signed(aluin1)) + ($signed(aluin2));
 assign alu_sub = aluin1 - aluin2;
 assign alu_or = aluin1 | aluin2;
 assign alu_and = aluin1 & aluin2;
 assign alu_sll = aluin1 << aluin2[4:0];
-assign alu_sra = aluin1 >> aluin2[4:0];//how?
-assign alu_srl = aluin1 >>> aluin2[4:0];
+assign alu_sra = ($signed(aluin1)) >>> aluin2[4:0];//how?
+assign alu_srl = aluin1 >> aluin2[4:0];
 assign alu_xor = aluin1 ^ aluin2;
-assign alu_slt = (aluin1 < aluin2) ? 1 : 0;
+assign alu_sltu = (aluin1 < aluin2) ? 32'b1 : 32'b0;
 
 wire input_sign1 = aluin1[31];
 wire input_sign2 = aluin2[31];
@@ -34,12 +34,12 @@ wire [31:0] alu_sign1;
 wire [31:0] alu_sign2;
 assign alu_sign1 = (input_sign1 == 1) ? (32'hffffffff - aluin1) : aluin1;
 assign alu_sign2 = (input_sign2 == 1) ? (32'hffffffff - aluin2) : aluin2;
-assign alu_sltu = (input_sign1 == 1 && input_sign2 == 0) ? 0 :
-                  (input_sign1 == 0 && input_sign2 == 1) ? 1 :
-                  (input_sign1 == 1 && input_sign2 == 1 && alu_sign1 >= alu_sign2) ? 1 :
-                  (input_sign1 == 1 && input_sign2 == 1 && alu_sign1 < alu_sign2) ? 0 :
-                  (input_sign1 == 0 && input_sign2 == 0 && alu_sign1 >= alu_sign2) ? 0 :
-                  1;
+assign alu_slt = (input_sign1 == 1 && input_sign2 == 0) ? 32'b1 :
+                  (input_sign1 == 0 && input_sign2 == 1) ? 32'b0 :
+                  (input_sign1 == 1 && input_sign2 == 1 && alu_sign1 > alu_sign2) ? 32'b1 :
+                  (input_sign1 == 1 && input_sign2 == 1 && alu_sign1 < alu_sign2) ? 32'b0 :
+                  (input_sign1 == 0 && input_sign2 == 0 && alu_sign1 > alu_sign2) ? 32'b0 :
+                  32'b1;
                 
 assign aluout = (aluCtrl == `ALUCTRL_ADD) ? alu_add:
                 (aluCtrl == `ALUCTRL_OR) ? alu_or:

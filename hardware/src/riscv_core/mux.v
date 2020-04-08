@@ -15,7 +15,7 @@ module mux_dmem(
 //writeback mux
 assign wb_data = (control_data == 2'b01) ? rtype_output://choose the result of alu
                  (control_data == 2'b11) ? pc_output://choose the result of jal / jalr
-                 (control_data == 2'b10 && addr == 4'b00x1) ? dmem_output://choose the result of dmem
+                 (control_data == 2'b10 && (addr == 4'b0001 || addr == 4'b0011)) ? dmem_output://choose the result of dmem
                  (control_data == 2'b10 && addr == 4'b0100) ? bios_output://choose bios memory
                  32'b0;
 endmodule
@@ -25,10 +25,12 @@ module mux_pc(
     input [31:0] jal_addr,
     input [31:0] branch_addr,
     input [1:0] jump_judge,
+    input branch_judge,
     output [31:0] pc_o
 );
 //define the input of jump signal
 assign pc_o = (jump_judge > 0) ? jal_addr :
+              (jump_judge == 0 && branch_judge == 1) ? branch_addr :
               pc_plus;
 
 endmodule

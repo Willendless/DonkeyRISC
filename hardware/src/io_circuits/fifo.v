@@ -1,4 +1,4 @@
-`include "../../lib/EECS151.v"
+`include "../EECS151.v"
 
 module fifo #(
     parameter WIDTH = 32,  // data width is 32-bit

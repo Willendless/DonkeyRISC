@@ -1,4 +1,4 @@
-`include "../../lib/EECS151.v"
+`include "../EECS151.v"
 
 module edge_detector #(
     parameter WIDTH = 1

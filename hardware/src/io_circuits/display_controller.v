@@ -1,4 +1,4 @@
-`include "../../lib/EECS151.v"
+`include "../EECS151.v"
 
 // Source: https://www.ibm.com/support/knowledgecenter/P8DEA/p8egb/p8egb_supportedresolution.htm
 module display_controller #(

@@ -1,6 +1,7 @@
 `include "defines.vh"
 `include "Opcode.vh"
 
+
 module Riscv151
 #(
     parameter CPU_CLOCK_FREQ    = 50_000_000,
@@ -37,13 +38,15 @@ module Riscv151
 
     wire [`REG_DBUS]    pc_data_reg;
     wire [`REG_DBUS]    pc_plus_reg;
-    //wire branch_judge;
+
+    wire branch_judge;
+    
     mux_pc mux_pc(
         .pc_plus(pc_plus_reg),
         .jal_addr(jal_addr),
         .branch_addr(branch_addr),
         .jump_judge(jump_judge),
-        //.branch_judge(),
+        .branch_judge(branch_judge),
         .pc_o(pc_in));
 
 
@@ -257,6 +260,8 @@ module Riscv151
         .control_load_o(control_load_ex)
     );
 
+    assign jump_judge = control_jump;
+
 //----------------execute stage------------//
 
     wire [`WORD_BUS]    alu_result_reg;
@@ -277,7 +282,8 @@ module Riscv151
         .pc_plus_i(pc_plus_ex),
         .reg1_data_i(reg1_output),
         .reg2_data_i(reg2_output),
-        .wb_addr_i(wb_addr_ex),
+        .wb_addr_i(wb_addr),
+        .rd_addr_i(wb_addr_ex),
         .reg1_addr_i(rf1_forward),
         .reg2_addr_i(rf2_forward),
         .imm_i(imm_ex),
@@ -301,7 +307,6 @@ module Riscv151
     );
 
     assign jal_addr = alu_result_reg>>2;
-    assign jump_judge = control_jump;
 
     wire [31:0] rtype_output;
     wire [1:0] control_data;
@@ -375,9 +380,9 @@ module Riscv151
         .dmem_douta_i(dmem_douta),
         .wb_addr_o(rf_wa),
         .bios_doutb_i(bios_doutb),
-        .wb_data_o(wb_data)               
-
+        .wb_data_o(wb_data)              
     );
+    assign rf_wd = wb_data;
 
 
 /*

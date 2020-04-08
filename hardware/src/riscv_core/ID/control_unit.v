@@ -67,7 +67,7 @@ module control_unit (
     output [1:0] control_jump,
     output [1:0] alu_op,
     output control_uart, //TODO
-    output [3:0] control_dmem,
+    output control_dmem,
     output [1:0] control_wr_mux,
     output wire control_csr_we,
     output [2:0] control_load
@@ -119,13 +119,14 @@ wire opc_auipc_signal = (opcode == 7'b0010111);
 assign alu_op = (i_type_signal_lw || s_type_signal || 
                 j_type_signal || i_type_signal_jalr ||
                 csr_type_signal) ? `ALUOP_ISJTYPE ://lw and sw type
-                r_type_signal ? `ALUOP_RTYPE ://branch type
+                (r_type_signal) ? `ALUOP_RTYPE :
+                (i_type_signal_addi) ? `ALUOP_ADTYPE ://branch type
                 2'b11;//calculate type
 
 assign control_jump[0] = i_type_signal_jalr;
 assign control_jump[1] = j_type_signal;
 
-assign control_wr_mux = r_type_signal ? 2'b01: //add r-type inst
+assign control_wr_mux = r_type_signal || i_type_signal_addi ? 2'b01: //add r-type inst
                       i_type_signal_lw ? 2'b10: //lw l-type inst
                       (i_type_signal_jalr || j_type_signal) ? 2'b11: //jar jalr
                       3'b00;
@@ -136,16 +137,18 @@ assign control_dmem = s_type_signal;//write enable data used for sw inst
 
 assign control_csr_we = csr_type_signal;
 
+assign control_branch = b_type_signal;
+
 always @(*) begin
     case(opcode)
-    `OPC_STORE: control_forward = `FORWARD_IMM;
-    `OPC_LOAD: control_forward = `FORWARD_REG1;
-    `OPC_BRANCH: control_forward = `FORWARD_REG1;
+    `OPC_STORE: control_forward = `FORWARD_STORE;
+    `OPC_LOAD: control_forward = `FORWARD_REG;
+    `OPC_BRANCH: control_forward = `FORWARD_REG;
     `OPC_JAL: control_forward = `FORWARD_PC1;
     `OPC_JALR: control_forward = `FORWARD_IMM;
-    `OPC_ARI_RTYPE: control_forward = `FORWARD_REG1;
+    `OPC_ARI_RTYPE: control_forward = `FORWARD_REG;
     `OPC_ARI_ITYPE: control_forward = `FORWARD_IMM;
-    default: control_forward = `FORWARD_REG1;
+    default: control_forward = `FORWARD_REG;
     endcase
 end
 

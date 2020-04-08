@@ -46,7 +46,7 @@
 
 `define ALUOP_RTYPE 2'b00
 `define ALUOP_ISJTYPE 2'b01
-`define ALUOP_OTHER 2'b10
+`define ALUOP_ADTYPE 2'b10
 
 //load and store function are all defined as add function
 
@@ -72,6 +72,8 @@
 
 `define ALUCTRL_SUB     4'b1000
 `define ALUCTRL_SRA     4'b1101
+`define ALUCTRL_SLLI    4'b0101
+`define ALUCTRL_SRAI    4'b1010
 
 //-----judgement of forwarding unit and mux
 `define REG1_MUX_REG    2'b01
@@ -82,9 +84,8 @@
 `define REG2_MUX_IMM    2'b11
 
 `define FORWARD_PC1     2'b01
-`define FORWARD_REG1    2'b00
-
-`define FORWARD_REG2    2'b00
+`define FORWARD_REG     2'b00
+`define FORWARD_STORE   2'b10
 `define FORWARD_IMM     2'b11
 
 //----judgement of load bit type
@@ -96,4 +97,10 @@
 
 //------branch and jal and jalr jump unit signal
 
+`define BGE 3'b101 
+`define BEQ 3'b000 
+`define BGEU 3'b111 
+`define BLT 3'b100 
+`define BLTU 3'b110 
+`define BNE 3'b001
 `endif
