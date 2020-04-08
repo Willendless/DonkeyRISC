@@ -47,7 +47,8 @@ module id (
     output control_dmem_o,
     output [1:0] control_wr_mux_o,
     output control_csr_we_o,
-    output [2:0] control_load_o
+    output [2:0] control_load_o,
+    output branch_judge
     // output wire wb_en_o, //*
 );
 
@@ -91,7 +92,6 @@ module id (
         .control_jump(control_jump_o),
         .control_forward(control_forward_o),
         .alu_op(alu_op_o),
-        .control_jump(control_jump_o),
         .control_uart(control_uart_o),
         .control_dmem(control_dmem_o),
         .control_branch(control_branch),

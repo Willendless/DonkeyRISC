@@ -6,6 +6,8 @@ module branch_comp(
     input is_branch,
     output reg branch_judge 
 );
+initial begin
+    branch_judge = 0;
 
     always @(*) begin
         if (is_branch == 1) begin

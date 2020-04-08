@@ -70,7 +70,8 @@ module control_unit (
     output control_dmem,
     output [1:0] control_wr_mux,
     output wire control_csr_we,
-    output [2:0] control_load
+    output [2:0] control_load,
+    output control_branch
 
 // modification
 /*

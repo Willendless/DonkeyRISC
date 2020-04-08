@@ -176,7 +176,8 @@ module Riscv151
         .control_dmem_o(control_dmem_reg),
         .control_wr_mux_o(control_wr_mux_reg),
         .control_csr_we_o(control_csr_we_reg),
-        .control_load_o(control_load_reg)
+        .control_load_o(control_load_reg),
+        .branch_judge(branch_judge)
     );
 
     // Asynchronous read: read data is available in the same cycle
