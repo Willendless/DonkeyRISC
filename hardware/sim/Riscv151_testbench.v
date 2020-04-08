@@ -274,23 +274,23 @@ module Riscv151_testbench();
 
         CPU.imem.mem[INST_ADDR + 0]  = {IMM0[11:0], 5'd1, `FNC_LW,  5'd2,  `OPC_LOAD};
         CPU.imem.mem[INST_ADDR + 1]  = {IMM0[11:0], 5'd1, `FNC_LH,  5'd3,  `OPC_LOAD};
-        CPU.imem.mem[INST_ADDR + 3]  = {IMM1[11:0], 5'd1, `FNC_LH,  5'd4,  `OPC_LOAD};
-        CPU.imem.mem[INST_ADDR + 4]  = {IMM2[11:0], 5'd1, `FNC_LH,  5'd5,  `OPC_LOAD};
-        CPU.imem.mem[INST_ADDR + 5]  = {IMM3[11:0], 5'd1, `FNC_LH,  5'd6,  `OPC_LOAD};
-        CPU.imem.mem[INST_ADDR + 6]  = {IMM0[11:0], 5'd1, `FNC_LB,  5'd7,  `OPC_LOAD};
-        CPU.imem.mem[INST_ADDR + 7]  = {IMM1[11:0], 5'd1, `FNC_LB,  5'd8,  `OPC_LOAD};
-        CPU.imem.mem[INST_ADDR + 8]  = {IMM2[11:0], 5'd1, `FNC_LB,  5'd9,  `OPC_LOAD};
-        CPU.imem.mem[INST_ADDR + 9]  = {IMM3[11:0], 5'd1, `FNC_LB,  5'd10, `OPC_LOAD};
+        CPU.imem.mem[INST_ADDR + 2]  = {IMM1[11:0], 5'd1, `FNC_LH,  5'd4,  `OPC_LOAD};
+        CPU.imem.mem[INST_ADDR + 3]  = {IMM2[11:0], 5'd1, `FNC_LH,  5'd5,  `OPC_LOAD};
+        CPU.imem.mem[INST_ADDR + 4]  = {IMM3[11:0], 5'd1, `FNC_LH,  5'd6,  `OPC_LOAD};
+        CPU.imem.mem[INST_ADDR + 5]  = {IMM0[11:0], 5'd1, `FNC_LB,  5'd7,  `OPC_LOAD};
+        CPU.imem.mem[INST_ADDR + 6]  = {IMM1[11:0], 5'd1, `FNC_LB,  5'd8,  `OPC_LOAD};
+        CPU.imem.mem[INST_ADDR + 7]  = {IMM2[11:0], 5'd1, `FNC_LB,  5'd9,  `OPC_LOAD};
+        CPU.imem.mem[INST_ADDR + 8]  = {IMM3[11:0], 5'd1, `FNC_LB,  5'd10, `OPC_LOAD};
 
-        CPU.imem.mem[INST_ADDR + 10] = {IMM0[11:0], 5'd1, `FNC_LHU, 5'd11, `OPC_LOAD};
-        CPU.imem.mem[INST_ADDR + 11] = {IMM1[11:0], 5'd1, `FNC_LHU, 5'd12, `OPC_LOAD};
-        CPU.imem.mem[INST_ADDR + 12] = {IMM2[11:0], 5'd1, `FNC_LHU, 5'd13, `OPC_LOAD};
-        CPU.imem.mem[INST_ADDR + 13] = {IMM3[11:0], 5'd1, `FNC_LHU, 5'd14, `OPC_LOAD};
+        CPU.imem.mem[INST_ADDR + 9] = {IMM0[11:0], 5'd1, `FNC_LHU, 5'd11, `OPC_LOAD};
+        CPU.imem.mem[INST_ADDR + 10] = {IMM1[11:0], 5'd1, `FNC_LHU, 5'd12, `OPC_LOAD};
+        CPU.imem.mem[INST_ADDR + 11] = {IMM2[11:0], 5'd1, `FNC_LHU, 5'd13, `OPC_LOAD};
+        CPU.imem.mem[INST_ADDR + 12] = {IMM3[11:0], 5'd1, `FNC_LHU, 5'd14, `OPC_LOAD};
 
-        CPU.imem.mem[INST_ADDR + 14] = {IMM0[11:0], 5'd1, `FNC_LBU, 5'd15, `OPC_LOAD};
-        CPU.imem.mem[INST_ADDR + 15] = {IMM1[11:0], 5'd1, `FNC_LBU, 5'd16, `OPC_LOAD};
-        CPU.imem.mem[INST_ADDR + 16] = {IMM2[11:0], 5'd1, `FNC_LBU, 5'd17, `OPC_LOAD};
-        CPU.imem.mem[INST_ADDR + 17] = {IMM3[11:0], 5'd1, `FNC_LBU, 5'd18, `OPC_LOAD};
+        CPU.imem.mem[INST_ADDR + 13] = {IMM0[11:0], 5'd1, `FNC_LBU, 5'd15, `OPC_LOAD};
+        CPU.imem.mem[INST_ADDR + 14] = {IMM1[11:0], 5'd1, `FNC_LBU, 5'd16, `OPC_LOAD};
+        CPU.imem.mem[INST_ADDR + 15] = {IMM2[11:0], 5'd1, `FNC_LBU, 5'd17, `OPC_LOAD};
+        CPU.imem.mem[INST_ADDR + 16] = {IMM3[11:0], 5'd1, `FNC_LBU, 5'd18, `OPC_LOAD};
 
         CPU.dmem.mem[DATA_ADDR] = 32'hdeadbeef;
 

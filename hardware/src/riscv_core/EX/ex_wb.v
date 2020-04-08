@@ -14,7 +14,8 @@ module ex_wb (
     output wire[`WORD_BUS]      alu_result_o,
     output wire[`REG_ABUS]      wb_addr_o,
     output wire[1:0]            control_wr_mux_o,
-    output wire[`REG_DBUS]      pc_plus_o
+    output wire[`REG_DBUS]      pc_plus_o,
+    output wire[1:0]            addr_offset
 );
 
     REGISTER_R #(.N(3)) store_load(
@@ -22,6 +23,12 @@ module ex_wb (
         .clk(clk),
         .rst(rst),
         .d(control_load_i));
+    
+    REGISTER_R #(.N(2)) store_offset(
+        .q(addr_offset),
+        .clk(clk),
+        .rst(rst),
+        .d(alu_result_i[1:0]));
 
     REGISTER_R #(.N(32)) store_alu(
         .q(alu_result_o),

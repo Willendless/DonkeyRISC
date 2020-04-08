@@ -203,6 +203,13 @@ module id_ex (
         .rst(rst),
         .q(control_csr_we_o),
         .d(control_csr_we_i));
+    
+    REGISTER_R #(.N(3)) control_load(
+        .clk(clk),
+        .rst(rst),
+        .q(control_load_o),
+        .d(control_load_i)
+    );
 
 
 

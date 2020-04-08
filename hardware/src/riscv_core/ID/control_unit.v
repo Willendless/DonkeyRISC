@@ -143,7 +143,7 @@ assign control_branch = b_type_signal;
 always @(*) begin
     case(opcode)
     `OPC_STORE: control_forward = `FORWARD_STORE;
-    `OPC_LOAD: control_forward = `FORWARD_REG;
+    `OPC_LOAD: control_forward = `FORWARD_IMM;
     `OPC_BRANCH: control_forward = `FORWARD_REG;
     `OPC_JAL: control_forward = `FORWARD_PC1;
     `OPC_JALR: control_forward = `FORWARD_IMM;

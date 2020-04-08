@@ -16,9 +16,9 @@ assign reg1_judge = (reg1_addr == wb_addr && (control_forward == `FORWARD_REG ||
                     `REG1_MUX_REG;
 
 assign reg2_judge = (reg2_addr == wb_addr && control_forward == `FORWARD_REG) ? `REG2_MUX_WB :
-                    (control_forward == `FORWARD_IMM || control_forward == `FORWARD_PC1 || control_forward == `FORWARD_STORE) ? `REG2_MUX_IMM :
+                    (control_forward === `FORWARD_IMM || control_forward === `FORWARD_PC1 || control_forward === `FORWARD_STORE) ? `REG2_MUX_IMM :
                     `REG2_MUX_REG;
 
-assign mem_waddr_judge = (reg2_addr == wb_addr && control_forward == `FORWARD_STORE);
+assign mem_wdata_judge = (reg2_addr == wb_addr && control_forward == `FORWARD_STORE);
 
 endmodule

@@ -8,6 +8,7 @@ module wb (
     input wire[1:0]             control_wr_mux_i,
     input wire[31:0]             pc_plus_i,
     input wire[2:0]              control_load_i,
+    input wire[1:0]              addr_offset_i,
 
     //from mem
     input wire[`DMEM_DBUS]      dmem_douta_i,
@@ -27,6 +28,7 @@ module wb (
         .wb_data(wb_data_o));
     
     load_type load_type(
+        .addr_offset(addr_offset_i),
         .control_load(control_load_i),
         .dmem_load_i(dmem_douta_i),
         .dmem_data_o(dmem_load_i));

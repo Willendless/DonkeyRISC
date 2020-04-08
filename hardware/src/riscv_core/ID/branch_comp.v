@@ -8,6 +8,7 @@ module branch_comp(
 );
 initial begin
     branch_judge = 0;
+end
 
     always @(*) begin
         if (is_branch == 1) begin

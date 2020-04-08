@@ -94,6 +94,10 @@
 `define DMEM_LB         3'b101
 `define DMEM_LHU        3'b011 
 `define DMEM_LBU        3'b100
+//----judgement of store bit type
+`define DMEM_SW         3'b001
+`define DMEM_SH         3'b010 
+`define DMEM_SB         3'b100
 
 //------branch and jal and jalr jump unit signal
 

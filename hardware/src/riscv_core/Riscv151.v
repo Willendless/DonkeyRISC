@@ -314,6 +314,7 @@ module Riscv151
     wire [31:0] pc_plus_wb;
     wire [2:0] control_load;
 
+    wire [1:0] addr_offset;
     ex_wb EX_WB (
         .clk(clk),
         .rst(rst),
@@ -327,7 +328,8 @@ module Riscv151
         .wb_addr_o(wb_addr),
         .control_wr_mux_o(control_data),
         .pc_plus_o(pc_plus_wb),
-        .control_load_o(control_load)
+        .control_load_o(control_load),
+        .addr_offset(addr_offset)
     );
 
     
@@ -374,6 +376,7 @@ module Riscv151
     //-----------wb stage---------------/
     wb WB (
         .control_load_i(control_load),
+        .addr_offset_i(addr_offset),
         .alu_result_i(rtype_output),
         .wb_addr_i(wb_addr),
         .control_wr_mux_i(control_data),
