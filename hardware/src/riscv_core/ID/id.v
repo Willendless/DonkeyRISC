@@ -48,8 +48,8 @@ module id (
     output [1:0] control_wr_mux_o,
     output control_csr_we_o,
     output [2:0] control_load_o,
-    output branch_judge,
-    output control_wb_o
+    output control_wb_o,
+    output control_branch_o
     // output wire wb_en_o, //*
 );
 
@@ -94,7 +94,7 @@ module id (
         .alu_op(alu_op_o),
         .control_uart(control_uart_o),
         .control_dmem(control_dmem_o),
-        .control_branch(control_branch),
+        .control_branch(control_branch_o),
         .control_wr_mux(control_wr_mux_o),
         .control_csr_we(control_csr_we_o),
         .control_load(control_load_o),
@@ -107,15 +107,7 @@ module id (
         .funct_i(inst_i[14:12]),
         .imm(imm_o),
         .branch_offset(branch_offset_o));
-    
-    branch_comp branch_comp(
-        .is_branch(control_branch),
-        .a(reg1_data_i),
-        .b(reg2_data_i),
-        .branch_type(funct3_o),
-        .branch_judge(branch_judge)
-    );
 
-    assign branch_addr_o = branch_offset_o[31:2] + pc_data_o;
+    assign branch_addr_o = branch_offset_o + pc_data_o;
 
 endmodule

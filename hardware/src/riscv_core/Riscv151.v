@@ -41,12 +41,11 @@ module Riscv151
 
     wire branch_judge;
     //wire [31:0] jal_addr1 = jal_addr<<2;
-    wire [31:0] branch_addr1 = branch_addr << 2;
     
     mux_pc mux_pc(
         .pc_plus(pc_plus_reg),
         .jal_addr(jal_addr),//remain some questions
-        .branch_addr(branch_addr1),
+        .branch_addr(branch_addr),
         .jump_judge(jump_judge),
         .branch_judge(branch_judge),
         .pc_o(pc_in));
@@ -83,10 +82,12 @@ module Riscv151
     localparam IMEM_DWIDTH = 32;
     localparam IMEM_DEPTH = 16384;
 
-    wire [IMEM_AWIDTH-1:0] imem_addra = 0;
-    wire [IMEM_AWIDTH-1:0] imem_addrb;
-    wire [IMEM_DWIDTH-1:0] imem_douta, imem_doutb;
-    wire [IMEM_DWIDTH-1:0] imem_dina, imem_dinb;
+    wire [IMEM_AWIDTH-1:0] imem_addra;
+    wire [IMEM_AWIDTH-1:0] imem_addrb = 0;
+    wire [IMEM_DWIDTH-1:0] imem_douta;
+    wire [IMEM_DWIDTH-1:0] imem_doutb = 32'b0;
+    wire [IMEM_DWIDTH-1:0] imem_dina = 32'b0;
+    wire [IMEM_DWIDTH-1:0] imem_dinb = 32'b0;
     wire imem_wea = 0;
     wire imem_web = 0;
 
@@ -153,7 +154,9 @@ module Riscv151
     wire[`REG_ABUS] rd_addr_reg;
 
     wire [2:0] control_load_reg;
+    wire control_branch_reg;
     wire control_wb_reg;
+    wire [31:0] branch_addr_reg;
     id ID (
         .inst_i(inst_output),
         .pc_data_i(pc_store),
@@ -167,7 +170,7 @@ module Riscv151
         .pc_data_o(pc_data_reg),
         .pc_plus_o(pc_plus_reg),
         .imm_o(imm_out),
-        .branch_addr_o(branch_addr),    // branch addr
+        .branch_addr_o(branch_addr_reg),    // branch addr
         .rd_addr_o(rd_addr_reg),
         .rs1_addr_o(reg1_addr_reg),
         .rs2_addr_o(reg2_addr_reg),
@@ -181,8 +184,8 @@ module Riscv151
         .control_wr_mux_o(control_wr_mux_reg),
         .control_csr_we_o(control_csr_we_reg),
         .control_load_o(control_load_reg),
-        .branch_judge(branch_judge),
-        .control_wb_o(control_wb_reg)
+        .control_wb_o(control_wb_reg),
+        .control_branch_o(control_branch_reg)
     );
 
     // Asynchronous read: read data is available in the same cycle
@@ -224,9 +227,13 @@ module Riscv151
 
     wire [2:0] control_load_ex;
     wire control_wb_ex;
+    wire control_branch;
+    wire [31:0] wb_data;
+
+    wire control_wb_back;  
     id_ex ID_EX (
         .clk(clk),
-        .rst(rst || branch_judge),
+        .rst(rst || branch_judge),//add jal jalr judge
         .pc_data_i(pc_data_reg),
         .pc_plus_i(pc_plus_reg),
         .reg1_data_i(reg1_data_reg),
@@ -246,7 +253,13 @@ module Riscv151
         .control_csr_we_i(control_csr_we_reg),
         .control_load_i(control_load_reg),
         .control_wb_i(control_wb_reg),
+        .control_branch_i(control_branch_reg),
+        .branch_addr_i(branch_addr_reg),
+        .wb_data_i(wb_data),
+        .wb_addr_i(wb_addr),
+        .is_wb_i(control_wb_back),
 
+        .branch_addr_o(branch_addr),
         .pc_data_o(pc_ex),
         .pc_plus_o(pc_plus_ex),
         .reg1_data_o(reg1_output),
@@ -265,7 +278,8 @@ module Riscv151
         .funct3_o(inst_alu),
         .inst_alu30_o(inst_alu30),
         .control_load_o(control_load_ex),
-        .control_wb_o(control_wb_ex)
+        .control_wb_o(control_wb_ex),
+        .control_branch_o(control_branch)
     );
 
     assign jump_judge = control_jump;
@@ -278,12 +292,12 @@ module Riscv151
     wire [`REG_DBUS]    pc_plus_reg2;
     wire [`REG_DBUS]    mem_write_reg;   
 
-    wire [31:0]         wb_data;
     wire [3:0]          dmem_wea;
 
     wire                csr_we;
     wire [`REG_DBUS]    csr_din;
     wire                control_wb;
+
     ex EX (
         .forward_data(wb_data),     // DATA from write back stage
         .pc_data_i(pc_ex),
@@ -304,6 +318,8 @@ module Riscv151
         .control_wr_mux_i(control_wr_mux),
         .control_csr_we_i(control_csr_we),
         .control_wb_i(control_wb_ex),
+        .control_wb_back(control_wb_back),
+        .control_branch_i(control_branch),
 
         .mem_write_o(mem_write_reg),
         .alu_result_o(alu_result_reg),
@@ -313,7 +329,8 @@ module Riscv151
         .pc_plus_o(pc_plus_reg2),
         .dmem_we(dmem_wea),
         .csr_data_o(csr_din),
-        .control_wb_o(control_wb)
+        .control_wb_o(control_wb),
+        .branch_judge(branch_judge)
     );
 
     assign jal_addr = alu_result_reg;
@@ -324,6 +341,7 @@ module Riscv151
     wire [2:0] control_load;
 
     wire [1:0] addr_offset;
+
     ex_wb EX_WB (
         .clk(clk),
         .rst(rst),
@@ -340,10 +358,10 @@ module Riscv151
         .pc_plus_o(pc_plus_wb),
         .control_load_o(control_load),
         .addr_offset(addr_offset),
-        .control_wb_o(rf_we)
+        .control_wb_o(control_wb_back)
     );
-
     
+    assign rf_we = control_wb_back;
     // UART Receiver
     wire [7:0] uart_rx_data_out;
     wire uart_rx_data_out_valid;
