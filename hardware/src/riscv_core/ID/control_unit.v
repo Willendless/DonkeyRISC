@@ -131,9 +131,9 @@ assign control_jump[0] = i_type_signal_jalr;
 assign control_jump[1] = j_type_signal;
 
 assign control_wr_mux = (r_type_signal || i_type_signal_addi
-                        || u_type_signal || l_type_signal || i_type_signal_jalr) ? 2'b01: //add r-type inst
+                        || u_type_signal || l_type_signal) ? 2'b01: //add r-type inst
                       i_type_signal_lw ? 2'b10: //lw l-type inst
-                      j_type_signal ? 2'b11: // jal
+                      (j_type_signal || i_type_signal_jalr) ? 2'b11: // jal
                       2'b00;
 
 assign control_uart = (i_type_signal_lw || s_type_signal);//read from uart

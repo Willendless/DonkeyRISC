@@ -40,11 +40,13 @@ module Riscv151
     wire [`REG_DBUS]    pc_plus_reg;
 
     wire branch_judge;
+    wire [31:0] jal_addr1 = jal_addr<<2;
+    wire [31:0] branch_addr1 = branch_addr << 2;
     
     mux_pc mux_pc(
         .pc_plus(pc_plus_reg),
-        .jal_addr(jal_addr),
-        .branch_addr(branch_addr),
+        .jal_addr(jal_addr1),//remain some questions
+        .branch_addr(branch_addr1),
         .jump_judge(jump_judge),
         .branch_judge(branch_judge),
         .pc_o(pc_in));
@@ -147,7 +149,6 @@ module Riscv151
     wire [1:0] control_wr_mux_reg;
     wire control_csr_we_reg;
 
-    wire[`WORD_BUS] branch_offset;
     wire[`REG_ABUS] rd_addr_reg;
 
     wire [2:0] control_load_reg;
@@ -224,7 +225,7 @@ module Riscv151
     wire control_wb_ex;
     id_ex ID_EX (
         .clk(clk),
-        .rst(rst),
+        .rst(rst || branch_judge),
         .pc_data_i(pc_data_reg),
         .pc_plus_i(pc_plus_reg),
         .reg1_data_i(reg1_data_reg),
