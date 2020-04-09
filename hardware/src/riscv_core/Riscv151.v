@@ -40,12 +40,12 @@ module Riscv151
     wire [`REG_DBUS]    pc_plus_reg;
 
     wire branch_judge;
-    wire [31:0] jal_addr1 = jal_addr<<2;
+    //wire [31:0] jal_addr1 = jal_addr<<2;
     wire [31:0] branch_addr1 = branch_addr << 2;
     
     mux_pc mux_pc(
         .pc_plus(pc_plus_reg),
-        .jal_addr(jal_addr1),//remain some questions
+        .jal_addr(jal_addr),//remain some questions
         .branch_addr(branch_addr1),
         .jump_judge(jump_judge),
         .branch_judge(branch_judge),
@@ -83,7 +83,8 @@ module Riscv151
     localparam IMEM_DWIDTH = 32;
     localparam IMEM_DEPTH = 16384;
 
-    wire [IMEM_AWIDTH-1:0] imem_addra, imem_addrb;
+    wire [IMEM_AWIDTH-1:0] imem_addra = 0;
+    wire [IMEM_AWIDTH-1:0] imem_addrb;
     wire [IMEM_DWIDTH-1:0] imem_douta, imem_doutb;
     wire [IMEM_DWIDTH-1:0] imem_dina, imem_dinb;
     wire imem_wea = 0;
@@ -315,7 +316,7 @@ module Riscv151
         .control_wb_o(control_wb)
     );
 
-    assign jal_addr = alu_result_reg>>2;
+    assign jal_addr = alu_result_reg;
 
     wire [31:0] rtype_output;
     wire [1:0] control_data;
