@@ -1,0 +1,59 @@
+#-----------------------------------------------------------
+# Vivado v2019.1 (64-bit)
+# SW Build 2552052 on Fri May 24 14:47:09 MDT 2019
+# IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
+# Start of session at: Sat Apr 11 10:50:06 2020
+# Process ID: 24543
+# Current directory: /home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware
+# Command line: vivado -mode batch -source scripts/sim.tcl -tclargs assembly_testbench assembly_tests assembly_tests
+# Log file: /home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/vivado.log
+# Journal file: /home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/vivado.jou
+#-----------------------------------------------------------
+source scripts/sim.tcl
+# set project_name   "z1top"
+# set testbench_name [lindex $argv 0]
+# set sw             [lindex $argv 1]
+# set test_name      [lindex $argv 2]
+# set sources_file scripts/${project_name}.tcl
+# if {![file exists $sources_file]} {
+#     puts "Invalid project name!"
+#     exit
+# }
+# if {![file exists ${project_name}_proj/${project_name}_proj.xpr]} {
+#     source scripts/build_project.tcl
+# } else {
+#     open_project ${project_name}_proj/${project_name}_proj.xpr
+# }
+CRITICAL WARNING: [Project 1-19] Could not find the file '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/wb.v'.
+CRITICAL WARNING: [Project 1-19] Could not find the file '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/ex_wb.v'.
+CRITICAL WARNING: [Project 1-19] Could not find the file '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/ex.v'.
+CRITICAL WARNING: [Project 1-19] Could not find the file '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/id.v'.
+CRITICAL WARNING: [Project 1-19] Could not find the file '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/id_ex.v'.
+CRITICAL WARNING: [Project 1-19] Could not find the file '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/alu.v'.
+CRITICAL WARNING: [Project 1-19] Could not find the file '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/alu_control.v'.
+CRITICAL WARNING: [Project 1-19] Could not find the file '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/branch_comp.v'.
+CRITICAL WARNING: [Project 1-19] Could not find the file '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/change_mem_wr.v'.
+CRITICAL WARNING: [Project 1-19] Could not find the file '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/control_unit.v'.
+CRITICAL WARNING: [Project 1-19] Could not find the file '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/dmem_wr.v'.
+CRITICAL WARNING: [Project 1-19] Could not find the file '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/forwarding_unit.v'.
+CRITICAL WARNING: [Project 1-19] Could not find the file '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/imm_gen.v'.
+Scanning sources...
+Finished scanning sources
+# update_compile_order -fileset sources_1
+# add_files -fileset sim_1 -norecurse sim/${testbench_name}.v
+# if {[string match "" ${sw}]} {
+#   set test_name ${testbench_name}
+# } else {
+#   add_files -norecurse [glob ../software/${sw}/*.mif]
+# }
+no files matched glob pattern "../software/assembly_tests/*.mif"
+    while executing
+"glob ../software/${sw}/*.mif"
+    invoked from within
+"if {[string match "" ${sw}]} {
+  set test_name ${testbench_name}
+} else {
+  add_files -norecurse [glob ../software/${sw}/*.mif]
+}"
+    (file "scripts/sim.tcl" line 25)
+INFO: [Common 17-206] Exiting Vivado at Sat Apr 11 10:50:20 2020...

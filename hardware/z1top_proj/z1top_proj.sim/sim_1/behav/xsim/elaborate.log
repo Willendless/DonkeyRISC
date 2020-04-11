@@ -1,0 +1,16 @@
+Vivado Simulator 2019.1
+Copyright 1986-1999, 2001-2019 Xilinx, Inc. All Rights Reserved.
+Running: /share/instsww/xilinx/Vivado/2019.1/bin/unwrapped/lnx64.o/xelab -wto ff2067a28e564f08b454a3209b73dba0 --incr --debug typical --relax --mt 8 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip --snapshot isa_testbench_behav xil_defaultlib.isa_testbench xil_defaultlib.glbl -log elaborate.log 
+Using 8 slave threads.
+Starting static elaboration
+ERROR: [VRFC 10-2063] Module <REGISTER_R> not found while processing module instance <pc_reg> [/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/Riscv151.v:54]
+ERROR: [VRFC 10-2063] Module <XILINX_SYNC_RAM_DP> not found while processing module instance <bios_mem> [/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/Riscv151.v:63]
+ERROR: [VRFC 10-2063] Module <id> not found while processing module instance <ID> [/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/Riscv151.v:164]
+ERROR: [VRFC 10-2063] Module <REGFILE_1W2R> not found while processing module instance <rf> [/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/Riscv151.v:197]
+ERROR: [VRFC 10-2063] Module <id_ex> not found while processing module instance <ID_EX> [/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/Riscv151.v:238]
+ERROR: [VRFC 10-2063] Module <ex> not found while processing module instance <EX> [/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/Riscv151.v:305]
+ERROR: [VRFC 10-2063] Module <ex_wb> not found while processing module instance <EX_WB> [/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/Riscv151.v:349]
+ERROR: [VRFC 10-2063] Module <SYNC_RAM_WBE> not found while processing module instance <dmem> [/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/Riscv151.v:393]
+ERROR: [VRFC 10-2063] Module <REGISTER_R_CE> not found while processing module instance <csr_reg> [/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/Riscv151.v:404]
+ERROR: [VRFC 10-2063] Module <wb> not found while processing module instance <WB> [/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/Riscv151.v:414]
+ERROR: [XSIM 43-3322] Static elaboration of top level Verilog design unit(s) in library work failed.

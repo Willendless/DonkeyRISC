@@ -1,0 +1,10 @@
+0.6
+2019.1
+May 24 2019
+14:51:52
+/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/sim/isa_testbench.v,1586627230,verilog,,,,isa_testbench,,,../../../../../src/riscv_core,,,,,
+/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/Opcode.vh,1586147366,verilog,,,,,,,,,,,,
+/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/Riscv151.v,1586627230,verilog,,/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/mux.v,/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/defines.vh;/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/Opcode.vh,Riscv151,,,../../../../../src/riscv_core,,,,,
+/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/defines.vh,1586454209,verilog,,,,,,,,,,,,
+/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/mux.v,1586627230,verilog,,/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/sim/isa_testbench.v,/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/defines.vh;/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/Opcode.vh,mux_dmem;mux_imem_read;mux_pc;mux_reg1;mux_reg2,,,../../../../../src/riscv_core,,,,,
+/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/glbl.v,1558713910,verilog,,,,glbl,,,,,,,,

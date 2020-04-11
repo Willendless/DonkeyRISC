@@ -2,11 +2,11 @@
 # Vivado v2019.1 (64-bit)
 # SW Build 2552052 on Fri May 24 14:47:09 MDT 2019
 # IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
-# Start of session at: Sun Apr  5 22:05:16 2020
-# Process ID: 14127
+# Start of session at: Sat Apr 11 11:07:59 2020
+# Process ID: 3675
 # Current directory: /home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware
-# Command line: vivado -mode batch -source scripts/write_bitstream.tcl
+# Command line: vivado -mode batch -source scripts/sim.tcl -tclargs isa_testbench riscv-isa-tests add
 # Log file: /home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/vivado.log
 # Journal file: /home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/vivado.jou
 #-----------------------------------------------------------
-source scripts/write_bitstream.tcl
+source scripts/sim.tcl
