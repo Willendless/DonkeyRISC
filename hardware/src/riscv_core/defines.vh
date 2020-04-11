@@ -46,7 +46,8 @@
 
 `define ALUOP_RTYPE 2'b00
 `define ALUOP_ISJTYPE 2'b01
-`define ALUOP_OTHER 2'b10
+`define ALUOP_ADTYPE 2'b10
+`define ALUOP_UTYPE  2'b11
 
 //load and store function are all defined as add function
 
@@ -72,6 +73,8 @@
 
 `define ALUCTRL_SUB     4'b1000
 `define ALUCTRL_SRA     4'b1101
+`define ALUCTRL_SLLI    4'b0101
+`define ALUCTRL_SRAI    4'b1010
 
 //-----judgement of forwarding unit and mux
 `define REG1_MUX_REG    2'b01
@@ -85,6 +88,17 @@
 `define FORWARD_REG     2'b00
 `define FORWARD_STORE   2'b10
 `define FORWARD_IMM     2'b11
+
+//----judgement of load bit type
+`define DMEM_LW         3'b001 
+`define DMEM_LH         3'b010 
+`define DMEM_LB         3'b101
+`define DMEM_LHU        3'b011 
+`define DMEM_LBU        3'b100
+//----judgement of store bit type
+`define DMEM_SW         3'b001
+`define DMEM_SH         3'b010 
+`define DMEM_SB         3'b100
 
 //------branch and jal and jalr jump unit signal
 

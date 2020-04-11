@@ -46,7 +46,7 @@ module isa_testbench();
         end
         done = 1;
 
-        if (csr[0] === 1'b1 && csr[31:1] === 31'd0) begin
+        if (csr[0] == 1'b1 && csr[31:1] == 31'd0) begin
             $display("[PASSED] - %s in %d simulation cycles", MIF_FILE, cycle);
         end else begin
             $display("[FAILED] - %s. Failed test: %d", MIF_FILE, csr[31:1]);

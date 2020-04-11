@@ -1,0 +1,143 @@
+#-----------------------------------------------------------
+# Vivado v2019.1 (64-bit)
+# SW Build 2552052 on Fri May 24 14:47:09 MDT 2019
+# IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
+# Start of session at: Sat Apr 11 11:07:59 2020
+# Process ID: 3675
+# Current directory: /home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware
+# Command line: vivado -mode batch -source scripts/sim.tcl -tclargs isa_testbench riscv-isa-tests add
+# Log file: /home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/vivado.log
+# Journal file: /home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/vivado.jou
+#-----------------------------------------------------------
+source scripts/sim.tcl
+# set project_name   "z1top"
+# set testbench_name [lindex $argv 0]
+# set sw             [lindex $argv 1]
+# set test_name      [lindex $argv 2]
+# set sources_file scripts/${project_name}.tcl
+# if {![file exists $sources_file]} {
+#     puts "Invalid project name!"
+#     exit
+# }
+# if {![file exists ${project_name}_proj/${project_name}_proj.xpr]} {
+#     source scripts/build_project.tcl
+# } else {
+#     open_project ${project_name}_proj/${project_name}_proj.xpr
+# }
+CRITICAL WARNING: [Project 1-19] Could not find the file '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/wb.v'.
+CRITICAL WARNING: [Project 1-19] Could not find the file '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/ex_wb.v'.
+CRITICAL WARNING: [Project 1-19] Could not find the file '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/ex.v'.
+CRITICAL WARNING: [Project 1-19] Could not find the file '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/id.v'.
+CRITICAL WARNING: [Project 1-19] Could not find the file '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/id_ex.v'.
+CRITICAL WARNING: [Project 1-19] Could not find the file '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/alu.v'.
+CRITICAL WARNING: [Project 1-19] Could not find the file '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/alu_control.v'.
+CRITICAL WARNING: [Project 1-19] Could not find the file '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/branch_comp.v'.
+CRITICAL WARNING: [Project 1-19] Could not find the file '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/change_mem_wr.v'.
+CRITICAL WARNING: [Project 1-19] Could not find the file '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/control_unit.v'.
+CRITICAL WARNING: [Project 1-19] Could not find the file '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/dmem_wr.v'.
+CRITICAL WARNING: [Project 1-19] Could not find the file '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/forwarding_unit.v'.
+CRITICAL WARNING: [Project 1-19] Could not find the file '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/imm_gen.v'.
+Scanning sources...
+Finished scanning sources
+# update_compile_order -fileset sources_1
+# add_files -fileset sim_1 -norecurse sim/${testbench_name}.v
+# if {[string match "" ${sw}]} {
+#   set test_name ${testbench_name}
+# } else {
+#   add_files -norecurse [glob ../software/${sw}/*.mif]
+# }
+# set_property top ${testbench_name} [get_filesets sim_1]
+# update_compile_order -fileset sim_1
+# launch_simulation -step compile
+INFO: [Vivado 12-5682] Launching behavioral simulation in '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [SIM-utils-54] Inspecting design source files for 'isa_testbench' in fileset 'sim_1'...
+INFO: [SIM-utils-43] Exported '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/bios151v3.mif'
+INFO: [SIM-utils-43] Exported '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/add.mif'
+INFO: [SIM-utils-43] Exported '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/addi.mif'
+INFO: [SIM-utils-43] Exported '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/and.mif'
+INFO: [SIM-utils-43] Exported '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/andi.mif'
+INFO: [SIM-utils-43] Exported '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/auipc.mif'
+INFO: [SIM-utils-43] Exported '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/beq.mif'
+INFO: [SIM-utils-43] Exported '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/bge.mif'
+INFO: [SIM-utils-43] Exported '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/bgeu.mif'
+INFO: [SIM-utils-43] Exported '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/blt.mif'
+INFO: [SIM-utils-43] Exported '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/bltu.mif'
+INFO: [SIM-utils-43] Exported '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/bne.mif'
+INFO: [SIM-utils-43] Exported '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/fence_i.mif'
+INFO: [SIM-utils-43] Exported '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/jal.mif'
+INFO: [SIM-utils-43] Exported '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/jalr.mif'
+INFO: [SIM-utils-43] Exported '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/lb.mif'
+INFO: [SIM-utils-43] Exported '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/lbu.mif'
+INFO: [SIM-utils-43] Exported '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/lh.mif'
+INFO: [SIM-utils-43] Exported '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/lhu.mif'
+INFO: [SIM-utils-43] Exported '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/lui.mif'
+INFO: [SIM-utils-43] Exported '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/lw.mif'
+INFO: [SIM-utils-43] Exported '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/or.mif'
+INFO: [SIM-utils-43] Exported '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/ori.mif'
+INFO: [SIM-utils-43] Exported '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/sb.mif'
+INFO: [SIM-utils-43] Exported '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/sh.mif'
+INFO: [SIM-utils-43] Exported '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/simple.mif'
+INFO: [SIM-utils-43] Exported '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/sll.mif'
+INFO: [SIM-utils-43] Exported '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/slli.mif'
+INFO: [SIM-utils-43] Exported '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/slt.mif'
+INFO: [SIM-utils-43] Exported '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/slti.mif'
+INFO: [SIM-utils-43] Exported '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/sltiu.mif'
+INFO: [SIM-utils-43] Exported '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/sltu.mif'
+INFO: [SIM-utils-43] Exported '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/sra.mif'
+INFO: [SIM-utils-43] Exported '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/srai.mif'
+INFO: [SIM-utils-43] Exported '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/srl.mif'
+INFO: [SIM-utils-43] Exported '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/srli.mif'
+INFO: [SIM-utils-43] Exported '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/sub.mif'
+INFO: [SIM-utils-43] Exported '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/sw.mif'
+INFO: [SIM-utils-43] Exported '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/xor.mif'
+INFO: [SIM-utils-43] Exported '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/xori.mif'
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim'
+xvlog --incr --relax -prj isa_testbench_vlog.prj
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/Riscv151.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module Riscv151
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/mux.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mux_dmem
+INFO: [VRFC 10-311] analyzing module mux_pc
+INFO: [VRFC 10-311] analyzing module mux_reg1
+INFO: [VRFC 10-311] analyzing module mux_reg2
+INFO: [VRFC 10-311] analyzing module mux_imem_read
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/sim/isa_testbench.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module isa_testbench
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl
+INFO: [USF-XSim-69] 'compile' step finished in '2' seconds
+# launch_simulation -step elaborate
+INFO: [Vivado 12-5682] Launching behavioral simulation in '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim'
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim'
+xelab -wto ff2067a28e564f08b454a3209b73dba0 --incr --debug typical --relax --mt 8 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip --snapshot isa_testbench_behav xil_defaultlib.isa_testbench xil_defaultlib.glbl -log elaborate.log
+Vivado Simulator 2019.1
+Copyright 1986-1999, 2001-2019 Xilinx, Inc. All Rights Reserved.
+Running: /share/instsww/xilinx/Vivado/2019.1/bin/unwrapped/lnx64.o/xelab -wto ff2067a28e564f08b454a3209b73dba0 --incr --debug typical --relax --mt 8 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip --snapshot isa_testbench_behav xil_defaultlib.isa_testbench xil_defaultlib.glbl -log elaborate.log 
+Using 8 slave threads.
+Starting static elaboration
+ERROR: [VRFC 10-2063] Module <REGISTER_R> not found while processing module instance <pc_reg> [/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/Riscv151.v:54]
+ERROR: [VRFC 10-2063] Module <XILINX_SYNC_RAM_DP> not found while processing module instance <bios_mem> [/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/Riscv151.v:63]
+ERROR: [VRFC 10-2063] Module <id> not found while processing module instance <ID> [/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/Riscv151.v:164]
+ERROR: [VRFC 10-2063] Module <REGFILE_1W2R> not found while processing module instance <rf> [/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/Riscv151.v:197]
+ERROR: [VRFC 10-2063] Module <id_ex> not found while processing module instance <ID_EX> [/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/Riscv151.v:238]
+ERROR: [VRFC 10-2063] Module <ex> not found while processing module instance <EX> [/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/Riscv151.v:305]
+ERROR: [VRFC 10-2063] Module <ex_wb> not found while processing module instance <EX_WB> [/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/Riscv151.v:349]
+ERROR: [VRFC 10-2063] Module <SYNC_RAM_WBE> not found while processing module instance <dmem> [/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/Riscv151.v:393]
+ERROR: [VRFC 10-2063] Module <REGISTER_R_CE> not found while processing module instance <csr_reg> [/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/Riscv151.v:404]
+ERROR: [VRFC 10-2063] Module <wb> not found while processing module instance <WB> [/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/Riscv151.v:414]
+ERROR: [XSIM 43-3322] Static elaboration of top level Verilog design unit(s) in library work failed.
+INFO: [USF-XSim-69] 'elaborate' step finished in '1' seconds
+INFO: [USF-XSim-99] Step results log file:'/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/elaborate.log'
+ERROR: [USF-XSim-62] 'elaborate' step failed with error(s). Please check the Tcl console output or '/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/elaborate.log' file for more information.
+ERROR: [Vivado 12-4473] Detected error while running simulation. Please correct the issue and retry this operation.
+ERROR: [Common 17-39] 'launch_simulation' failed due to earlier errors.
+
+    while executing
+"launch_simulation -step elaborate"
+    (file "scripts/sim.tcl" line 36)
+INFO: [Common 17-206] Exiting Vivado at Sat Apr 11 11:08:20 2020...

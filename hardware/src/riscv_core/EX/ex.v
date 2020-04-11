@@ -6,8 +6,7 @@
 *
 */
 `include "../defines.vh"
-`include "../mux.v"
-
+`include "../Opcode.vh"
 module ex (
     //  forward data
     input wire [31:0] forward_data,
@@ -35,7 +34,9 @@ module ex (
     input wire control_dmem_i,
     input wire[1:0] control_wr_mux_i,
     input wire control_csr_we_i,
-
+    input wire control_wb_i,
+    input wire control_wb_back,
+    input wire control_branch_i,
 
     output wire[`WORD_BUS]      alu_result_o,
     output wire[`REG_DBUS]      mem_write_o,      
@@ -44,9 +45,17 @@ module ex (
     output wire[`REG_DBUS]      pc_plus_o,
     output wire [3:0]           dmem_we,
     output wire                 control_csr_we_o,
-    output wire[`REG_DBUS]      csr_data_o
+    output wire[`REG_DBUS]      csr_data_o,
+    output wire                 control_wb_o,
+    output wire                 branch_judge
     
 );
+//todo: uart
+    reg uart_store;
+    always @(*) begin
+        uart_store = control_uart_i;
+    end
+    
     wire [31:0] aluout;
     assign alu_result_o = aluout;
     dmem_wr dmem_wr (
@@ -85,11 +94,14 @@ module ex (
         .reg1_addr(reg1_addr_i),
         .reg2_addr(reg2_addr_i),
         .wb_addr(wb_addr_i),
+        .is_wb(control_wb_back),
         .control_forward(control_forward_i),
         .reg1_judge(reg1_judge),
         .reg2_judge(reg2_judge),
         .mem_wdata_judge(mem_wdata_judge));
 
+    assign control_wb_o = control_wb_i;
+    
     wire [31:0] aluin1;
     wire [31:0] aluin2;
 
@@ -122,6 +134,24 @@ module ex (
         .aluin2(aluin2),
         .aluCtrl(alu_ctrl),
         .aluout(aluout));
+    
+    wire [31:0] branch_comp_a;
+    wire [31:0] branch_comp_b;
+
+    assign branch_comp_a = (control_wb_back && (wb_addr_i == reg1_addr_i))
+                            ? forward_data : reg1_data_i;
+    assign branch_comp_b = (control_wb_back && (wb_addr_i == reg2_addr_i))
+                            ? forward_data : reg2_data_i;
+
+    branch_comp branch_comp(
+        .branch_type(funct3_i),
+        .a(branch_comp_a),
+        .b(branch_comp_b),
+        .is_branch(control_branch_i),
+        .branch_judge(branch_judge)
+    
+
+    );
     
 
 endmodule // ex 

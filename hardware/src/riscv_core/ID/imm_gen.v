@@ -1,8 +1,8 @@
-`include "../Opcode.vh"
 `include "../defines.vh"
-
+`include "../Opcode.vh"
 module imm_gen (
     input wire[`INST_BUS] opcode_i,
+    input wire [2:0] funct_i,
     output reg[`IMM32_BUS] imm,
     output reg[`IMM32_BUS] branch_offset
 );
@@ -12,7 +12,12 @@ module imm_gen (
         case (opcode_i[`FIELD_OPCODE_5])
             // I-type
             `OPC_JALR_5, `OPC_LOAD_5,
-            `OPC_ARI_ITYPE_5: imm = {{21{opcode_i[31]}}, opcode_i[30:20]};
+            `OPC_ARI_ITYPE_5: begin
+            if (funct_i == 3'b101 || funct_i == 3'b001)
+                imm = {26'b0, opcode_i[25:20]};               
+            else
+                imm = {{21{opcode_i[31]}}, opcode_i[30:20]};    
+            end
             // S-type
             `OPC_STORE_5: imm = {{21{opcode_i[31]}}, opcode_i[30:25], opcode_i[11:8], opcode_i[7]};
             // B-type

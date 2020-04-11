@@ -1,7 +1,7 @@
 `ifndef MUX
 `define MUX
-
 `include "defines.vh"
+`include "Opcode.vh"
 module mux_dmem(
     input [31:0] dmem_output,
     input [31:0] bios_output,
@@ -69,7 +69,7 @@ module mux_imem_read(
     input [31:0] bios_out,
     output [31:0] inst_output
 );
-    assign inst_output = (pc30 == 1'b1) ? imem_out : bios_out;
+    assign inst_output = (pc30 == 1'b0) ? imem_out : bios_out;
 endmodule
 
 

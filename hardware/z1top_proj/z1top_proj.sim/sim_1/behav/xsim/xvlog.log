@@ -1,0 +1,12 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/Riscv151.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module Riscv151
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/src/riscv_core/mux.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mux_dmem
+INFO: [VRFC 10-311] analyzing module mux_pc
+INFO: [VRFC 10-311] analyzing module mux_reg1
+INFO: [VRFC 10-311] analyzing module mux_reg2
+INFO: [VRFC 10-311] analyzing module mux_imem_read
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/sim/isa_testbench.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module isa_testbench
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/cc/eecs151/sp20/class/eecs151-abm/riscv/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl

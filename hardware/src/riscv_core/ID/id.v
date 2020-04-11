@@ -1,6 +1,6 @@
-`include "../Opcode.vh"
-`include "../defines.vh"
 
+`include "../defines.vh"
+`include "../Opcode.vh"
 /*
 *   TODO:
 *   id stage file, connect to id_ex
@@ -15,7 +15,7 @@
 */
 module id (
     input wire[`IMEM_DBUS]      inst_i,
-    input wire[`REG_DBUS]       pc_data_i,     
+    input wire[`REG_DBUS]       pc_data_i,    
 
     // reg data from regfile
     input wire[`REG_DBUS] reg1_data_i,
@@ -47,8 +47,9 @@ module id (
     output control_dmem_o,
     output [1:0] control_wr_mux_o,
     output control_csr_we_o,
-    output branch_judge
-    // output wire wb_en_o, //*
+    output [2:0] control_load_o,
+    output control_wb_o,
+    output control_branch_o
 );
 
     // decocde
@@ -69,9 +70,8 @@ module id (
         
 
     // next pc
-
     assign pc_data_o = pc_data_i;
-    assign pc_plus_o = pc_data_i + 1;
+    assign pc_plus_o = pc_data_i + 4;
 
 
     // reg_file
@@ -87,30 +87,26 @@ module id (
     wire control_branch;
     control_unit control (
         .opcode(inst_opcode),
+        .funct3_i(inst_i[`FIELD_FUNCT3]),
+        .control_jump(control_jump_o),
         .control_forward(control_forward_o),
         .alu_op(alu_op_o),
-        .control_jump(control_jump_o),
         .control_uart(control_uart_o),
         .control_dmem(control_dmem_o),
-        .control_branch(control_branch),
+        .control_branch(control_branch_o),
         .control_wr_mux(control_wr_mux_o),
-        .control_csr_we(control_csr_we_o));
+        .control_csr_we(control_csr_we_o),
+        .control_load(control_load_o),
+        .control_wb(control_wb_o));
 
     // imm_gen
     wire [31:0] branch_offset_o;
     imm_gen imm (
         .opcode_i(inst_i),
+        .funct_i(inst_i[14:12]),
         .imm(imm_o),
         .branch_offset(branch_offset_o));
-    
-    branch_comp branch_comp(
-        .is_branch(control_branch),
-        .a(reg1_data_i),
-        .b(reg2_data_i),
-        .branch_type(funct3_o),
-        .branch_judge(branch_judge)
-    );
 
-    assign branch_addr_o = branch_offset_o[31:2] + pc_data_o;
+    assign branch_addr_o = branch_offset_o + pc_data_o;
 
 endmodule

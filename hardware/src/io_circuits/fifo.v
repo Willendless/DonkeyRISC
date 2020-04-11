@@ -1,5 +1,3 @@
-`include "../../lib/EECS151.v"
-
 module fifo #(
     parameter WIDTH = 32,  // data width is 32-bit
     parameter LOGDEPTH = 3 // 2^3 = 8 entries

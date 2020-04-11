@@ -10,7 +10,7 @@ module assembly_testbench();
 
     Riscv151 # (
         .CPU_CLOCK_FREQ(CPU_CLOCK_FREQ),
-        .BIOS_MEM_HEX_FILE("assembly_tests.mif")
+        .BIOS_MEM_HEX_FILE("assembly_tests.hex")
     ) CPU (
         .clk(clk),
         .rst(rst),

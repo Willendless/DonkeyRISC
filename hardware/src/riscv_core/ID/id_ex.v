@@ -1,5 +1,5 @@
 `include "../defines.vh"
-
+`include "../Opcode.vh"
 /*
 *   TODO:
 *   id_ex pipeline register file, connect to ex stage
@@ -59,16 +59,25 @@ module id_ex (
     input wire control_dmem_i,
     input wire[1:0] control_wr_mux_i,
     input wire control_csr_we_i,
+    input wire [2:0] control_load_i,
+    input wire control_wb_i,
+    input wire control_branch_i,
+    input [31:0] branch_addr_i,
+    input [31:0] wb_data_i,
+    input [4:0] wb_addr_i,
+    input is_wb_i,
 
-    output 
-    
-    [1:0] control_forward_o,
+    output [1:0] control_forward_o,
     output [1:0] control_jump_o,
     output [1:0] alu_op_o,
     output control_uart_o, //TODO
     output control_dmem_o,
     output [1:0] control_wr_mux_o,
     output wire control_csr_we_o,
+    output wire [2:0] control_load_o,
+    output wire control_wb_o,
+    output wire control_branch_o,
+    output [31:0] branch_addr_o,
 
     output wire[2:0]         funct3_o,
     output wire              inst_alu30_o
@@ -88,6 +97,11 @@ module id_ex (
     //output pc_sel
 
 );
+    REGISTER_R #(.N(1)) control_wb_reg ( 
+        .clk(clk),
+        .rst(rst),
+        .q(control_wb_o),
+        .d(control_wb_i));
     // pc & pc + 4
     REGISTER_R #(.N(`REG_DWIDTH)) pc_data_reg ( 
         .clk(clk),
@@ -102,18 +116,25 @@ module id_ex (
 
 
     // reg data & addr
+    wire [31:0] reg1_data_o1;
     REGISTER_R #(.N(`REG_DWIDTH)) reg1_store(
         .clk(clk),
         .rst(rst),
         .q(reg1_data_o),
-        .d(reg1_data_i));
+        .d(reg1_data_o1));
 
+    assign reg1_data_o1 = (reg1_addr_i == wb_addr_i && is_wb_i)
+                         ? wb_data_i : reg1_data_i;
+    
+    wire [31:0] reg2_data_o1;
     REGISTER_R #(.N(`REG_DWIDTH)) reg2_store(
         .clk(clk),
         .rst(rst),
         .q(reg2_data_o),
-        .d(reg2_data_i));
-
+        .d(reg2_data_o1));
+    assign reg2_data_o1 = (reg2_addr_i == wb_addr_i && is_wb_i)
+                         ? wb_data_i : reg2_data_i;
+    
     REGISTER_R #(.N(`REG_AWIDTH)) reg1_addr_store(
         .q(reg1_addr_o),
         .clk(clk),
@@ -137,6 +158,13 @@ module id_ex (
         .clk(clk),
         .rst(rst),
         .d(imm_i)
+    );
+
+    REGISTER_R #(.N(1)) load_sign (
+        .q(control_dmem_o),
+        .clk(clk),
+        .rst(rst),
+        .d(control_dmem_i)
     );
 
 
@@ -196,6 +224,27 @@ module id_ex (
         .rst(rst),
         .q(control_csr_we_o),
         .d(control_csr_we_i));
+    
+    REGISTER_R #(.N(1)) ctrl_branch_reg(
+        .clk(clk),
+        .rst(rst),
+        .q(control_branch_o),
+        .d(control_branch_i));
+    
+    REGISTER_R #(.N(3)) control_load(
+        .clk(clk),
+        .rst(rst),
+        .q(control_load_o),
+        .d(control_load_i)
+    );
+
+    REGISTER_R #(.N(32)) branch_addr_load(
+        .clk(clk),
+        .rst(rst),
+        .q(branch_addr_o),
+        .d(branch_addr_i)
+    );
+
 
 
 

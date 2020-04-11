@@ -1,0 +1,11 @@
+# compile verilog/system verilog design source files
+verilog xil_defaultlib  --include "../../../../../src/riscv_core" \
+"../../../../../src/riscv_core/Riscv151.v" \
+"../../../../../src/riscv_core/mux.v" \
+"../../../../../sim/isa_testbench.v" \
+
+# compile glbl module
+verilog xil_defaultlib "glbl.v"
+
+# Do not sort compile order
+nosort
