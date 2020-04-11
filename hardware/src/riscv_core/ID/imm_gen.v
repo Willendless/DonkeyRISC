@@ -1,6 +1,5 @@
-`include "../Opcode.vh"
 `include "../defines.vh"
-
+`include "../Opcode.vh"
 module imm_gen (
     input wire[`INST_BUS] opcode_i,
     input wire [2:0] funct_i,
@@ -14,7 +13,7 @@ module imm_gen (
             // I-type
             `OPC_JALR_5, `OPC_LOAD_5,
             `OPC_ARI_ITYPE_5: begin
-            if (funct_i === 3'b101 || funct_i === 3'b001)
+            if (funct_i == 3'b101 || funct_i == 3'b001)
                 imm = {26'b0, opcode_i[25:20]};               
             else
                 imm = {{21{opcode_i[31]}}, opcode_i[30:20]};    

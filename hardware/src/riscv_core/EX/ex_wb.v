@@ -1,6 +1,5 @@
 `include "../defines.vh"
-
-
+`include "../Opcode.vh"
 module ex_wb (
     input clk,
     input rst,
@@ -56,7 +55,7 @@ module ex_wb (
         .rst(rst),
         .d(pc_plus_i));
     
-    REGISTER_R # (.N(1'b1)) store_control_wb(
+    REGISTER_R # (.N(1)) store_control_wb(
         .q(control_wb_o),
         .clk(clk),
         .rst(rst),

@@ -1,7 +1,7 @@
 `ifndef MUX
 `define MUX
-
 `include "defines.vh"
+`include "Opcode.vh"
 module mux_dmem(
     input [31:0] dmem_output,
     input [31:0] bios_output,
@@ -15,7 +15,7 @@ module mux_dmem(
 //writeback mux
 assign wb_data = (control_data == 2'b01) ? rtype_output://choose the result of alu
                  (control_data == 2'b11) ? pc_output://choose the result of jal / jalr
-                 (control_data === 2'b10 && (addr === 4'b0001 || addr === 4'b0011)) ? dmem_output://choose the result of dmem
+                 (control_data == 2'b10 && (addr == 4'b0001 || addr == 4'b0011)) ? dmem_output://choose the result of dmem
                  (control_data == 2'b10 && addr == 4'b0100) ? bios_output://choose bios memory
                  32'b0;
 endmodule
@@ -69,7 +69,7 @@ module mux_imem_read(
     input [31:0] bios_out,
     output [31:0] inst_output
 );
-    assign inst_output = (pc30 == 1'b1) ? imem_out : bios_out;
+    assign inst_output = (pc30 == 1'b0) ? imem_out : bios_out;
 endmodule
 
 

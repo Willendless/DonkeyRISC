@@ -1,6 +1,5 @@
 `include "../defines.vh"
-`include "../mux.v"
-
+`include "../Opcode.vh"
 module wb (
     // from ex_wb
     input wire[31:0]             alu_result_i,

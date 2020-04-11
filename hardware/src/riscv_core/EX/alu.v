@@ -1,4 +1,5 @@
 `include "../defines.vh"
+`include "../Opcode.vh"
 
 module alu(
     input [31:0] aluin1,

@@ -1,4 +1,5 @@
 `include "../defines.vh"
+`include "../Opcode.vh"
 module branch_comp(
     input [2:0] branch_type,
     input [31:0] a,

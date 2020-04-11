@@ -1,5 +1,5 @@
 `include "../defines.vh"
-
+`include "../Opcode.vh"
 /*
 *   TODO:
 *   id_ex pipeline register file, connect to ex stage
@@ -97,7 +97,7 @@ module id_ex (
     //output pc_sel
 
 );
-    REGISTER_R #(.N(1'b1)) control_wb_reg ( 
+    REGISTER_R #(.N(1)) control_wb_reg ( 
         .clk(clk),
         .rst(rst),
         .q(control_wb_o),
@@ -160,7 +160,7 @@ module id_ex (
         .d(imm_i)
     );
 
-    REGISTER_R #(.N(1'b1)) load_sign (
+    REGISTER_R #(.N(1)) load_sign (
         .q(control_dmem_o),
         .clk(clk),
         .rst(rst),

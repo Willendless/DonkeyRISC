@@ -1,6 +1,6 @@
-`include "../Opcode.vh"
-`include "../defines.vh"
 
+`include "../defines.vh"
+`include "../Opcode.vh"
 /*
 *   TODO:
 *   id stage file, connect to id_ex

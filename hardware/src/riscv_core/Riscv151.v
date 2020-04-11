@@ -1,7 +1,5 @@
 `include "defines.vh"
 `include "Opcode.vh"
-
-
 module Riscv151
 #(
     parameter CPU_CLOCK_FREQ    = 50_000_000,
@@ -69,28 +67,37 @@ module Riscv151
         .MEM_INIT_HEX_FILE(BIOS_MEM_HEX_FILE)
     ) bios_mem(
         .q0(bios_douta),    // output
-        .d0(),              // intput
+        .d0(32'b0),              // intput
         .addr0(bios_addra), // input
         .we0(1'b0),         // input
         .q1(bios_doutb),    // output
-        .d1(),              // input
+        .d1(32'b0),              // input
         .addr1(bios_addrb), // input
         .we1(1'b0),         // input
         .clk(clk), .rst(rst));
+    
+    wire [31:0] alu_result_reg1;
+    assign bios_addrb = alu_result_reg1[11:0];
 
     localparam IMEM_AWIDTH = 14;
     localparam IMEM_DWIDTH = 32;
     localparam IMEM_DEPTH = 16384;
 
     wire [IMEM_AWIDTH-1:0] imem_addra;
-    wire [IMEM_AWIDTH-1:0] imem_addrb = 0;
+    wire [IMEM_AWIDTH-1:0] imem_addrb;
     wire [IMEM_DWIDTH-1:0] imem_douta;
     wire [IMEM_DWIDTH-1:0] imem_doutb = 32'b0;
     wire [IMEM_DWIDTH-1:0] imem_dina = 32'b0;
-    wire [IMEM_DWIDTH-1:0] imem_dinb = 32'b0;
+    wire [IMEM_DWIDTH-1:0] imem_dinb;
     wire imem_wea = 0;
-    wire imem_web = 0;
+    wire imem_web;
 
+    wire [3:0] dmem_wea_reg;
+
+    wire [31:0] pc_in1 = pc_in>>2;
+    assign imem_addrb = alu_result_reg1[13:0];
+    assign imem_addra = pc_in1[IMEM_AWIDTH-1:0];
+    assign imem_web = dmem_wea_reg;
     // Instruction Memory
     // Synchronous read: read takes one cycle
     // Synchronous write: write takes one cycle
@@ -110,11 +117,8 @@ module Riscv151
         .we1(imem_web),    // input
         .clk(clk), .rst(rst));
 
-    assign bios_addra = pc_in[BIOS_AWIDTH-1:0];
-    wire [31:0] pc_in1 = pc_in>>2;
-    assign imem_addra = pc_in1[IMEM_AWIDTH-1:0];
-    
-    wire if_flush = 0;
+    assign bios_addra = pc_in[BIOS_AWIDTH-1:0]>>2;
+
 
 //-----------second stage----------------//
     wire [31:0] inst_output;
@@ -122,7 +126,7 @@ module Riscv151
     mux_imem_read mux_imem_read(
         .imem_out(imem_douta),
         .bios_out(bios_douta),
-        .pc30(1'b1),
+        .pc30(pc_store[30]),
         .inst_output(inst_output));
     
     wire [31:0] imm_out;
@@ -133,7 +137,7 @@ module Riscv151
     wire [31:0] rf_rd1, rf_rd2;
 
     wire [4:0] wb_addr;
-    assign rf_we = 1'b1;
+    //assign rf_we = 1'b1;
 
     wire [`REG_DBUS] reg1_data_reg;
     wire [`REG_ABUS] reg1_addr_reg;
@@ -327,7 +331,7 @@ module Riscv151
         .control_wr_mux_o(control_wr_mux_reg2),
         .control_csr_we_o(csr_we),
         .pc_plus_o(pc_plus_reg2),
-        .dmem_we(dmem_wea),
+        .dmem_we(dmem_wea_reg),
         .csr_data_o(csr_din),
         .control_wb_o(control_wb),
         .branch_judge(branch_judge)
@@ -376,8 +380,12 @@ module Riscv151
     wire [DMEM_DWIDTH-1:0] dmem_dina, dmem_douta;
 
     assign dmem_dina = mem_write_reg;
-    assign dmem_addra = {16'b0, alu_result_reg[15:0]>>2};
+    assign imem_dinb = mem_write_reg;
+    
+    assign alu_result_reg1 = alu_result_reg>>2;
+    assign dmem_addra = {18'b0, alu_result_reg1[13:0]};
 
+    assign dmem_wea = dmem_wea_reg;
     // Data Memory
     // Synchronous read: read takes one cycle
     // Synchronous write: write takes one cycle

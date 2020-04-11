@@ -6,8 +6,7 @@
 *
 */
 `include "../defines.vh"
-`include "../mux.v"
-
+`include "../Opcode.vh"
 module ex (
     //  forward data
     input wire [31:0] forward_data,
@@ -51,6 +50,12 @@ module ex (
     output wire                 branch_judge
     
 );
+//todo: uart
+    reg uart_store;
+    always @(*) begin
+        uart_store = control_uart_i;
+    end
+    
     wire [31:0] aluout;
     assign alu_result_o = aluout;
     dmem_wr dmem_wr (

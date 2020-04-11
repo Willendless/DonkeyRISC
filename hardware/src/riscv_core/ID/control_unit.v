@@ -1,6 +1,5 @@
 `include "../defines.vh"
 `include "../Opcode.vh"
-
 /**
 * control_unit.v
 * control unit of cpu, feed control signal of each stage's mux
@@ -105,15 +104,15 @@ initial begin
     control_forward = 2'b0;
 end
 
-wire r_type_signal = (opcode === 7'b0110011);//add,sub
-wire i_type_signal_lw = (opcode === 7'b0000011);//lw etc
-wire b_type_signal = (opcode === 7'b1100011);//branch
-wire i_type_signal_addi = (opcode === 7'b0010011);//addi etc
-wire i_type_signal_jalr = (opcode === 7'b1100111);//jalr
-wire s_type_signal = (opcode === 7'b0100011);//sw
-wire j_type_signal = (opcode === 7'b1101111);//jal
-wire u_type_signal = (opcode === 7'b0010111);
-wire l_type_signal = (opcode === 7'b0110111);
+wire r_type_signal = (opcode == 7'b0110011);//add,sub
+wire i_type_signal_lw = (opcode == 7'b0000011);//lw etc
+wire b_type_signal = (opcode == 7'b1100011);//branch
+wire i_type_signal_addi = (opcode == 7'b0010011);//addi etc
+wire i_type_signal_jalr = (opcode == 7'b1100111);//jalr
+wire s_type_signal = (opcode == 7'b0100011);//sw
+wire j_type_signal = (opcode == 7'b1101111);//jal
+wire u_type_signal = (opcode == 7'b0010111);
+wire l_type_signal = (opcode == 7'b0110111);
 
 wire csr_type_signal = (opcode == `OPC_CSR);
 
@@ -159,11 +158,11 @@ always @(*) begin
     endcase
 end
 
-assign control_load = (i_type_signal_lw && (funct3_i === `FNC_LB)) ? `DMEM_LB :
-                      (i_type_signal_lw && (funct3_i === `FNC_LH)) ? `DMEM_LH :
-                      (i_type_signal_lw && (funct3_i === `FNC_LW)) ? `DMEM_LW :
-                      (i_type_signal_lw && (funct3_i === `FNC_LBU)) ? `DMEM_LBU :
-                      (i_type_signal_lw && (funct3_i === `FNC_LHU)) ? `DMEM_LHU :
+assign control_load = (i_type_signal_lw && (funct3_i == `FNC_LB)) ? `DMEM_LB :
+                      (i_type_signal_lw && (funct3_i == `FNC_LH)) ? `DMEM_LH :
+                      (i_type_signal_lw && (funct3_i == `FNC_LW)) ? `DMEM_LW :
+                      (i_type_signal_lw && (funct3_i == `FNC_LBU)) ? `DMEM_LBU :
+                      (i_type_signal_lw && (funct3_i == `FNC_LHU)) ? `DMEM_LHU :
                       3'b000;
 
 assign control_wb = (b_type_signal || s_type_signal) ? 1'b0 : 1'b1;
