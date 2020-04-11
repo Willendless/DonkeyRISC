@@ -9,7 +9,7 @@ hardware/src/*proj
 hardware/src/bitstream_files
 *.jou
 *.log
-z1top_proj/*
+hardware/z1top_proj/*
 
 *.o
 *.bin
