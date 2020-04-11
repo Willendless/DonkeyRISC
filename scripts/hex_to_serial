@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 #!/usr/bin/env python3
 # ported from /home/ff/eecs151/tools-151/bin/coe_to_serial
 import os
@@ -48,6 +49,8 @@ for inst_num, inst in enumerate(program):
 
 print("Done")
 =======
+=======
+>>>>>>> 3d171906b525b12152e5828674e656b01da63a66
 #!/usr/bin/env python3
 # ported from /home/ff/eecs151/tools-151/bin/coe_to_serial
 import os
@@ -96,5 +99,9 @@ for inst_num, inst in enumerate(program):
     else:
         print("Sent {:d}/{:d} bytes".format(4+inst_num*4, size), end='\r')
 
+<<<<<<< HEAD
 print("Done")
 >>>>>>> 45a019aa3cf011d9b4aef60a85cd38ea5aa96234
+=======
+print("Done")
+>>>>>>> 3d171906b525b12152e5828674e656b01da63a66

@@ -7,6 +7,9 @@ _minted*
 hardware/src/.Xil
 hardware/src/*proj
 hardware/src/bitstream_files
+*.jou
+*.log
+hardware/z1top_proj/*
 
 *.o
 *.bin

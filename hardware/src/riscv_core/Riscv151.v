@@ -234,10 +234,12 @@ module Riscv151
     wire control_branch;
     wire [31:0] wb_data;
 
+    wire if_flush;
+    assign if_flush = rst || branch_judge || jump_judge[0] || jump_judge[1];
     wire control_wb_back;  
     id_ex ID_EX (
         .clk(clk),
-        .rst(rst || branch_judge),//add jal jalr judge
+        .rst(if_flush),//add jal jalr judge
         .pc_data_i(pc_data_reg),
         .pc_plus_i(pc_plus_reg),
         .reg1_data_i(reg1_data_reg),
