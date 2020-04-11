@@ -1,5 +1,3 @@
-`include "../EECS151.v"
-
 module debouncer #(
     parameter WIDTH              = 1,
     parameter SAMPLE_CNT_MAX     = 25000,

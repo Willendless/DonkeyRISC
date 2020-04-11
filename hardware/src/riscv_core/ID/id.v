@@ -50,7 +50,6 @@ module id (
     output [2:0] control_load_o,
     output control_wb_o,
     output control_branch_o
-    // output wire wb_en_o, //*
 );
 
     // decocde
