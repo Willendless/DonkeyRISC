@@ -154,6 +154,7 @@ always @(*) begin
     `OPC_ARI_ITYPE: control_forward = `FORWARD_IMM;
     `OPC_LUI: control_forward = `FORWARD_IMM;
     `OPC_AUIPC: control_forward = `FORWARD_PC1;
+    `OPC_CSR: control_forward = `FORWARD_REG;
     default: control_forward = `FORWARD_REG;
     endcase
 end
