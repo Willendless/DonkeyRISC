@@ -1,0 +1,27 @@
+#-----------------------------------------------------------
+# Vivado v2019.1 (64-bit)
+# SW Build 2552052 on Fri May 24 14:49:42 MDT 2019
+# IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
+# Start of session at: Sat Apr 11 10:07:35 2020
+# Process ID: 16940
+# Current directory: C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/DonkeyRISCV/DonkeyRISCV.runs/synth_1
+# Command line: vivado.exe -log Riscv151.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source Riscv151.tcl
+# Log file: C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/DonkeyRISCV/DonkeyRISCV.runs/synth_1/Riscv151.vds
+# Journal file: C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/DonkeyRISCV/DonkeyRISCV.runs/synth_1\vivado.jou
+#-----------------------------------------------------------
+source Riscv151.tcl -notrace
+Command: synth_design -top Riscv151 -part xc7z020clg400-1
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7z020'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7z020'
+INFO: Launching helper process for spawning children vivado processes
+INFO: Helper process launched with PID 14984 
+WARNING: [Synth 8-2841] use of undefined macro ALUOP_ADTYPE [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/EX/alu_control.v:15]
+ERROR: [Synth 8-2715] syntax error near ) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/EX/alu_control.v:15]
+INFO: [Synth 8-2350] module alu_control ignored due to previous errors [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/EX/alu_control.v:3]
+Failed to read verilog 'C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/EX/alu_control.v'
+INFO: [Common 17-83] Releasing license: Synthesis
+3 Infos, 1 Warnings, 0 Critical Warnings and 2 Errors encountered.
+synth_design failed
+ERROR: [Common 17-69] Command failed: Vivado Synthesis failed
+INFO: [Common 17-206] Exiting Vivado at Sat Apr 11 10:08:03 2020...
