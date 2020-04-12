@@ -65,10 +65,6 @@ module ex (
         .dmem_we(dmem_we)
     );
 
-    // csr control signal
-    assign control_csr_we_o = control_csr_we_i;
-    assign csr_data_o = funct3_i == 3'b001 ? reg1_data_i : 
-                        funct3_i == 3'b101 ? imm_i : 32'b0;
 
 
     // write back control signal
@@ -107,6 +103,11 @@ module ex (
 
     wire [`REG_DBUS]    mem_wdata;
     assign mem_wdata = mem_wdata_judge == 1'b0 ? reg2_data_i : forward_data;
+
+    // csr control signal
+    assign control_csr_we_o = control_csr_we_i;
+    assign csr_data_o = funct3_i == 3'b001 ? aluin1 : 
+                        funct3_i == 3'b101 ? imm_i : 32'b0;
 
     // memory wirte data
     change_mem_wr change_mem_wr(

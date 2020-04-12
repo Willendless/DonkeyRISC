@@ -14,7 +14,7 @@ module forwarding_unit(
 
 
 assign reg1_judge = (reg1_addr == wb_addr &&
-                    (control_forward == `FORWARD_REG || control_forward == `FORWARD_STORE)
+                    (control_forward == `FORWARD_REG || control_forward == `FORWARD_STORE || control_forward == `FORWARD_IMM)
                     && is_wb == 1'b1) ? `REG1_MUX_WB :
                     (control_forward == `FORWARD_PC1) ? `REG1_MUX_PC :
                     `REG1_MUX_REG;
