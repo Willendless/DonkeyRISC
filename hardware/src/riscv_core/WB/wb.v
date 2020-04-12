@@ -17,6 +17,8 @@ module wb (
 );
     assign wb_addr_o = wb_addr_i;
     wire [31:0] dmem_load_i;
+    wire [31:0] wb_data; 
+    
     mux_dmem mux_dmem(
         .dmem_output(dmem_load_i),
         .bios_output(bios_doutb_i),
@@ -24,7 +26,9 @@ module wb (
         .rtype_output(alu_result_i),
         .control_data(control_wr_mux_i),
         .addr(alu_result_i[31:28]),
-        .wb_data(wb_data_o));
+        .wb_data(wb_data));
+
+    assign wb_data_o = (wb_addr_i == 32'b0) ? 31'b0 : wb_data;
     
     load_type load_type(
         .addr_offset(addr_offset_i),

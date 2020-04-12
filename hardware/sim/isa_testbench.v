@@ -25,15 +25,15 @@ module isa_testbench();
     reg [31:0] cycle = 0;
     reg [255:0] MIF_FILE;
     initial begin
-        // if (!$value$plusargs("MIF_FILE=%s", MIF_FILE)) begin
-        //     $display("Must supply mif_file!");
-        //     $finish();
-        // end
+        if (!$value$plusargs("MIF_FILE=%s", MIF_FILE)) begin
+            $display("Must supply mif_file!");
+            $finish();
+        end
 
-        // $readmemh(MIF_FILE, CPU.dmem.mem);
-        // $readmemh(MIF_FILE, CPU.imem.mem);
-        $readmemh("C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/software/riscv-isa-tests/add.mif", CPU.dmem.mem);
-        $readmemh("C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/software/riscv-isa-tests/add.mif", CPU.imem.mem);
+        $readmemh(MIF_FILE, CPU.dmem.mem);
+        $readmemh(MIF_FILE, CPU.imem.mem);
+        // $readmemh("C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/software/riscv-isa-tests/add.mif", CPU.dmem.mem);
+        // $readmemh("C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/software/riscv-isa-tests/add.mif", CPU.imem.mem);
 
         rst = 0;
 

@@ -35,7 +35,7 @@ module branch_comp(
                     branch_judge = 0;
                 end
             `BLTU: branch_judge = (a < b);
-            `BNE: branch_judge = ~(a==b);
+            `BNE: branch_judge = ~(a == b);
             endcase
         end else begin
             branch_judge = 1'b0;
