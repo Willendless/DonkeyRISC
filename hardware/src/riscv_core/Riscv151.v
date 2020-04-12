@@ -367,7 +367,6 @@ module Riscv151
         .control_wb_o(control_wb_back)
     );
     
-    assign rf_we = (rf_wa == 5'b0) ? 1'b0 : control_wb_back;
     // UART Receiver
     wire [7:0] uart_rx_data_out;
     wire uart_rx_data_out_valid;
@@ -426,6 +425,7 @@ module Riscv151
         .wb_data_o(wb_data)              
     );
     assign rf_wd = wb_data;
+    assign rf_we = (wb_addr != 32'b0) ? control_wb_back : 1'b0;
 
 
 /*
