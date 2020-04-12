@@ -17,22 +17,22 @@ module branch_comp(
                 if (a[31] == 0 && b[31] == 0)
                     branch_judge = (a >= b);
                 else if (a[31] == 1 && b[31] == 1)
-                    branch_judge = (a <= b);
+                    branch_judge = (a >= b);
                 else if (a[31] == 0 && b[31] == 1)
-                    branch_judge = 0;
-                else
                     branch_judge = 1;
+                else
+                    branch_judge = 0;
                 end
             `BGEU: branch_judge = (a >= b);
             `BLT: begin
                 if (a[31] == 0 && b[31] == 0)
                     branch_judge = (a < b);
                 else if (a[31] == 1 && b[31] == 1)
-                    branch_judge = (a >= b);
+                    branch_judge = (a < b);
                 else if (a[31] == 0 && b[31] == 1)
-                    branch_judge = 1;
-                else
                     branch_judge = 0;
+                else
+                    branch_judge = 1;
                 end
             `BLTU: branch_judge = (a < b);
             `BNE: branch_judge = ~(a == b);

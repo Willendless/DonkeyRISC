@@ -31,15 +31,15 @@ assign alu_sltu = (aluin1 < aluin2) ? 32'b1 : 32'b0;
 
 wire input_sign1 = aluin1[31];
 wire input_sign2 = aluin2[31];
-wire [31:0] alu_sign1;
-wire [31:0] alu_sign2;
-assign alu_sign1 = (input_sign1 == 1) ? (32'hffffffff - aluin1) : aluin1;
-assign alu_sign2 = (input_sign2 == 1) ? (32'hffffffff - aluin2) : aluin2;
+//wire [31:0] alu_sign1;
+//wire [31:0] alu_sign2;
+//assign alu_sign1 = (input_sign1 == 1) ? (32'hffffffff - aluin1) : aluin1;
+//assign alu_sign2 = (input_sign2 == 1) ? (32'hffffffff - aluin2) : aluin2;
 assign alu_slt = (input_sign1 == 1 && input_sign2 == 0) ? 32'b1 :
                   (input_sign1 == 0 && input_sign2 == 1) ? 32'b0 :
-                  (input_sign1 == 1 && input_sign2 == 1 && alu_sign1 > alu_sign2) ? 32'b1 :
-                  (input_sign1 == 1 && input_sign2 == 1 && alu_sign1 < alu_sign2) ? 32'b0 :
-                  (input_sign1 == 0 && input_sign2 == 0 && alu_sign1 > alu_sign2) ? 32'b0 :
+                  (input_sign1 == 1 && input_sign2 == 1 && aluin1 < aluin2) ? 32'b1 :
+                  (input_sign1 == 1 && input_sign2 == 1 && aluin1 >= aluin2) ? 32'b0 :
+                  (input_sign1 == 0 && input_sign2 == 0 && aluin1 >= aluin2) ? 32'b0 :
                   32'b1;
                 
 assign aluout = (aluCtrl == `ALUCTRL_ADD) ? alu_add:
