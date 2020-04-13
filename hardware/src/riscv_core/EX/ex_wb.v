@@ -9,6 +9,11 @@ module ex_wb (
     input wire[`REG_DBUS]       pc_plus_i,
     input wire[2:0]             control_load_i,
     input wire                  control_wb_i,
+    input wire                  inst_exec_i,
+    input wire                  uart_rx_out_valid,
+    input wire                  uart_tx_in_ready,
+    input [7:0]                uart_read_i, 
+    input [1:0]                 control_uart_i,
 
     output wire[2:0]            control_load_o,
     output wire[`WORD_BUS]      alu_result_o,
@@ -16,8 +21,15 @@ module ex_wb (
     output wire[1:0]            control_wr_mux_o,
     output wire[`REG_DBUS]      pc_plus_o,
     output wire[1:0]            addr_offset,
-    output wire                 control_wb_o
+    output wire                 control_wb_o,
+    output [31:0]               uart_data_o,
+    output wire[1:0]            control_uart_o
 );
+    REGISTER_R #(.N(2)) store_uart(
+        .q(control_uart_o),
+        .clk(clk),
+        .rst(rst),
+        .d(control_uart_i));
 
     REGISTER_R #(.N(3)) store_load(
         .q(control_load_o),
@@ -60,5 +72,53 @@ module ex_wb (
         .clk(clk),
         .rst(rst),
         .d(control_wb_i));
+    
+    wire [31:0] cycle_count1;
+    wire [31:0] cycle_count2;
+    wire reset_count;
+    wire is_count;
 
+    assign reset_count = (alu_result_i == 32'h80000018);
+
+    assign is_count = inst_exec_i;
+
+    REGISTER_R # (.N(32), .INIT(32'b0)) cycle_counter(
+        .q(cycle_count1),
+        .d(cycle_count2),
+        .rst(reset_count),
+        .clk(clk)
+    );
+
+    assign cycle_ount2 = cycle_count1 + 1;
+
+    wire [31:0] inst_count1;
+    wire [31:0] inst_count2;
+    assign inst_count1 = inst_count2 + 1;
+
+    REGISTER_R_CE # (.N(32), .INIT(32'b0)) inst_counter(
+        .q(inst_count1),
+        .d(inst_count2),
+        .rst(reset_count),
+        .clk(clk),
+        .ce(is_count)
+    );
+
+    reg [31:0] uart_data;
+
+always @(*) begin
+    case(alu_result_i)
+        32'h80000000: uart_data = {30'b0, uart_rx_out_valid, uart_tx_in_ready};
+        32'h80000004: uart_data = {24'b0, uart_read_i};
+        32'h80000010: uart_data = cycle_count1;
+        32'h80000014: uart_data = inst_count1;
+        default: uart_data = 32'b0;
+    endcase
+end
+
+    REGISTER_R #(.N(32), .INIT(32'b0)) uart_lw(
+        .clk(clk),
+        .rst(rst),
+        .q(uart_data_o),
+        .d(uart_data)
+    );
 endmodule

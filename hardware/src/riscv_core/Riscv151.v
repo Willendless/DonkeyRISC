@@ -151,7 +151,7 @@ module Riscv151
     wire control_dmem_reg;
     wire [1:0] control_jump_reg;    
     wire [1:0] aluOp_reg;
-    wire control_uart_reg;
+    wire [1:0] control_uart_reg;
     wire [1:0] control_wr_mux_reg;
     wire control_csr_we_reg;
 
@@ -221,7 +221,7 @@ module Riscv151
     wire [1:0] control_forward;
     wire [1:0] control_jump;
     wire [1:0] aluOp;
-    wire control_uart;
+    wire [1:0] control_uart;
     wire control_dmem;
     wire [1:0] control_wr_mux;
     wire control_csr_we;
@@ -303,6 +303,8 @@ module Riscv151
     wire                csr_we;
     wire [`REG_DBUS]    csr_din;
     wire                control_wb;
+    wire is_inst_exec;
+    wire [1:0] control_uart_wb;
 
     ex EX (
         .forward_data(wb_data),     // DATA from write back stage
@@ -326,6 +328,7 @@ module Riscv151
         .control_wb_i(control_wb_ex),
         .control_wb_back(control_wb_back),
         .control_branch_i(control_branch),
+        .control_jump_i(control_jump),
 
         .mem_write_o(mem_write_reg),
         .alu_result_o(alu_result_reg),
@@ -336,7 +339,9 @@ module Riscv151
         .dmem_we(dmem_wea_reg),
         .csr_data_o(csr_din),
         .control_wb_o(control_wb),
-        .branch_judge(branch_judge)
+        .branch_judge(branch_judge),
+        .inst_exec_i(is_inst_exec),
+        .control_uart_o(control_uart_wb)
     );
 
     assign jal_addr = alu_result_reg;
@@ -347,6 +352,14 @@ module Riscv151
     wire [2:0] control_load;
 
     wire [1:0] addr_offset;
+    wire [31:0] uart_data_out;
+
+    wire uart_rx_data_out_valid;
+    wire uart_tx_data_in_ready;
+
+    wire [7:0] uart_rx_data_out;
+    wire uart_rx_data_out_ready;
+    wire [1:0] control_load_uart;
 
     ex_wb EX_WB (
         .clk(clk),
@@ -357,6 +370,11 @@ module Riscv151
         .pc_plus_i(pc_plus_reg2),
         .control_load_i(control_load_ex),
         .control_wb_i(control_wb),
+        .inst_exec_i(is_inst_exec),
+        .uart_rx_out_valid(uart_rx_data_out_valid),
+        .uart_tx_in_ready(uart_tx_data_in_ready),
+        .uart_read_i(uart_rx_data_out), 
+        .control_uart_i(control_uart_wb), 
 
         .alu_result_o(rtype_output),
         .wb_addr_o(wb_addr),
@@ -364,13 +382,12 @@ module Riscv151
         .pc_plus_o(pc_plus_wb),
         .control_load_o(control_load),
         .addr_offset(addr_offset),
-        .control_wb_o(control_wb_back)
+        .control_wb_o(control_wb_back),
+        .uart_data_o(uart_data_out),
+        .control_uart_o(control_load_uart)
     );
     
     // UART Receiver
-    wire [7:0] uart_rx_data_out;
-    wire uart_rx_data_out_valid;
-    wire uart_rx_data_out_ready;
 
     localparam DMEM_AWIDTH = 32;
     localparam DMEM_DWIDTH = 32;
@@ -413,7 +430,9 @@ module Riscv151
 
     //-----------wb stage---------------/
     wb WB (
+        .uart_data_i(uart_data_out),
         .control_load_i(control_load),
+        .control_uart_i(control_load_uart),
         .addr_offset_i(addr_offset),
         .alu_result_i(rtype_output),
         .wb_addr_i(wb_addr),
@@ -427,8 +446,11 @@ module Riscv151
     assign rf_wd = wb_data;
     assign rf_we = (wb_addr != 32'b0) ? control_wb_back : 1'b0;
 
+    wire uart_tx_data_in_valid;
 
-/*
+    assign uart_rx_data_out_ready = (control_uart_wb[0] == 1'b1);
+    assign uart_tx_data_in_valid = (control_uart_wb[1] == 1'b1);
+   
     uart_receiver #(
         .CLOCK_FREQ(CPU_CLOCK_FREQ),
         .BAUD_RATE(BAUD_RATE)) uart_rx (
@@ -442,8 +464,7 @@ module Riscv151
 
     // UART Transmitter
     wire [7:0] uart_tx_data_in;
-    wire uart_tx_data_in_valid;
-    wire uart_tx_data_in_ready;
+    assign uart_tx_data_in = mem_write_reg;
 
     uart_transmitter #(
         .CLOCK_FREQ(CPU_CLOCK_FREQ),
@@ -456,7 +477,7 @@ module Riscv151
         .serial_out(FPGA_SERIAL_TX)            // output
     );
 
-*/
+
     // Construct your datapath, add as many modules as you want
 
 endmodule

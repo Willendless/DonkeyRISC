@@ -44,7 +44,7 @@ module id (
     output [1:0] control_forward_o,
     output [1:0] control_jump_o,
     output [1:0] alu_op_o,
-    output control_uart_o, //TODO
+    output [1:0] control_uart_o, //TODO
     output control_dmem_o,
     output [1:0] control_wr_mux_o,
     output control_csr_we_o,

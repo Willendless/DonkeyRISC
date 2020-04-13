@@ -30,13 +30,14 @@ module ex (
     // control signal
     input wire[1:0] control_forward_i,
     input wire[1:0] alu_op_i,
-    input wire control_uart_i, //TODO
+    input wire [1:0] control_uart_i, //TODO
     input wire control_dmem_i,
     input wire[1:0] control_wr_mux_i,
     input wire control_csr_we_i,
     input wire control_wb_i,
     input wire control_wb_back,
     input wire control_branch_i,
+    input wire[1:0] control_jump_i,
 
     output wire[`WORD_BUS]      alu_result_o,
     output wire[`REG_DBUS]      mem_write_o,      
@@ -47,16 +48,15 @@ module ex (
     output wire                 control_csr_we_o,
     output wire[`REG_DBUS]      csr_data_o,
     output wire                 control_wb_o,
-    output wire                 branch_judge
+    output wire                 branch_judge,
+    output wire                 inst_exec_i,
+    output wire [1:0]           control_uart_o
     
 );
-//todo: uart
-    reg uart_store;
-    always @(*) begin
-        uart_store = control_uart_i;
-    end
-    
     wire [31:0] aluout;
+    assign control_uart_o = (aluout == 32'h8000004 || aluout == 32'h80000008) ?
+                            control_uart_i : 2'b0;
+    
     assign alu_result_o = aluout;
     dmem_wr dmem_wr (
         .funct3_i(funct3_i),
@@ -150,9 +150,9 @@ module ex (
         .b(branch_comp_b),
         .is_branch(control_branch_i),
         .branch_judge(branch_judge)
-    
-
     );
+
+    assign inst_exec_i = ~(branch_judge == 0 && control_jump_i == 2'b0);
     
 
 endmodule // ex 

@@ -65,7 +65,7 @@ module control_unit (
     output reg [1:0] control_forward,
     output [1:0] control_jump,
     output [1:0] alu_op,
-    output control_uart, //TODO
+    output [1:0] control_uart, //TODO
     output control_dmem,
     output [1:0] control_wr_mux,
     output wire control_csr_we,
@@ -135,7 +135,9 @@ assign control_wr_mux = (r_type_signal || i_type_signal_addi
                       (j_type_signal || i_type_signal_jalr) ? 2'b11: // jal
                       2'b00;
 
-assign control_uart = (i_type_signal_lw || s_type_signal);//read from uart
+assign control_uart = (i_type_signal_lw == 1) ? 2'b01://lw receiver 2'b01
+                      (s_type_signal == 1) ? 2'b10:
+                      2'b00;
 
 assign control_dmem = s_type_signal;//write enable data used for sw inst
 

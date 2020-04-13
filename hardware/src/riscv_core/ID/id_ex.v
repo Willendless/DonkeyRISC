@@ -55,7 +55,7 @@ module id_ex (
     input wire[1:0] control_forward_i,
     input wire[1:0] control_jump_i,
     input wire[1:0] alu_op_i,
-    input wire control_uart_i, //TODO
+    input wire [1:0] control_uart_i, //TODO
     input wire control_dmem_i,
     input wire[1:0] control_wr_mux_i,
     input wire control_csr_we_i,
@@ -70,7 +70,7 @@ module id_ex (
     output [1:0] control_forward_o,
     output [1:0] control_jump_o,
     output [1:0] alu_op_o,
-    output control_uart_o, //TODO
+    output [1:0] control_uart_o, //TODO
     output control_dmem_o,
     output [1:0] control_wr_mux_o,
     output wire control_csr_we_o,
@@ -201,7 +201,7 @@ module id_ex (
         .q(control_jump_o),
         .d(control_jump_i));
     
-    REGISTER_R #(.N(1)) uart_reg(
+    REGISTER_R #(.N(2)) uart_reg(
         .clk(clk),
         .rst(rst),
         .q(control_uart_o),
