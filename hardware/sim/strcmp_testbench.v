@@ -25,8 +25,8 @@ module strcmp_testbench();
 
     initial begin
         #1;
-        $readmemh("D:/PDF/course/UCB/eecs151/proj/software/strcmp/strcmp.mif", CPU.imem.mem);
-        $readmemh("D:/PDF/course/UCB/eecs151/proj/software/strcmp/strcmp.mif", CPU.dmem.mem);
+        $readmemh("strcmp.mif", CPU.imem.mem);
+        $readmemh("strcmp.mif", CPU.dmem.mem);
 
         rst = 1;
 
