@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Vivado v2019.1 (64-bit)
+# SW Build 2552052 on Fri May 24 14:47:09 MDT 2019
+# IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
+# Start of session at: Tue Apr 14 07:08:25 2020
+# Process ID: 5406
+# Current directory: /home/eecs151/cpu/hardware
+# Command line: vivado -mode batch -source scripts/sim.tcl -tclargs isa_testbench riscv-isa-tests all
+# Log file: /home/eecs151/cpu/hardware/vivado.log
+# Journal file: /home/eecs151/cpu/hardware/vivado.jou
+#-----------------------------------------------------------
+source scripts/sim.tcl
