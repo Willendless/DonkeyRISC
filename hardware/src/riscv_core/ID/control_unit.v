@@ -1,25 +1,5 @@
 `include "../defines.vh"
 `include "../Opcode.vh"
-/**
-* control_unit.v
-* control unit of cpu, feed control signal of each stage's mux
-*   @OUTPUT:
-* // inst type
-*   
-* // ex stage muxes
-*   alu_op: output to alu_control
-*   alu_src1_sel: forward from WRITE BACK stage
-*   alu_src2_sel: reg2 or imm
-*   mem_read -> load
-*   mem_write  -> store
-* // wb stage muxes
-*   (inst_type, funct3)->wb_sel
-*   wb_enable
-* // pc & IMEM/BIOS
-*   pc_sel
-*/
-
-
 
 /**
 *   1. Integer Computational Instructions
@@ -73,33 +53,8 @@ module control_unit (
     output control_branch,
     output control_wb
 
-// modification
-/*
-    output alu_src1_sel_o,
-    output alu_src2_sel_o,
-    output mem_read_o,
-    output mem_write_o,
-    output wb_enable_o
-    //output pc_sel*/
-
 );
 
-/*
-    always @(*) begin
-        alu_src1_sel_o = 1'b0;
-        alu_src2_sel_o = 1'b0;
-        mem_read_o = 1'b0;
-        mem_write_o = 1'b0;
-        wb_enable_o = 1'b0;
-        case (opcode[`FIELD_OPCODE_5])
-            `OPC_ARI_RTYPE_5: begin
-                wb_enable_o = 1'b1;
-            end 
-            default: ;
-        endcase
-        
-    end
-*/
 initial begin
     control_forward = 2'b0;
 end

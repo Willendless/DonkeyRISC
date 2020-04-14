@@ -77,7 +77,7 @@ module Riscv151
         .clk(clk), .rst(rst));
     
     wire [31:0] alu_result_reg1;
-    assign bios_addrb = alu_result_reg1[11:0];
+    assign bios_addrb = {2'b0, alu_result_reg1[11:0] >> 2};
 
     localparam IMEM_AWIDTH = 14;
     localparam IMEM_DWIDTH = 32;
@@ -387,7 +387,37 @@ module Riscv151
         .control_uart_o(control_load_uart)
     );
     
+    wire uart_tx_data_in_valid;
+
+    assign uart_rx_data_out_ready = (control_uart_wb[0] == 1'b1) && (alu_result_reg == 32'h80000004);
+    assign uart_tx_data_in_valid = (control_uart_wb[1] == 1'b1) && (alu_result_reg == 32'h80000008);
+   
     // UART Receiver
+    uart_receiver #(
+        .CLOCK_FREQ(CPU_CLOCK_FREQ),
+        .BAUD_RATE(BAUD_RATE)) uart_rx (
+        .clk(clk),
+        .rst(rst),
+        .data_out(uart_rx_data_out),             // output
+        .data_out_valid(uart_rx_data_out_valid), // output
+        .data_out_ready(uart_rx_data_out_ready), // input
+        .serial_in(FPGA_SERIAL_RX)               // input
+    );
+
+    // UART Transmitter
+    wire [7:0] uart_tx_data_in;
+    assign uart_tx_data_in = mem_write_reg;
+
+    uart_transmitter #(
+        .CLOCK_FREQ(CPU_CLOCK_FREQ),
+        .BAUD_RATE(BAUD_RATE)) uart_tx (
+        .clk(clk),
+        .rst(rst),
+        .data_in(uart_tx_data_in),             // input
+        .data_in_valid(uart_tx_data_in_valid), // input
+        .data_in_ready(uart_tx_data_in_ready), // output
+        .serial_out(FPGA_SERIAL_TX)            // output
+    );
 
     localparam DMEM_AWIDTH = 32;
     localparam DMEM_DWIDTH = 32;
@@ -440,43 +470,14 @@ module Riscv151
         .control_wr_mux_i(control_data),
         .pc_plus_i(pc_plus_wb),
         .dmem_douta_i(dmem_douta),
-        .wb_addr_o(rf_wa),
         .bios_doutb_i(bios_doutb),
+
+        .wb_addr_o(rf_wa),
         .wb_data_o(wb_data)              
     );
     assign rf_wd = wb_data;
     assign rf_we = (wb_addr != 32'b0) ? control_wb_back : 1'b0;
 
-    wire uart_tx_data_in_valid;
-
-    assign uart_rx_data_out_ready = (control_uart_wb[0] == 1'b1);
-    assign uart_tx_data_in_valid = (control_uart_wb[1] == 1'b1);
-   
-    uart_receiver #(
-        .CLOCK_FREQ(CPU_CLOCK_FREQ),
-        .BAUD_RATE(BAUD_RATE)) uart_rx (
-        .clk(clk),
-        .rst(rst),
-        .data_out(uart_rx_data_out),             // output
-        .data_out_valid(uart_rx_data_out_valid), // output
-        .data_out_ready(uart_rx_data_out_ready), // input
-        .serial_in(FPGA_SERIAL_RX)               // input
-    );
-
-    // UART Transmitter
-    wire [7:0] uart_tx_data_in;
-    assign uart_tx_data_in = mem_write_reg;
-
-    uart_transmitter #(
-        .CLOCK_FREQ(CPU_CLOCK_FREQ),
-        .BAUD_RATE(BAUD_RATE)) uart_tx (
-        .clk(clk),
-        .rst(reset),
-        .data_in(uart_tx_data_in),             // input
-        .data_in_valid(uart_tx_data_in_valid), // input
-        .data_in_ready(uart_tx_data_in_ready), // output
-        .serial_out(FPGA_SERIAL_TX)            // output
-    );
 
 
     // Construct your datapath, add as many modules as you want
