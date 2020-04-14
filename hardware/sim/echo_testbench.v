@@ -19,7 +19,7 @@ module echo_testbench();
     Riscv151 # (
         .RESET_PC(32'h40000000),
         .CPU_CLOCK_FREQ(CPU_CLOCK_FREQ),
-        .BIOS_MEM_HEX_FILE("D:/PDF/course/UCB/eecs151/proj/software/mmult/mmult.mif")
+        .BIOS_MEM_HEX_FILE("D:/PDF/course/UCB/eecs151/proj/software/echo/echo.mif")
     ) CPU (
         .clk(clk),
         .rst(rst),
