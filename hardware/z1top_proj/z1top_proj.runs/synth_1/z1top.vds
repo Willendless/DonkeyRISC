@@ -1,0 +1,1027 @@
+#-----------------------------------------------------------
+# Vivado v2019.1 (64-bit)
+# SW Build 2552052 on Fri May 24 14:47:09 MDT 2019
+# IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
+# Start of session at: Mon Apr 13 21:33:00 2020
+# Process ID: 23534
+# Current directory: /home/eecs151/cpu/hardware/z1top_proj/z1top_proj.runs/synth_1
+# Command line: vivado -log z1top.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source z1top.tcl
+# Log file: /home/eecs151/cpu/hardware/z1top_proj/z1top_proj.runs/synth_1/z1top.vds
+# Journal file: /home/eecs151/cpu/hardware/z1top_proj/z1top_proj.runs/synth_1/vivado.jou
+#-----------------------------------------------------------
+source z1top.tcl -notrace
+Command: synth_design -top z1top -part xc7z020clg400-1
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7z020'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7z020'
+INFO: [Device 21-403] Loading part xc7z020clg400-1
+INFO: Launching helper process for spawning children vivado processes
+INFO: Helper process launched with PID 23553 
+WARNING: [Synth 8-2490] overwriting previous definition of module Riscv151 [/home/eecs151/cpu/hardware/src/riscv_core/Riscv151.v:3]
+WARNING: [Synth 8-2490] overwriting previous definition of module button_parser [/home/eecs151/cpu/hardware/src/io_circuits/button_parser.v:2]
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:07 ; elapsed = 00:00:10 . Memory (MB): peak = 1780.723 ; gain = 159.652 ; free physical = 1114 ; free virtual = 2487
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'z1top' [/home/eecs151/cpu/hardware/src/z1top.v:4]
+	Parameter CPU_CLOCK_PERIOD bound to: 20 - type: integer 
+	Parameter CPU_CLOCK_FREQ bound to: 50000000 - type: integer 
+	Parameter B_SAMPLE_CNT_MAX bound to: 25000 - type: integer 
+	Parameter B_PULSE_CNT_MAX bound to: 200 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'clk_wiz' [/home/eecs151/cpu/hardware/src/clk_wiz.v:58]
+	Parameter CLKIN1_PERIOD bound to: 8 - type: integer 
+	Parameter CLKFBOUT_MULT_F bound to: 8 - type: integer 
+	Parameter DIVCLK_DIVIDE bound to: 1 - type: integer 
+	Parameter CLKOUT0_DIVIDE bound to: 20 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'IBUF' [/opt/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:32856]
+	Parameter CAPACITANCE bound to: DONT_CARE - type: string 
+	Parameter IBUF_DELAY_VALUE bound to: 0 - type: string 
+	Parameter IBUF_LOW_PWR bound to: TRUE - type: string 
+	Parameter IFD_DELAY_VALUE bound to: AUTO - type: string 
+	Parameter IOSTANDARD bound to: DEFAULT - type: string 
+INFO: [Synth 8-6155] done synthesizing module 'IBUF' (1#1) [/opt/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:32856]
+INFO: [Synth 8-6157] synthesizing module 'PLLE2_ADV' [/opt/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:61199]
+	Parameter BANDWIDTH bound to: OPTIMIZED - type: string 
+	Parameter CLKFBOUT_MULT bound to: 8 - type: integer 
+	Parameter CLKFBOUT_PHASE bound to: 0.000000 - type: float 
+	Parameter CLKIN1_PERIOD bound to: 8.000000 - type: float 
+	Parameter CLKIN2_PERIOD bound to: 0.000000 - type: float 
+	Parameter CLKOUT0_DIVIDE bound to: 20 - type: integer 
+	Parameter CLKOUT0_DUTY_CYCLE bound to: 0.500000 - type: float 
+	Parameter CLKOUT0_PHASE bound to: 0.000000 - type: float 
+	Parameter CLKOUT1_DIVIDE bound to: 1 - type: integer 
+	Parameter CLKOUT1_DUTY_CYCLE bound to: 0.500000 - type: float 
+	Parameter CLKOUT1_PHASE bound to: 0.000000 - type: float 
+	Parameter CLKOUT2_DIVIDE bound to: 1 - type: integer 
+	Parameter CLKOUT2_DUTY_CYCLE bound to: 0.500000 - type: float 
+	Parameter CLKOUT2_PHASE bound to: 0.000000 - type: float 
+	Parameter CLKOUT3_DIVIDE bound to: 1 - type: integer 
+	Parameter CLKOUT3_DUTY_CYCLE bound to: 0.500000 - type: float 
+	Parameter CLKOUT3_PHASE bound to: 0.000000 - type: float 
+	Parameter CLKOUT4_DIVIDE bound to: 1 - type: integer 
+	Parameter CLKOUT4_DUTY_CYCLE bound to: 0.500000 - type: float 
+	Parameter CLKOUT4_PHASE bound to: 0.000000 - type: float 
+	Parameter CLKOUT5_DIVIDE bound to: 1 - type: integer 
+	Parameter CLKOUT5_DUTY_CYCLE bound to: 0.500000 - type: float 
+	Parameter CLKOUT5_PHASE bound to: 0.000000 - type: float 
+	Parameter COMPENSATION bound to: ZHOLD - type: string 
+	Parameter DIVCLK_DIVIDE bound to: 1 - type: integer 
+	Parameter IS_CLKINSEL_INVERTED bound to: 1'b0 
+	Parameter IS_PWRDWN_INVERTED bound to: 1'b0 
+	Parameter IS_RST_INVERTED bound to: 1'b0 
+	Parameter REF_JITTER1 bound to: 0.010000 - type: float 
+	Parameter REF_JITTER2 bound to: 0.010000 - type: float 
+	Parameter STARTUP_WAIT bound to: FALSE - type: string 
+INFO: [Synth 8-6155] done synthesizing module 'PLLE2_ADV' (2#1) [/opt/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:61199]
+INFO: [Synth 8-6157] synthesizing module 'BUFG' [/opt/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:1075]
+INFO: [Synth 8-6155] done synthesizing module 'BUFG' (3#1) [/opt/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:1075]
+INFO: [Synth 8-6155] done synthesizing module 'clk_wiz' (4#1) [/home/eecs151/cpu/hardware/src/clk_wiz.v:58]
+INFO: [Synth 8-6157] synthesizing module 'button_parser' [/home/eecs151/cpu/hardware/src/io_circuits/button_parser.v:2]
+	Parameter WIDTH bound to: 4 - type: integer 
+	Parameter SAMPLE_CNT_MAX bound to: 25000 - type: integer 
+	Parameter PULSE_CNT_MAX bound to: 200 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'synchronizer' [/home/eecs151/cpu/hardware/src/io_circuits/synchronizer.v:1]
+	Parameter WIDTH bound to: 4 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'REGISTER' [/home/eecs151/cpu/hardware/src/EECS151.v:27]
+	Parameter N bound to: 4 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'REGISTER' (5#1) [/home/eecs151/cpu/hardware/src/EECS151.v:27]
+INFO: [Synth 8-6155] done synthesizing module 'synchronizer' (6#1) [/home/eecs151/cpu/hardware/src/io_circuits/synchronizer.v:1]
+INFO: [Synth 8-6157] synthesizing module 'debouncer' [/home/eecs151/cpu/hardware/src/io_circuits/debouncer.v:1]
+	Parameter WIDTH bound to: 4 - type: integer 
+	Parameter SAMPLE_CNT_MAX bound to: 25000 - type: integer 
+	Parameter PULSE_CNT_MAX bound to: 200 - type: integer 
+	Parameter WRAPPING_CNT_WIDTH bound to: 16 - type: integer 
+	Parameter SAT_CNT_WIDTH bound to: 9 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'REGISTER_R_CE' [/home/eecs151/cpu/hardware/src/EECS151.v:63]
+	Parameter N bound to: 9 - type: integer 
+	Parameter INIT bound to: 9'b000000000 
+INFO: [Synth 8-6155] done synthesizing module 'REGISTER_R_CE' (7#1) [/home/eecs151/cpu/hardware/src/EECS151.v:63]
+INFO: [Synth 8-6157] synthesizing module 'REGISTER_R' [/home/eecs151/cpu/hardware/src/EECS151.v:49]
+	Parameter N bound to: 16 - type: integer 
+	Parameter INIT bound to: 16'b0000000000000000 
+INFO: [Synth 8-6155] done synthesizing module 'REGISTER_R' (8#1) [/home/eecs151/cpu/hardware/src/EECS151.v:49]
+INFO: [Synth 8-6157] synthesizing module 'REGISTER_CE' [/home/eecs151/cpu/hardware/src/EECS151.v:38]
+	Parameter N bound to: 4 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'REGISTER_CE' (9#1) [/home/eecs151/cpu/hardware/src/EECS151.v:38]
+INFO: [Synth 8-6155] done synthesizing module 'debouncer' (10#1) [/home/eecs151/cpu/hardware/src/io_circuits/debouncer.v:1]
+INFO: [Synth 8-6157] synthesizing module 'edge_detector' [/home/eecs151/cpu/hardware/src/io_circuits/edge_detector.v:1]
+	Parameter WIDTH bound to: 4 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'REGISTER_R_CE__parameterized0' [/home/eecs151/cpu/hardware/src/EECS151.v:63]
+	Parameter N bound to: 1 - type: integer 
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-6155] done synthesizing module 'REGISTER_R_CE__parameterized0' (10#1) [/home/eecs151/cpu/hardware/src/EECS151.v:63]
+INFO: [Synth 8-6155] done synthesizing module 'edge_detector' (11#1) [/home/eecs151/cpu/hardware/src/io_circuits/edge_detector.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'button_parser' (12#1) [/home/eecs151/cpu/hardware/src/io_circuits/button_parser.v:2]
+INFO: [Synth 8-6157] synthesizing module 'Riscv151' [/home/eecs151/cpu/hardware/src/riscv_core/Riscv151.v:3]
+	Parameter CPU_CLOCK_FREQ bound to: 50000000 - type: integer 
+	Parameter RESET_PC bound to: 1073741824 - type: integer 
+	Parameter BAUD_RATE bound to: 115200 - type: integer 
+	Parameter BIOS_MEM_HEX_FILE bound to: bios151v3.mif - type: string 
+	Parameter BIOS_AWIDTH bound to: 12 - type: integer 
+	Parameter BIOS_DWIDTH bound to: 32 - type: integer 
+	Parameter BIOS_DEPTH bound to: 4096 - type: integer 
+	Parameter IMEM_AWIDTH bound to: 14 - type: integer 
+	Parameter IMEM_DWIDTH bound to: 32 - type: integer 
+	Parameter IMEM_DEPTH bound to: 16384 - type: integer 
+	Parameter DMEM_AWIDTH bound to: 32 - type: integer 
+	Parameter DMEM_DWIDTH bound to: 32 - type: integer 
+	Parameter DMEM_DEPTH bound to: 16384 - type: integer 
+	Parameter CSR_ADDR bound to: 12'b010100011110 
+INFO: [Synth 8-6157] synthesizing module 'mux_pc' [/home/eecs151/cpu/hardware/src/riscv_core/mux.v:23]
+INFO: [Synth 8-6155] done synthesizing module 'mux_pc' (13#1) [/home/eecs151/cpu/hardware/src/riscv_core/mux.v:23]
+INFO: [Synth 8-6157] synthesizing module 'REGISTER_R__parameterized0' [/home/eecs151/cpu/hardware/src/EECS151.v:49]
+	Parameter N bound to: 32 - type: integer 
+	Parameter INIT bound to: 32'b00111111111111111111111111111100 
+INFO: [Synth 8-6155] done synthesizing module 'REGISTER_R__parameterized0' (13#1) [/home/eecs151/cpu/hardware/src/EECS151.v:49]
+INFO: [Synth 8-6157] synthesizing module 'XILINX_SYNC_RAM_DP' [/home/eecs151/cpu/hardware/src/EECS151.v:279]
+	Parameter DWIDTH bound to: 32 - type: integer 
+	Parameter AWIDTH bound to: 12 - type: integer 
+	Parameter DEPTH bound to: 4096 - type: integer 
+	Parameter MEM_INIT_HEX_FILE bound to: bios151v3.mif - type: string 
+	Parameter MEM_INIT_BIN_FILE bound to: (null) - type: string 
+INFO: [Synth 8-5534] Detected attribute (* ram_style = "block" *) [/home/eecs151/cpu/hardware/src/EECS151.v:296]
+INFO: [Synth 8-3876] $readmem data file 'bios151v3.mif' is read successfully [/home/eecs151/cpu/hardware/src/EECS151.v:301]
+INFO: [Synth 8-6155] done synthesizing module 'XILINX_SYNC_RAM_DP' (14#1) [/home/eecs151/cpu/hardware/src/EECS151.v:279]
+INFO: [Synth 8-6157] synthesizing module 'XILINX_SYNC_RAM_DP__parameterized0' [/home/eecs151/cpu/hardware/src/EECS151.v:279]
+	Parameter DWIDTH bound to: 32 - type: integer 
+	Parameter AWIDTH bound to: 14 - type: integer 
+	Parameter DEPTH bound to: 16384 - type: integer 
+	Parameter MEM_INIT_HEX_FILE bound to: (null) - type: string 
+	Parameter MEM_INIT_BIN_FILE bound to: (null) - type: string 
+INFO: [Synth 8-6155] done synthesizing module 'XILINX_SYNC_RAM_DP__parameterized0' (14#1) [/home/eecs151/cpu/hardware/src/EECS151.v:279]
+INFO: [Synth 8-6157] synthesizing module 'mux_imem_read' [/home/eecs151/cpu/hardware/src/riscv_core/mux.v:66]
+INFO: [Synth 8-6155] done synthesizing module 'mux_imem_read' (15#1) [/home/eecs151/cpu/hardware/src/riscv_core/mux.v:66]
+INFO: [Synth 8-6157] synthesizing module 'id' [/home/eecs151/cpu/hardware/src/riscv_core/ID/id.v:17]
+INFO: [Synth 8-6157] synthesizing module 'control_unit' [/home/eecs151/cpu/hardware/src/riscv_core/ID/control_unit.v:61]
+INFO: [Synth 8-6155] done synthesizing module 'control_unit' (16#1) [/home/eecs151/cpu/hardware/src/riscv_core/ID/control_unit.v:61]
+INFO: [Synth 8-6157] synthesizing module 'imm_gen' [/home/eecs151/cpu/hardware/src/riscv_core/ID/imm_gen.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'imm_gen' (17#1) [/home/eecs151/cpu/hardware/src/riscv_core/ID/imm_gen.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'id' (18#1) [/home/eecs151/cpu/hardware/src/riscv_core/ID/id.v:17]
+INFO: [Synth 8-6157] synthesizing module 'REGFILE_1W2R' [/home/eecs151/cpu/hardware/src/EECS151.v:455]
+	Parameter DWIDTH bound to: 32 - type: integer 
+	Parameter AWIDTH bound to: 5 - type: integer 
+	Parameter DEPTH bound to: 32 - type: integer 
+	Parameter MEM_INIT_HEX_FILE bound to: (null) - type: string 
+	Parameter MEM_INIT_BIN_FILE bound to: (null) - type: string 
+INFO: [Synth 8-6155] done synthesizing module 'REGFILE_1W2R' (19#1) [/home/eecs151/cpu/hardware/src/EECS151.v:455]
+INFO: [Synth 8-6157] synthesizing module 'id_ex' [/home/eecs151/cpu/hardware/src/riscv_core/ID/id_ex.v:28]
+INFO: [Synth 8-6157] synthesizing module 'REGISTER_R__parameterized1' [/home/eecs151/cpu/hardware/src/EECS151.v:49]
+	Parameter N bound to: 1 - type: integer 
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-6155] done synthesizing module 'REGISTER_R__parameterized1' (19#1) [/home/eecs151/cpu/hardware/src/EECS151.v:49]
+INFO: [Synth 8-6157] synthesizing module 'REGISTER_R__parameterized2' [/home/eecs151/cpu/hardware/src/EECS151.v:49]
+	Parameter N bound to: 32 - type: integer 
+	Parameter INIT bound to: 32'b00000000000000000000000000000000 
+INFO: [Synth 8-6155] done synthesizing module 'REGISTER_R__parameterized2' (19#1) [/home/eecs151/cpu/hardware/src/EECS151.v:49]
+INFO: [Synth 8-6157] synthesizing module 'REGISTER_R__parameterized3' [/home/eecs151/cpu/hardware/src/EECS151.v:49]
+	Parameter N bound to: 5 - type: integer 
+	Parameter INIT bound to: 5'b00000 
+INFO: [Synth 8-6155] done synthesizing module 'REGISTER_R__parameterized3' (19#1) [/home/eecs151/cpu/hardware/src/EECS151.v:49]
+INFO: [Synth 8-6157] synthesizing module 'REGISTER_R__parameterized4' [/home/eecs151/cpu/hardware/src/EECS151.v:49]
+	Parameter N bound to: 3 - type: integer 
+	Parameter INIT bound to: 3'b000 
+INFO: [Synth 8-6155] done synthesizing module 'REGISTER_R__parameterized4' (19#1) [/home/eecs151/cpu/hardware/src/EECS151.v:49]
+INFO: [Synth 8-6157] synthesizing module 'REGISTER_R__parameterized5' [/home/eecs151/cpu/hardware/src/EECS151.v:49]
+	Parameter N bound to: 2 - type: integer 
+	Parameter INIT bound to: 2'b00 
+INFO: [Synth 8-6155] done synthesizing module 'REGISTER_R__parameterized5' (19#1) [/home/eecs151/cpu/hardware/src/EECS151.v:49]
+INFO: [Synth 8-6155] done synthesizing module 'id_ex' (20#1) [/home/eecs151/cpu/hardware/src/riscv_core/ID/id_ex.v:28]
+INFO: [Synth 8-6157] synthesizing module 'ex' [/home/eecs151/cpu/hardware/src/riscv_core/EX/ex.v:10]
+INFO: [Synth 8-6157] synthesizing module 'dmem_wr' [/home/eecs151/cpu/hardware/src/riscv_core/EX/dmem_wr.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'dmem_wr' (21#1) [/home/eecs151/cpu/hardware/src/riscv_core/EX/dmem_wr.v:3]
+INFO: [Synth 8-6157] synthesizing module 'alu_control' [/home/eecs151/cpu/hardware/src/riscv_core/EX/alu_control.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'alu_control' (22#1) [/home/eecs151/cpu/hardware/src/riscv_core/EX/alu_control.v:3]
+INFO: [Synth 8-6157] synthesizing module 'forwarding_unit' [/home/eecs151/cpu/hardware/src/riscv_core/EX/forwarding_unit.v:4]
+INFO: [Synth 8-6155] done synthesizing module 'forwarding_unit' (23#1) [/home/eecs151/cpu/hardware/src/riscv_core/EX/forwarding_unit.v:4]
+INFO: [Synth 8-6157] synthesizing module 'change_mem_wr' [/home/eecs151/cpu/hardware/src/riscv_core/EX/change_mem_wr.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'change_mem_wr' (24#1) [/home/eecs151/cpu/hardware/src/riscv_core/EX/change_mem_wr.v:1]
+INFO: [Synth 8-6157] synthesizing module 'mux_reg1' [/home/eecs151/cpu/hardware/src/riscv_core/mux.v:38]
+INFO: [Synth 8-6155] done synthesizing module 'mux_reg1' (25#1) [/home/eecs151/cpu/hardware/src/riscv_core/mux.v:38]
+INFO: [Synth 8-6157] synthesizing module 'mux_reg2' [/home/eecs151/cpu/hardware/src/riscv_core/mux.v:52]
+INFO: [Synth 8-6155] done synthesizing module 'mux_reg2' (26#1) [/home/eecs151/cpu/hardware/src/riscv_core/mux.v:52]
+INFO: [Synth 8-6157] synthesizing module 'alu' [/home/eecs151/cpu/hardware/src/riscv_core/EX/alu.v:4]
+INFO: [Synth 8-6155] done synthesizing module 'alu' (27#1) [/home/eecs151/cpu/hardware/src/riscv_core/EX/alu.v:4]
+INFO: [Synth 8-6157] synthesizing module 'branch_comp' [/home/eecs151/cpu/hardware/src/riscv_core/EX/branch_comp.v:3]
+INFO: [Synth 8-155] case statement is not full and has no default [/home/eecs151/cpu/hardware/src/riscv_core/EX/branch_comp.v:14]
+INFO: [Synth 8-6155] done synthesizing module 'branch_comp' (28#1) [/home/eecs151/cpu/hardware/src/riscv_core/EX/branch_comp.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'ex' (29#1) [/home/eecs151/cpu/hardware/src/riscv_core/EX/ex.v:10]
+INFO: [Synth 8-6157] synthesizing module 'ex_wb' [/home/eecs151/cpu/hardware/src/riscv_core/EX/ex_wb.v:3]
+INFO: [Synth 8-6157] synthesizing module 'REGISTER_R_CE__parameterized1' [/home/eecs151/cpu/hardware/src/EECS151.v:63]
+	Parameter N bound to: 8 - type: integer 
+	Parameter INIT bound to: 7'b0000000 
+INFO: [Synth 8-6155] done synthesizing module 'REGISTER_R_CE__parameterized1' (29#1) [/home/eecs151/cpu/hardware/src/EECS151.v:63]
+INFO: [Synth 8-6157] synthesizing module 'REGISTER_R_CE__parameterized2' [/home/eecs151/cpu/hardware/src/EECS151.v:63]
+	Parameter N bound to: 32 - type: integer 
+	Parameter INIT bound to: 32'b00000000000000000000000000000000 
+INFO: [Synth 8-6155] done synthesizing module 'REGISTER_R_CE__parameterized2' (29#1) [/home/eecs151/cpu/hardware/src/EECS151.v:63]
+INFO: [Synth 8-6155] done synthesizing module 'ex_wb' (30#1) [/home/eecs151/cpu/hardware/src/riscv_core/EX/ex_wb.v:3]
+INFO: [Synth 8-6157] synthesizing module 'SYNC_RAM_WBE' [/home/eecs151/cpu/hardware/src/EECS151.v:235]
+	Parameter DWIDTH bound to: 32 - type: integer 
+	Parameter AWIDTH bound to: 32 - type: integer 
+	Parameter DEPTH bound to: 16384 - type: integer 
+	Parameter MEM_INIT_HEX_FILE bound to: (null) - type: string 
+	Parameter MEM_INIT_BIN_FILE bound to: (null) - type: string 
+INFO: [Synth 8-5534] Detected attribute (* ram_style = "block" *) [/home/eecs151/cpu/hardware/src/EECS151.v:246]
+INFO: [Synth 8-6155] done synthesizing module 'SYNC_RAM_WBE' (31#1) [/home/eecs151/cpu/hardware/src/EECS151.v:235]
+INFO: [Synth 8-6157] synthesizing module 'wb' [/home/eecs151/cpu/hardware/src/riscv_core/WB/wb.v:3]
+INFO: [Synth 8-6157] synthesizing module 'mux_dmem' [/home/eecs151/cpu/hardware/src/riscv_core/mux.v:5]
+INFO: [Synth 8-6155] done synthesizing module 'mux_dmem' (32#1) [/home/eecs151/cpu/hardware/src/riscv_core/mux.v:5]
+INFO: [Synth 8-6157] synthesizing module 'load_type' [/home/eecs151/cpu/hardware/src/riscv_core/WB/load_type.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'load_type' (33#1) [/home/eecs151/cpu/hardware/src/riscv_core/WB/load_type.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'wb' (34#1) [/home/eecs151/cpu/hardware/src/riscv_core/WB/wb.v:3]
+INFO: [Synth 8-6157] synthesizing module 'uart_receiver' [/home/eecs151/cpu/hardware/src/io_circuits/uart_receiver.v:1]
+	Parameter CLOCK_FREQ bound to: 50000000 - type: integer 
+	Parameter BAUD_RATE bound to: 115200 - type: integer 
+	Parameter SYMBOL_EDGE_TIME bound to: 434 - type: integer 
+	Parameter SAMPLE_TIME bound to: 217 - type: integer 
+	Parameter CLOCK_COUNTER_WIDTH bound to: 9 - type: integer 
+	Parameter IDLE bound to: 2'b00 
+	Parameter WORK bound to: 2'b01 
+	Parameter DONE bound to: 2'b11 
+INFO: [Synth 8-5534] Detected attribute (* mark_debug = "true" *) [/home/eecs151/cpu/hardware/src/io_circuits/uart_receiver.v:22]
+INFO: [Synth 8-5534] Detected attribute (* mark_debug = "true" *) [/home/eecs151/cpu/hardware/src/io_circuits/uart_receiver.v:35]
+INFO: [Synth 8-5534] Detected attribute (* mark_debug = "true" *) [/home/eecs151/cpu/hardware/src/io_circuits/uart_receiver.v:48]
+INFO: [Synth 8-6157] synthesizing module 'REGISTER_R_CE__parameterized3' [/home/eecs151/cpu/hardware/src/EECS151.v:63]
+	Parameter N bound to: 10 - type: integer 
+	Parameter INIT bound to: 10'b0000000000 
+INFO: [Synth 8-6155] done synthesizing module 'REGISTER_R_CE__parameterized3' (34#1) [/home/eecs151/cpu/hardware/src/EECS151.v:63]
+INFO: [Synth 8-6157] synthesizing module 'REGISTER_R_CE__parameterized4' [/home/eecs151/cpu/hardware/src/EECS151.v:63]
+	Parameter N bound to: 4 - type: integer 
+	Parameter INIT bound to: 32'sb00000000000000000000000000000000 
+INFO: [Synth 8-6155] done synthesizing module 'REGISTER_R_CE__parameterized4' (34#1) [/home/eecs151/cpu/hardware/src/EECS151.v:63]
+INFO: [Synth 8-6157] synthesizing module 'REGISTER_R_CE__parameterized5' [/home/eecs151/cpu/hardware/src/EECS151.v:63]
+	Parameter N bound to: 9 - type: integer 
+	Parameter INIT bound to: 32'sb00000000000000000000000000000000 
+INFO: [Synth 8-6155] done synthesizing module 'REGISTER_R_CE__parameterized5' (34#1) [/home/eecs151/cpu/hardware/src/EECS151.v:63]
+INFO: [Synth 8-6071] Mark debug on the nets applies keep_hierarchy on instance 'rx_shift'. This will prevent further optimization [/home/eecs151/cpu/hardware/src/io_circuits/uart_receiver.v:27]
+INFO: [Synth 8-6071] Mark debug on the nets applies keep_hierarchy on instance 'bit_counter'. This will prevent further optimization [/home/eecs151/cpu/hardware/src/io_circuits/uart_receiver.v:40]
+INFO: [Synth 8-6071] Mark debug on the nets applies keep_hierarchy on instance 'clock_counter'. This will prevent further optimization [/home/eecs151/cpu/hardware/src/io_circuits/uart_receiver.v:54]
+INFO: [Synth 8-6155] done synthesizing module 'uart_receiver' (35#1) [/home/eecs151/cpu/hardware/src/io_circuits/uart_receiver.v:1]
+INFO: [Synth 8-6157] synthesizing module 'uart_transmitter' [/home/eecs151/cpu/hardware/src/io_circuits/uart_transmitter.v:1]
+	Parameter CLOCK_FREQ bound to: 50000000 - type: integer 
+	Parameter BAUD_RATE bound to: 115200 - type: integer 
+	Parameter SYMBOL_EDGE_TIME bound to: 434 - type: integer 
+	Parameter CLOCK_COUNTER_WIDTH bound to: 9 - type: integer 
+	Parameter IDLE bound to: 1'b0 
+	Parameter WORK bound to: 1'b1 
+INFO: [Synth 8-5534] Detected attribute (* mark_debug = "true" *) [/home/eecs151/cpu/hardware/src/io_circuits/uart_transmitter.v:20]
+INFO: [Synth 8-5534] Detected attribute (* mark_debug = "true" *) [/home/eecs151/cpu/hardware/src/io_circuits/uart_transmitter.v:31]
+INFO: [Synth 8-5534] Detected attribute (* mark_debug = "true" *) [/home/eecs151/cpu/hardware/src/io_circuits/uart_transmitter.v:44]
+INFO: [Synth 8-6157] synthesizing module 'REGISTER_CE__parameterized0' [/home/eecs151/cpu/hardware/src/EECS151.v:38]
+	Parameter N bound to: 10 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'REGISTER_CE__parameterized0' (35#1) [/home/eecs151/cpu/hardware/src/EECS151.v:38]
+INFO: [Synth 8-6071] Mark debug on the nets applies keep_hierarchy on instance 'tx_shift'. This will prevent further optimization [/home/eecs151/cpu/hardware/src/io_circuits/uart_transmitter.v:25]
+INFO: [Synth 8-6155] done synthesizing module 'uart_transmitter' (36#1) [/home/eecs151/cpu/hardware/src/io_circuits/uart_transmitter.v:1]
+WARNING: [Synth 8-3848] Net reset in module/entity Riscv151 does not have driver. [/home/eecs151/cpu/hardware/src/riscv_core/Riscv151.v:473]
+INFO: [Synth 8-6155] done synthesizing module 'Riscv151' (37#1) [/home/eecs151/cpu/hardware/src/riscv_core/Riscv151.v:3]
+INFO: [Synth 8-6157] synthesizing module 'REGISTER_IOB' [/home/eecs151/cpu/hardware/src/EECS151.v:76]
+	Parameter N bound to: 1 - type: integer 
+INFO: [Synth 8-5534] Detected attribute (* IOB = "true" *) [/home/eecs151/cpu/hardware/src/EECS151.v:78]
+INFO: [Synth 8-6155] done synthesizing module 'REGISTER_IOB' (38#1) [/home/eecs151/cpu/hardware/src/EECS151.v:76]
+INFO: [Synth 8-6155] done synthesizing module 'z1top' (39#1) [/home/eecs151/cpu/hardware/src/z1top.v:4]
+WARNING: [Synth 8-3331] design SYNC_RAM_WBE has unconnected port addr[31]
+WARNING: [Synth 8-3331] design SYNC_RAM_WBE has unconnected port addr[30]
+WARNING: [Synth 8-3331] design SYNC_RAM_WBE has unconnected port addr[29]
+WARNING: [Synth 8-3331] design SYNC_RAM_WBE has unconnected port addr[28]
+WARNING: [Synth 8-3331] design SYNC_RAM_WBE has unconnected port addr[27]
+WARNING: [Synth 8-3331] design SYNC_RAM_WBE has unconnected port addr[26]
+WARNING: [Synth 8-3331] design SYNC_RAM_WBE has unconnected port addr[25]
+WARNING: [Synth 8-3331] design SYNC_RAM_WBE has unconnected port addr[24]
+WARNING: [Synth 8-3331] design SYNC_RAM_WBE has unconnected port addr[23]
+WARNING: [Synth 8-3331] design SYNC_RAM_WBE has unconnected port addr[22]
+WARNING: [Synth 8-3331] design SYNC_RAM_WBE has unconnected port addr[21]
+WARNING: [Synth 8-3331] design SYNC_RAM_WBE has unconnected port addr[20]
+WARNING: [Synth 8-3331] design SYNC_RAM_WBE has unconnected port addr[19]
+WARNING: [Synth 8-3331] design SYNC_RAM_WBE has unconnected port addr[18]
+WARNING: [Synth 8-3331] design SYNC_RAM_WBE has unconnected port addr[17]
+WARNING: [Synth 8-3331] design SYNC_RAM_WBE has unconnected port addr[16]
+WARNING: [Synth 8-3331] design SYNC_RAM_WBE has unconnected port addr[15]
+WARNING: [Synth 8-3331] design SYNC_RAM_WBE has unconnected port addr[14]
+WARNING: [Synth 8-3331] design imm_gen has unconnected port opcode_i[1]
+WARNING: [Synth 8-3331] design imm_gen has unconnected port opcode_i[0]
+WARNING: [Synth 8-3331] design imm_gen has unconnected port funct_i[2]
+WARNING: [Synth 8-3331] design imm_gen has unconnected port funct_i[1]
+WARNING: [Synth 8-3331] design imm_gen has unconnected port funct_i[0]
+WARNING: [Synth 8-3331] design z1top has unconnected port SWITCHES[0]
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:15 ; elapsed = 00:00:19 . Memory (MB): peak = 1851.633 ; gain = 230.562 ; free physical = 1118 ; free virtual = 2494
+---------------------------------------------------------------------------------
+
+Report Check Netlist: 
++------+------------------+-------+---------+-------+------------------+
+|      |Item              |Errors |Warnings |Status |Description       |
++------+------------------+-------+---------+-------+------------------+
+|1     |multi_driven_nets |      0|        0|Passed |Multi driven nets |
++------+------------------+-------+---------+-------+------------------+
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:15 ; elapsed = 00:00:20 . Memory (MB): peak = 1867.473 ; gain = 246.402 ; free physical = 1124 ; free virtual = 2500
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:15 ; elapsed = 00:00:20 . Memory (MB): peak = 1867.473 ; gain = 246.402 ; free physical = 1124 ; free virtual = 2500
+---------------------------------------------------------------------------------
+INFO: [Netlist 29-17] Analyzing 1 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Parsing XDC File [/home/eecs151/cpu/hardware/constrs/pynq-z1.xdc]
+Finished Parsing XDC File [/home/eecs151/cpu/hardware/constrs/pynq-z1.xdc]
+INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [/home/eecs151/cpu/hardware/constrs/pynq-z1.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/z1top_propImpl.xdc].
+Resolution: To avoid this warning, move constraints listed in [.Xil/z1top_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
+INFO: [Timing 38-2] Deriving generated clocks
+Completed Processing XDC Constraints
+
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1993.137 ; gain = 0.000 ; free physical = 989 ; free virtual = 2396
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Constraint Validation Runtime : Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.01 . Memory (MB): peak = 1993.137 ; gain = 0.000 ; free physical = 989 ; free virtual = 2396
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:28 ; elapsed = 00:00:37 . Memory (MB): peak = 1993.137 ; gain = 372.066 ; free physical = 1070 ; free virtual = 2480
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xc7z020clg400-1
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:28 ; elapsed = 00:00:37 . Memory (MB): peak = 1993.137 ; gain = 372.066 ; free physical = 1070 ; free virtual = 2480
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:28 ; elapsed = 00:00:37 . Memory (MB): peak = 1993.137 ; gain = 372.066 ; free physical = 1072 ; free virtual = 2482
+---------------------------------------------------------------------------------
+INFO: [Synth 8-5587] ROM size for "control_forward" is below threshold of ROM address width. It will be mapped to LUTs
+INFO: [Synth 8-5587] ROM size for "control_forward" is below threshold of ROM address width. It will be mapped to LUTs
+INFO: [Synth 8-3971] The signal "XILINX_SYNC_RAM_DP:/mem_reg" was recognized as a true dual port RAM template.
+INFO: [Synth 8-3971] The signal "XILINX_SYNC_RAM_DP__parameterized0:/mem_reg" was recognized as a true dual port RAM template.
+WARNING: [Synth 8-6841] Block RAM (mem_reg) originally specified as a Byte Wide Write Enable RAM cannot take advantage of ByteWide feature and is implemented with single write enable per RAM due to following reason.
+(address width (14) is more than optimal threshold of 12. Implementing using BWWE will require more logic and timing would be suboptimal. Please use attribute "ram_decomp = power" if BWWE is desired.)
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:30 ; elapsed = 00:00:39 . Memory (MB): peak = 1993.141 ; gain = 372.070 ; free physical = 1061 ; free virtual = 2473
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     32 Bit       Adders := 6     
+	   3 Input     32 Bit       Adders := 1     
+	   2 Input     16 Bit       Adders := 1     
+	   2 Input      9 Bit       Adders := 6     
+	   2 Input      4 Bit       Adders := 2     
++---XORs : 
+	   2 Input     32 Bit         XORs := 1     
++---Registers : 
+	               32 Bit    Registers := 18    
+	               16 Bit    Registers := 1     
+	               10 Bit    Registers := 2     
+	                9 Bit    Registers := 6     
+	                8 Bit    Registers := 1     
+	                5 Bit    Registers := 4     
+	                4 Bit    Registers := 5     
+	                3 Bit    Registers := 3     
+	                2 Bit    Registers := 9     
+	                1 Bit    Registers := 18    
++---RAMs : 
+	             512K Bit         RAMs := 2     
+	             128K Bit         RAMs := 1     
+	             1024 Bit         RAMs := 1     
++---Muxes : 
+	   2 Input     32 Bit        Muxes := 19    
+	   6 Input     32 Bit        Muxes := 1     
+	   8 Input     32 Bit        Muxes := 1     
+	   4 Input     32 Bit        Muxes := 2     
+	   3 Input     32 Bit        Muxes := 2     
+	   2 Input     16 Bit        Muxes := 2     
+	   2 Input     10 Bit        Muxes := 2     
+	   2 Input      8 Bit        Muxes := 2     
+	   4 Input      8 Bit        Muxes := 2     
+	   5 Input      4 Bit        Muxes := 1     
+	   4 Input      4 Bit        Muxes := 1     
+	  10 Input      4 Bit        Muxes := 1     
+	   2 Input      4 Bit        Muxes := 1     
+	  13 Input      4 Bit        Muxes := 1     
+	   2 Input      3 Bit        Muxes := 1     
+	   6 Input      3 Bit        Muxes := 1     
+	   8 Input      3 Bit        Muxes := 1     
+	  11 Input      2 Bit        Muxes := 1     
+	   4 Input      2 Bit        Muxes := 1     
+	   3 Input      2 Bit        Muxes := 2     
+	   2 Input      2 Bit        Muxes := 4     
+	   6 Input      2 Bit        Muxes := 1     
+	   6 Input      1 Bit        Muxes := 1     
+	   2 Input      1 Bit        Muxes := 8     
+	   4 Input      1 Bit        Muxes := 2     
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start RTL Hierarchical Component Statistics 
+---------------------------------------------------------------------------------
+Hierarchical RTL Component report 
+Module REGISTER 
+Detailed RTL Component Info : 
++---Registers : 
+	                4 Bit    Registers := 1     
+Module REGISTER_R 
+Detailed RTL Component Info : 
++---Registers : 
+	               16 Bit    Registers := 1     
+Module REGISTER_CE 
+Detailed RTL Component Info : 
++---Registers : 
+	                4 Bit    Registers := 1     
+Module REGISTER_R_CE 
+Detailed RTL Component Info : 
++---Registers : 
+	                9 Bit    Registers := 1     
+Module debouncer 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     16 Bit       Adders := 1     
+	   2 Input      9 Bit       Adders := 4     
+Module REGISTER_R_CE__parameterized0 
+Detailed RTL Component Info : 
++---Registers : 
+	                1 Bit    Registers := 1     
+Module mux_pc 
+Detailed RTL Component Info : 
++---Muxes : 
+	   2 Input     32 Bit        Muxes := 2     
+Module REGISTER_R__parameterized0 
+Detailed RTL Component Info : 
++---Registers : 
+	               32 Bit    Registers := 1     
+Module XILINX_SYNC_RAM_DP 
+Detailed RTL Component Info : 
++---Registers : 
+	               32 Bit    Registers := 2     
++---RAMs : 
+	             128K Bit         RAMs := 1     
+Module XILINX_SYNC_RAM_DP__parameterized0 
+Detailed RTL Component Info : 
++---Registers : 
+	               32 Bit    Registers := 2     
++---RAMs : 
+	             512K Bit         RAMs := 1     
+Module mux_imem_read 
+Detailed RTL Component Info : 
++---Muxes : 
+	   2 Input     32 Bit        Muxes := 1     
+Module control_unit 
+Detailed RTL Component Info : 
++---Muxes : 
+	   2 Input      3 Bit        Muxes := 1     
+	   6 Input      3 Bit        Muxes := 1     
+	  11 Input      2 Bit        Muxes := 1     
+	   4 Input      2 Bit        Muxes := 1     
+	   3 Input      2 Bit        Muxes := 1     
+	   2 Input      2 Bit        Muxes := 2     
+Module imm_gen 
+Detailed RTL Component Info : 
++---Muxes : 
+	   6 Input     32 Bit        Muxes := 1     
+	   8 Input     32 Bit        Muxes := 1     
+	   8 Input      3 Bit        Muxes := 1     
+Module id 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     32 Bit       Adders := 2     
+Module REGFILE_1W2R 
+Detailed RTL Component Info : 
++---RAMs : 
+	             1024 Bit         RAMs := 1     
+Module REGISTER_R__parameterized1 
+Detailed RTL Component Info : 
++---Registers : 
+	                1 Bit    Registers := 1     
+Module REGISTER_R__parameterized2 
+Detailed RTL Component Info : 
++---Registers : 
+	               32 Bit    Registers := 1     
+Module REGISTER_R__parameterized3 
+Detailed RTL Component Info : 
++---Registers : 
+	                5 Bit    Registers := 1     
+Module REGISTER_R__parameterized4 
+Detailed RTL Component Info : 
++---Registers : 
+	                3 Bit    Registers := 1     
+Module REGISTER_R__parameterized5 
+Detailed RTL Component Info : 
++---Registers : 
+	                2 Bit    Registers := 1     
+Module id_ex 
+Detailed RTL Component Info : 
++---Muxes : 
+	   2 Input     32 Bit        Muxes := 2     
+Module dmem_wr 
+Detailed RTL Component Info : 
++---Muxes : 
+	   5 Input      4 Bit        Muxes := 1     
+	   4 Input      4 Bit        Muxes := 1     
+Module alu_control 
+Detailed RTL Component Info : 
++---Muxes : 
+	  10 Input      4 Bit        Muxes := 1     
+	   2 Input      4 Bit        Muxes := 1     
+	  13 Input      4 Bit        Muxes := 1     
+Module forwarding_unit 
+Detailed RTL Component Info : 
++---Muxes : 
+	   3 Input      2 Bit        Muxes := 1     
+	   2 Input      2 Bit        Muxes := 1     
+Module mux_reg1 
+Detailed RTL Component Info : 
++---Muxes : 
+	   4 Input     32 Bit        Muxes := 1     
+Module mux_reg2 
+Detailed RTL Component Info : 
++---Muxes : 
+	   4 Input     32 Bit        Muxes := 1     
+Module alu 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     32 Bit       Adders := 1     
+	   3 Input     32 Bit       Adders := 1     
++---XORs : 
+	   2 Input     32 Bit         XORs := 1     
++---Muxes : 
+	   6 Input      1 Bit        Muxes := 1     
+Module branch_comp 
+Detailed RTL Component Info : 
++---Muxes : 
+	   2 Input      1 Bit        Muxes := 4     
+Module ex 
+Detailed RTL Component Info : 
++---Muxes : 
+	   3 Input     32 Bit        Muxes := 1     
+	   2 Input     32 Bit        Muxes := 3     
+	   2 Input      2 Bit        Muxes := 1     
+Module REGISTER_R_CE__parameterized1 
+Detailed RTL Component Info : 
++---Registers : 
+	                8 Bit    Registers := 1     
+Module REGISTER_R_CE__parameterized2 
+Detailed RTL Component Info : 
++---Registers : 
+	               32 Bit    Registers := 1     
+Module ex_wb 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     32 Bit       Adders := 2     
++---Muxes : 
+	   2 Input     32 Bit        Muxes := 1     
+Module SYNC_RAM_WBE 
+Detailed RTL Component Info : 
++---Registers : 
+	               32 Bit    Registers := 1     
++---RAMs : 
+	             512K Bit         RAMs := 1     
++---Muxes : 
+	   2 Input     32 Bit        Muxes := 6     
+	   2 Input      8 Bit        Muxes := 1     
+Module mux_dmem 
+Detailed RTL Component Info : 
++---Muxes : 
+	   2 Input     32 Bit        Muxes := 2     
+	   3 Input     32 Bit        Muxes := 1     
+Module load_type 
+Detailed RTL Component Info : 
++---Muxes : 
+	   2 Input     16 Bit        Muxes := 2     
+	   4 Input      8 Bit        Muxes := 1     
+Module wb 
+Detailed RTL Component Info : 
++---Muxes : 
+	   2 Input     32 Bit        Muxes := 2     
+Module REGISTER_R_CE__parameterized3 
+Detailed RTL Component Info : 
++---Registers : 
+	               10 Bit    Registers := 1     
+Module REGISTER_R_CE__parameterized4 
+Detailed RTL Component Info : 
++---Registers : 
+	                4 Bit    Registers := 1     
+Module REGISTER_R_CE__parameterized5 
+Detailed RTL Component Info : 
++---Registers : 
+	                9 Bit    Registers := 1     
+Module uart_receiver 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     32 Bit       Adders := 1     
+	   2 Input      9 Bit       Adders := 1     
+	   2 Input      4 Bit       Adders := 1     
++---Muxes : 
+	   4 Input      8 Bit        Muxes := 1     
+	   2 Input      8 Bit        Muxes := 1     
+	   6 Input      2 Bit        Muxes := 1     
+	   4 Input      1 Bit        Muxes := 2     
+Module REGISTER_CE__parameterized0 
+Detailed RTL Component Info : 
++---Registers : 
+	               10 Bit    Registers := 1     
+Module uart_transmitter 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input      9 Bit       Adders := 1     
+	   2 Input      4 Bit       Adders := 1     
++---Muxes : 
+	   2 Input     10 Bit        Muxes := 2     
+	   2 Input      1 Bit        Muxes := 4     
+Module REGISTER_IOB 
+Detailed RTL Component Info : 
++---Registers : 
+	                1 Bit    Registers := 1     
+---------------------------------------------------------------------------------
+Finished RTL Hierarchical Component Statistics
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 220 (col length:60)
+BRAMs: 280 (col length: RAMB18 60 RAMB36 30)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+Warning: Parallel synthesis criteria is not met 
+INFO: [Synth 8-5587] ROM size for "cpu/ID/control/control_forward" is below threshold of ROM address width. It will be mapped to LUTs
+WARNING: [Synth 8-3331] design z1top has unconnected port SWITCHES[0]
+WARNING: [Synth 8-6014] Unused sequential element cpu/bios_mem/mem_reg was removed. 
+WARNING: [Synth 8-6014] Unused sequential element cpu/bios_mem/mem_reg was removed. 
+WARNING: [Synth 8-6014] Unused sequential element cpu/imem/mem_reg was removed. 
+WARNING: [Synth 8-6841] Block RAM (cpu/dmem/mem_reg) originally specified as a Byte Wide Write Enable RAM cannot take advantage of ByteWide feature and is implemented with single write enable per RAM due to following reason.
+(address width (14) is more than optimal threshold of 12. Implementing using BWWE will require more logic and timing would be suboptimal. Please use attribute "ram_decomp = power" if BWWE is desired.)
+INFO: [Synth 8-3886] merging instance 'cpu/ID_EX/pc_plus_reg/q_reg[0]' (FDR) to 'cpu/ID_EX/pc_data_reg/q_reg[0]'
+INFO: [Synth 8-3886] merging instance 'i_0/cpu/bios_mem/read0_reg_val_reg[1]' (FDR) to 'i_0/cpu/bios_mem/read0_reg_val_reg[0]'
+INFO: [Synth 8-3886] merging instance 'cpu/EX_WB/store_offset/q_reg[0]' (FDR) to 'cpu/EX_WB/store_alu/q_reg[0]'
+INFO: [Synth 8-3886] merging instance 'cpu/EX_WB/store_offset/q_reg[1]' (FDR) to 'cpu/EX_WB/store_alu/q_reg[1]'
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:03:04 ; elapsed = 00:03:15 . Memory (MB): peak = 2048.133 ; gain = 427.062 ; free physical = 967 ; free virtual = 2391
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start ROM, RAM, DSP and Shift Register Reporting
+---------------------------------------------------------------------------------
+
+Block RAM: Preliminary Mapping  Report (see note below)
++------------------------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
+|Module Name                         | RTL Object | PORT A (Depth x Width) | W | R | PORT B (Depth x Width) | W | R | Ports driving FF | RAMB18 | RAMB36 | 
++------------------------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
+|XILINX_SYNC_RAM_DP:                 | mem_reg    | 4 K x 32(READ_FIRST)   | W | R | 4 K x 32(READ_FIRST)   | W | R | Port A and B     | 0      | 4      | 
+|XILINX_SYNC_RAM_DP__parameterized0: | mem_reg    | 16 K x 32(READ_FIRST)  | W | R | 16 K x 32(READ_FIRST)  | W | R | Port A and B     | 0      | 16     | 
+|SYNC_RAM_WBE:                       | mem_reg    | 16 K x 32(READ_FIRST)  | W | R |                        |   |   | Port A           | 0      | 16     | 
++------------------------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
+
+Note: The table above is a preliminary report that shows the Block RAMs at the current stage of the synthesis flow. Some Block RAMs may be reimplemented as non Block RAM primitives later in the synthesis flow. Multiple instantiated Block RAMs are reported only once. 
+
+Distributed RAM: Preliminary Mapping  Report (see note below)
++------------+----------------+-----------+----------------------+---------------+
+|Module Name | RTL Object     | Inference | Size (Depth x Width) | Primitives    | 
++------------+----------------+-----------+----------------------+---------------+
+|z1top       | cpu/rf/mem_reg | Implied   | 32 x 32              | RAM32M x 12   | 
++------------+----------------+-----------+----------------------+---------------+
+
+Note: The table above is a preliminary report that shows the Distributed RAMs at the current stage of the synthesis flow. Some Distributed RAMs may be reimplemented as non Distributed RAM primitives later in the synthesis flow. Multiple instantiated RAMs are reported only once.
+---------------------------------------------------------------------------------
+Finished ROM, RAM, DSP and Shift Register Reporting
+---------------------------------------------------------------------------------
+INFO: [Synth 8-4652] Swapped enable and write-enable on 16 RAM instances of RAM cpu/imem/mem_reg to conserve power
+INFO: [Synth 8-6837] The timing for the instance i_1/cpu/imem/mem_reg_0 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance i_1/cpu/imem/mem_reg_1 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance i_1/cpu/imem/mem_reg_2 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance i_1/cpu/imem/mem_reg_3 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance i_1/cpu/imem/mem_reg_4 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance i_1/cpu/imem/mem_reg_5 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance i_1/cpu/imem/mem_reg_6 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance i_1/cpu/imem/mem_reg_7 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance i_1/cpu/imem/mem_reg_8 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance i_1/cpu/imem/mem_reg_9 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance i_1/cpu/imem/mem_reg_10 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance i_1/cpu/imem/mem_reg_11 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance i_1/cpu/imem/mem_reg_12 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance i_1/cpu/imem/mem_reg_13 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance i_1/cpu/imem/mem_reg_14 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance i_1/cpu/imem/mem_reg_15 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance i_4/cpu/dmem/mem_reg_0_0 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance i_4/cpu/dmem/mem_reg_0_1 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance i_4/cpu/dmem/mem_reg_0_2 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance i_4/cpu/dmem/mem_reg_0_3 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance i_4/cpu/dmem/mem_reg_1_0 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance i_4/cpu/dmem/mem_reg_1_1 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance i_4/cpu/dmem/mem_reg_1_2 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance i_4/cpu/dmem/mem_reg_1_3 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance i_4/cpu/dmem/mem_reg_2_0 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance i_4/cpu/dmem/mem_reg_2_1 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance i_4/cpu/dmem/mem_reg_2_2 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance i_4/cpu/dmem/mem_reg_2_3 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance i_4/cpu/dmem/mem_reg_3_0 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance i_4/cpu/dmem/mem_reg_3_1 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance i_4/cpu/dmem/mem_reg_3_2 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance i_4/cpu/dmem/mem_reg_3_3 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:03:20 ; elapsed = 00:03:32 . Memory (MB): peak = 2048.137 ; gain = 427.066 ; free physical = 837 ; free virtual = 2272
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:04:33 ; elapsed = 00:04:46 . Memory (MB): peak = 2126.141 ; gain = 505.070 ; free physical = 811 ; free virtual = 2246
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start ROM, RAM, DSP and Shift Register Reporting
+---------------------------------------------------------------------------------
+
+Block RAM: Final Mapping  Report
++------------------------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
+|Module Name                         | RTL Object | PORT A (Depth x Width) | W | R | PORT B (Depth x Width) | W | R | Ports driving FF | RAMB18 | RAMB36 | 
++------------------------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
+|XILINX_SYNC_RAM_DP:                 | mem_reg    | 4 K x 32(READ_FIRST)   | W | R | 4 K x 32(READ_FIRST)   | W | R | Port A and B     | 0      | 4      | 
+|XILINX_SYNC_RAM_DP__parameterized0: | mem_reg    | 16 K x 32(READ_FIRST)  | W | R | 16 K x 32(READ_FIRST)  | W | R | Port A and B     | 0      | 16     | 
+|SYNC_RAM_WBE:                       | mem_reg    | 16 K x 32(READ_FIRST)  | W | R |                        |   |   | Port A           | 0      | 16     | 
++------------------------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
+
+
+Distributed RAM: Final Mapping  Report
++------------+----------------+-----------+----------------------+---------------+
+|Module Name | RTL Object     | Inference | Size (Depth x Width) | Primitives    | 
++------------+----------------+-----------+----------------------+---------------+
+|z1top       | cpu/rf/mem_reg | Implied   | 32 x 32              | RAM32M x 12   | 
++------------+----------------+-----------+----------------------+---------------+
+
+---------------------------------------------------------------------------------
+Finished ROM, RAM, DSP and Shift Register Reporting
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+INFO: [Synth 8-4765] Removing register instance (\cpu/ID_EX/dmem_reg/q_reg[0] ) from module (z1top) as it is equivalent to (\cpu/ID_EX/load_sign/q_reg[0] ) and driving same net [/home/eecs151/cpu/hardware/src/EECS151.v:57]
+INFO: [Synth 8-3886] merging instance 'cpu/ID_EX/load_sign/q_reg[0]' (FDR) to 'cpu/ID_EX/uart_reg/q_reg[1]'
+INFO: [Synth 8-6837] The timing for the instance cpu/imem/mem_reg_0 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance cpu/imem/mem_reg_1 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance cpu/imem/mem_reg_2 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance cpu/imem/mem_reg_3 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance cpu/imem/mem_reg_4 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance cpu/imem/mem_reg_5 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance cpu/imem/mem_reg_6 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance cpu/imem/mem_reg_7 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance cpu/imem/mem_reg_8 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance cpu/imem/mem_reg_9 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance cpu/imem/mem_reg_10 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance cpu/imem/mem_reg_11 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance cpu/imem/mem_reg_12 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance cpu/imem/mem_reg_13 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance cpu/imem/mem_reg_14 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance cpu/imem/mem_reg_15 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance cpu/dmem/mem_reg_0_0 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance cpu/dmem/mem_reg_0_1 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance cpu/dmem/mem_reg_0_2 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance cpu/dmem/mem_reg_0_3 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance cpu/dmem/mem_reg_1_0 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance cpu/dmem/mem_reg_1_1 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance cpu/dmem/mem_reg_1_2 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance cpu/dmem/mem_reg_1_3 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance cpu/dmem/mem_reg_2_0 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance cpu/dmem/mem_reg_2_1 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance cpu/dmem/mem_reg_2_2 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance cpu/dmem/mem_reg_2_3 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance cpu/dmem/mem_reg_3_0 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance cpu/dmem/mem_reg_3_1 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance cpu/dmem/mem_reg_3_2 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-6837] The timing for the instance cpu/dmem/mem_reg_3_3 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:04:45 ; elapsed = 00:04:58 . Memory (MB): peak = 2126.141 ; gain = 505.070 ; free physical = 811 ; free virtual = 2247
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+INFO: [Synth 8-4163] Replicating register \cpu_rx_reg/q_reg[0]  to handle IOB=TRUE attribute
+INFO: [Synth 8-6064] Net \cpu/dmem_wea_reg [0] is driving 80 big block pins (URAM, BRAM and DSP loads). Created 9 replicas of its driver. 
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:04:49 ; elapsed = 00:05:02 . Memory (MB): peak = 2126.145 ; gain = 505.074 ; free physical = 812 ; free virtual = 2247
+---------------------------------------------------------------------------------
+
+Report Check Netlist: 
++------+------------------+-------+---------+-------+------------------+
+|      |Item              |Errors |Warnings |Status |Description       |
++------+------------------+-------+---------+-------+------------------+
+|1     |multi_driven_nets |      0|        0|Passed |Multi driven nets |
++------+------------------+-------+---------+-------+------------------+
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:04:49 ; elapsed = 00:05:02 . Memory (MB): peak = 2126.145 ; gain = 505.074 ; free physical = 812 ; free virtual = 2247
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:04:50 ; elapsed = 00:05:03 . Memory (MB): peak = 2126.145 ; gain = 505.074 ; free physical = 812 ; free virtual = 2247
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:04:50 ; elapsed = 00:05:03 . Memory (MB): peak = 2126.145 ; gain = 505.074 ; free physical = 812 ; free virtual = 2247
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:04:51 ; elapsed = 00:05:03 . Memory (MB): peak = 2126.145 ; gain = 505.074 ; free physical = 812 ; free virtual = 2247
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:04:51 ; elapsed = 00:05:03 . Memory (MB): peak = 2126.145 ; gain = 505.074 ; free physical = 812 ; free virtual = 2247
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+-----------+------+
+|      |Cell       |Count |
++------+-----------+------+
+|1     |BUFG       |     2|
+|2     |CARRY4     |    63|
+|3     |LUT1       |   122|
+|4     |LUT2       |   163|
+|5     |LUT3       |   226|
+|6     |LUT4       |   195|
+|7     |LUT5       |   351|
+|8     |LUT6       |  2222|
+|9     |MUXF7      |   533|
+|10    |MUXF8      |   137|
+|11    |PLLE2_ADV  |     1|
+|12    |RAM32M     |    12|
+|13    |RAMB36E1   |    16|
+|14    |RAMB36E1_1 |    16|
+|15    |FDRE       |   561|
+|16    |FDSE       |    28|
+|17    |IBUF       |     4|
+|18    |OBUF       |     7|
++------+-----------+------+
+
+Report Instance Areas: 
++------+---------------------------+-----------------------------------+------+
+|      |Instance                   |Module                             |Cells |
++------+---------------------------+-----------------------------------+------+
+|1     |top                        |                                   |  4659|
+|2     |  bp                       |button_parser                      |    57|
+|3     |    button_debouncer       |debouncer                          |    50|
+|4     |      detect               |REGISTER_CE                        |     1|
+|5     |      \genblk3[0].sat_cnt  |REGISTER_R_CE                      |    23|
+|6     |      wrapping_cnt         |REGISTER_R                         |    26|
+|7     |    button_edge_detector   |edge_detector                      |     4|
+|8     |      \genblk1[0].reg1     |REGISTER_R_CE__parameterized0      |     3|
+|9     |      \genblk1[0].reg2     |REGISTER_R_CE__parameterized0_29   |     1|
+|10    |    button_synchronizer    |synchronizer                       |     3|
+|11    |      dreg1                |REGISTER                           |     1|
+|12    |      dreg2                |REGISTER_28                        |     2|
+|13    |  clk_wiz                  |clk_wiz                            |     4|
+|14    |  cpu                      |Riscv151                           |  4586|
+|15    |    EX                     |ex                                 |    36|
+|16    |      alu                  |alu                                |    29|
+|17    |      branch_comp          |branch_comp                        |     7|
+|18    |    EX_WB                  |ex_wb                              |   887|
+|19    |      cycle_counter        |REGISTER_R__parameterized2_18      |    43|
+|20    |      inst_counter         |REGISTER_R_CE__parameterized2_19   |    41|
+|21    |      store_addr           |REGISTER_R__parameterized3_20      |     7|
+|22    |      store_alu            |REGISTER_R__parameterized2_21      |   617|
+|23    |      store_control        |REGISTER_R__parameterized5_22      |     2|
+|24    |      store_control_wb     |REGISTER_R__parameterized1_23      |     1|
+|25    |      store_load           |REGISTER_R__parameterized4_24      |    78|
+|26    |      store_pc_wb          |REGISTER_R__parameterized2_25      |    32|
+|27    |      store_uart           |REGISTER_R__parameterized5_26      |     2|
+|28    |      store_uart_data      |REGISTER_R_CE__parameterized1      |     8|
+|29    |      uart_lw              |REGISTER_R__parameterized2_27      |    56|
+|30    |    ID                     |id                                 |    16|
+|31    |    ID_EX                  |id_ex                              |  3230|
+|32    |      alu_reg              |REGISTER_R__parameterized5_1       |    92|
+|33    |      branch_addr_load     |REGISTER_R__parameterized2         |    32|
+|34    |      control_load         |REGISTER_R__parameterized4         |     3|
+|35    |      control_wb_reg__0    |REGISTER_R__parameterized1_2       |     1|
+|36    |      csr_we_reg           |REGISTER_R__parameterized1_3       |     1|
+|37    |      ctrl_branch_reg      |REGISTER_R__parameterized1_4       |     1|
+|38    |      forward_reg          |REGISTER_R__parameterized5_5       |  1739|
+|39    |      funct3_reg           |REGISTER_R__parameterized4_6       |   274|
+|40    |      imm_data             |REGISTER_R__parameterized2_7       |    38|
+|41    |      inst_alu30_reg       |REGISTER_R__parameterized1_8       |     1|
+|42    |      jump_reg             |REGISTER_R__parameterized5_9       |   786|
+|43    |      pc_data_reg          |REGISTER_R__parameterized2_10      |    32|
+|44    |      pc_plus_reg          |REGISTER_R__parameterized2_11      |    31|
+|45    |      rd_addr_store        |REGISTER_R__parameterized3         |     5|
+|46    |      reg1_addr_store      |REGISTER_R__parameterized3_12      |    28|
+|47    |      reg1_store           |REGISTER_R__parameterized2_13      |    48|
+|48    |      reg2_addr_store      |REGISTER_R__parameterized3_14      |    50|
+|49    |      reg2_store           |REGISTER_R__parameterized2_15      |    59|
+|50    |      uart_reg             |REGISTER_R__parameterized5_16      |     7|
+|51    |      wr_mux_reg           |REGISTER_R__parameterized5_17      |     2|
+|52    |    bios_mem               |XILINX_SYNC_RAM_DP                 |   161|
+|53    |    csr_reg                |REGISTER_R_CE__parameterized2      |     6|
+|54    |    dmem                   |SYNC_RAM_WBE                       |    42|
+|55    |    imem                   |XILINX_SYNC_RAM_DP__parameterized0 |    29|
+|56    |    pc_reg                 |REGISTER_R__parameterized0         |    52|
+|57    |    rf                     |REGFILE_1W2R                       |    12|
+|58    |    uart_rx                |uart_receiver                      |    69|
+|59    |      rx_shift             |REGISTER_R_CE__parameterized3      |    10|
+|60    |      bit_counter          |REGISTER_R_CE__parameterized4__1   |     4|
+|61    |      clock_counter        |REGISTER_R_CE__parameterized5__1   |     9|
+|62    |      state                |REGISTER_R__parameterized5         |    14|
+|63    |    uart_tx                |uart_transmitter                   |    46|
+|64    |      tx_shift             |REGISTER_CE__parameterized0        |    10|
+|65    |      bit_counter          |REGISTER_R_CE__parameterized4      |     4|
+|66    |      clock_counter        |REGISTER_R_CE__parameterized5      |     9|
+|67    |      state                |REGISTER_R__parameterized1         |     9|
+|68    |  cpu_rx_reg               |REGISTER_IOB                       |     1|
+|69    |  cpu_tx_reg               |REGISTER_IOB_0                     |     1|
++------+---------------------------+-----------------------------------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:04:51 ; elapsed = 00:05:03 . Memory (MB): peak = 2126.145 ; gain = 505.074 ; free physical = 812 ; free virtual = 2247
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 6 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:04:45 ; elapsed = 00:04:56 . Memory (MB): peak = 2126.145 ; gain = 379.410 ; free physical = 871 ; free virtual = 2306
+Synthesis Optimization Complete : Time (s): cpu = 00:04:51 ; elapsed = 00:05:04 . Memory (MB): peak = 2126.148 ; gain = 505.074 ; free physical = 884 ; free virtual = 2319
+INFO: [Project 1-571] Translating synthesized netlist
+INFO: [Netlist 29-17] Analyzing 778 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2126.148 ; gain = 0.000 ; free physical = 818 ; free virtual = 2258
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 12 instances were transformed.
+  RAM32M => RAM32M (RAMD32, RAMD32, RAMD32, RAMD32, RAMD32, RAMD32, RAMS32, RAMS32): 12 instances
+
+INFO: [Common 17-83] Releasing license: Synthesis
+214 Infos, 33 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:05:01 ; elapsed = 00:05:16 . Memory (MB): peak = 2126.148 ; gain = 616.457 ; free physical = 935 ; free virtual = 2376
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2126.148 ; gain = 0.000 ; free physical = 935 ; free virtual = 2376
+WARNING: [Constraints 18-5210] No constraints selected for write.
+Resolution: This message can indicate that there are no constraints for the design, or it can indicate that the used_in flags are set such that the constraints are ignored. This later case is used when running synth_design to not write synthesis constraints to the resulting checkpoint. Instead, project constraints are read when the synthesized design is opened.
+INFO: [Common 17-1381] The checkpoint '/home/eecs151/cpu/hardware/z1top_proj/z1top_proj.runs/synth_1/z1top.dcp' has been generated.
+INFO: [runtcl-4] Executing : report_utilization -file z1top_utilization_synth.rpt -pb z1top_utilization_synth.pb
+INFO: [Common 17-206] Exiting Vivado at Mon Apr 13 21:38:27 2020...
