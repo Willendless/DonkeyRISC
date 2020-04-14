@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Vivado v2019.1 (64-bit)
+# SW Build 2552052 on Fri May 24 14:47:09 MDT 2019
+# IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
+# Start of session at: Mon Apr 13 21:01:36 2020
+# Process ID: 18300
+# Current directory: /home/eecs151/cpu/hardware
+# Command line: vivado -mode batch -source scripts/write_bitstream.tcl
+# Log file: /home/eecs151/cpu/hardware/vivado.log
+# Journal file: /home/eecs151/cpu/hardware/vivado.jou
+#-----------------------------------------------------------
+source scripts/write_bitstream.tcl
