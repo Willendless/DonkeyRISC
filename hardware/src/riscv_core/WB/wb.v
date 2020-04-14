@@ -22,6 +22,8 @@ module wb (
     wire [31:0] bios_load_i;
     wire [31:0] wb_data; 
     wire [31:0] before_uart_data;
+
+
     mux_dmem mux_dmem(
         .dmem_output(dmem_load_i),
         .bios_output(bios_load_i),

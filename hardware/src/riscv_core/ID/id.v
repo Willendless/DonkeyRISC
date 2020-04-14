@@ -102,9 +102,11 @@ module id (
 
     // imm_gen
     wire [31:0] branch_offset_o;
+
+    wire [2:0] funct3_in = inst_i[14:12];
     imm_gen imm (
         .opcode_i(inst_i),
-        .funct_i(inst_i[14:12]),
+        .funct_i(funct3_in),
         .imm(imm_o),
         .branch_offset(branch_offset_o));
 
