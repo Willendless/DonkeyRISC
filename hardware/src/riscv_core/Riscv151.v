@@ -471,7 +471,7 @@ module Riscv151
         .CLOCK_FREQ(CPU_CLOCK_FREQ),
         .BAUD_RATE(BAUD_RATE)) uart_tx (
         .clk(clk),
-        .rst(reset),
+        .rst(rst),
         .data_in(uart_tx_data_in),             // input
         .data_in_valid(uart_tx_data_in_valid), // input
         .data_in_ready(uart_tx_data_in_ready), // output
