@@ -4,12 +4,13 @@
 *.log
 _minted*
 *.swp
-hardware/src/.Xil
-hardware/src/*proj
-hardware/src/bitstream_files
 *.jou
 *.log
-hardware/z1top_proj/*
+./hardware/z1top_proj/*
+./hardware/src/*proj
+./hardware/src/bitstream_files
+.vscode/*
+
 
 *.o
 *.bin
