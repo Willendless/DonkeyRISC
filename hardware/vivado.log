@@ -1,0 +1,45 @@
+#-----------------------------------------------------------
+# Vivado v2018.2 (64-bit)
+# SW Build 2258646 on Thu Jun 14 20:03:12 MDT 2018
+# IP Build 2256618 on Thu Jun 14 22:10:49 MDT 2018
+# Start of session at: Tue Apr 14 06:58:10 2020
+# Process ID: 9332
+# Current directory: D:/PDF/course/UCB/eecs151/proj/hardware
+# Command line: vivado.exe -mode batch -source scripts/sim.tcl -tclargs isa_testbench riscv-isa-tests all
+# Log file: D:/PDF/course/UCB/eecs151/proj/hardware/vivado.log
+# Journal file: D:/PDF/course/UCB/eecs151/proj/hardware\vivado.jou
+#-----------------------------------------------------------
+source scripts/sim.tcl
+# set project_name   "z1top"
+# set testbench_name [lindex $argv 0]
+# set sw             [lindex $argv 1]
+# set test_name      [lindex $argv 2]
+# set sources_file scripts/${project_name}.tcl
+# if {![file exists $sources_file]} {
+#     puts "Invalid project name!"
+#     exit
+# }
+# if {![file exists ${project_name}_proj/${project_name}_proj.xpr]} {
+#     source scripts/build_project.tcl
+# } else {
+#     open_project ${project_name}_proj/${project_name}_proj.xpr
+# }
+## set project_name "z1top"
+## set sources_file scripts/${project_name}.tcl
+## if {![file exists $sources_file]} {
+##     puts "Invalid project name!"
+##     exit
+## }
+## create_project -force ${project_name}_proj ${project_name}_proj -part xc7z020clg400-1
+## set_property board_part www.digilentinc.com:pynq-z1:part0:1.0 [current_project]
+ERROR: [Board 49-71] The board_part definition was not found for www.digilentinc.com:pynq-z1:part0:1.0. The project's board_part property was not set, but the project's part property was set to xc7z020clg400-1. Valid board_part values can be retrieved with the 'get_board_parts' Tcl command. Check if board.repoPaths parameter is set and the board_part is installed from the tcl app store.
+
+    while executing
+"source scripts/build_project.tcl"
+    invoked from within
+"if {![file exists ${project_name}_proj/${project_name}_proj.xpr]} {
+    source scripts/build_project.tcl
+} else {
+    open_project ${project_name}_pro..."
+    (file "scripts/sim.tcl" line 14)
+INFO: [Common 17-206] Exiting Vivado at Tue Apr 14 06:58:15 2020...

@@ -117,7 +117,7 @@ module Riscv151
         .we1(imem_web),    // input
         .clk(clk), .rst(rst));
 
-    assign bios_addra = pc_in[BIOS_AWIDTH-1:0]>>2;
+    assign bios_addra = pc_in1[BIOS_AWIDTH-1:0];
 
 
 //-----------second stage----------------//
