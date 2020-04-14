@@ -401,6 +401,7 @@ module Riscv151
     assign imem_dinb = mem_write_reg;
     
     assign alu_result_reg1 = alu_result_reg>>2;
+
     assign dmem_addra = {18'b0, alu_result_reg1[13:0]};
 
     assign dmem_wea = dmem_wea_reg;
