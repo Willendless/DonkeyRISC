@@ -72,7 +72,7 @@ module ex_wb (
         .clk(clk),
         .rst(rst),
         .d(control_wb_i));
-    
+    /*
     wire [7:0] store_data;
     REGISTER_R_CE # (.N(8), .INIT(7'b0)) store_uart_data(
         .q(store_data),
@@ -80,7 +80,7 @@ module ex_wb (
         .clk(clk),
         .rst(rst),
         .ce(uart_rx_out_valid)
-    );
+    );*/
     
     wire [31:0] cycle_count1;
     wire [31:0] cycle_count2;
@@ -117,7 +117,7 @@ module ex_wb (
 always @(*) begin
     case(alu_result_i)
         32'h80000000: uart_data = {30'b0, uart_rx_out_valid, uart_tx_in_ready};
-        32'h80000004: uart_data = {24'b0, store_data};
+        32'h80000004: uart_data = {24'b0, uart_read_i};
         32'h80000010: uart_data = cycle_count1;
         32'h80000014: uart_data = inst_count1;
         default: uart_data = 32'b0;

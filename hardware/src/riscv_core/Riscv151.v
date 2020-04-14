@@ -449,8 +449,8 @@ module Riscv151
 
     wire uart_tx_data_in_valid;
 
-    assign uart_rx_data_out_ready = (control_uart_wb[0] == 1'b1);
-    assign uart_tx_data_in_valid = (control_uart_wb[1] == 1'b1);
+    assign uart_rx_data_out_ready = (alu_result_reg == 32'h80000004) && (control_uart_wb[0] == 1'b1);
+    assign uart_tx_data_in_valid = (alu_result_reg == 32'h80000008) && (control_uart_wb[1] == 1'b1);
    
     uart_receiver #(
         .CLOCK_FREQ(CPU_CLOCK_FREQ),
@@ -465,7 +465,7 @@ module Riscv151
 
     // UART Transmitter
     wire [7:0] uart_tx_data_in;
-    assign uart_tx_data_in = mem_write_reg;
+    assign uart_tx_data_in = mem_write_reg[7:0];
 
     uart_transmitter #(
         .CLOCK_FREQ(CPU_CLOCK_FREQ),

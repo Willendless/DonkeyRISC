@@ -21,9 +21,12 @@ module wb (
     wire [31:0] dmem_load_i;
     wire [31:0] wb_data; 
     wire [31:0] before_uart_data;
+
+    wire [31:0] bios_load_i;
+
     mux_dmem mux_dmem(
         .dmem_output(dmem_load_i),
-        .bios_output(bios_doutb_i),
+        .bios_output(bios_load_i),
         .pc_output(pc_plus_i),
         .rtype_output(alu_result_i),
         .control_data(control_wr_mux_i),
@@ -42,5 +45,13 @@ module wb (
         .control_load(control_load_i),
         .dmem_load_i(dmem_douta_i),
         .dmem_data_o(dmem_load_i));
+    
+    load_type load_bios(
+        .addr_offset(addr_offset_i),
+        .control_load(control_load_i),
+        .dmem_load_i(bios_doutb_i),
+        .dmem_data_o(bios_load_i)
+    );
+
 
 endmodule
