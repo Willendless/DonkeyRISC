@@ -77,7 +77,7 @@ module Riscv151
         .clk(clk), .rst(rst));
     
     wire [31:0] alu_result_reg1;
-    assign bios_addrb = {2'b0, alu_result_reg1[11:0] >> 2};
+    assign bios_addrb = alu_result_reg1[11:0];
 
     localparam IMEM_AWIDTH = 14;
     localparam IMEM_DWIDTH = 32;
@@ -406,7 +406,7 @@ module Riscv151
 
     // UART Transmitter
     wire [7:0] uart_tx_data_in;
-    assign uart_tx_data_in = mem_write_reg;
+    assign uart_tx_data_in = mem_write_reg[7:0];
 
     uart_transmitter #(
         .CLOCK_FREQ(CPU_CLOCK_FREQ),
