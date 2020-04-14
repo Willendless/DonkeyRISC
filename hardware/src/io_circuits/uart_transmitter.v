@@ -74,7 +74,7 @@ module uart_transmitter #(
         state_reg_next = state_reg_val;
         case (state_reg_val)
         IDLE: if (data_in_valid == 1'b1) state_reg_next = WORK;
-        WORK: if (bit_counter_val == 10) state_reg_next = IDLE; 
+        WORK: if (bit_counter_val == 9 && is_symbol_edge == 1'b1) state_reg_next = IDLE; 
         default: ; 
         endcase
     end
