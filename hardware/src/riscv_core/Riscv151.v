@@ -100,7 +100,7 @@ module Riscv151
     wire [31:0] pc_in1 = pc_in>>2;
     assign imem_addrb = alu_result_reg1[13:0];
     assign imem_addra = pc_in1[IMEM_AWIDTH-1:0];
-    assign imem_web = (alu_result_reg[31:29] == 3'b001 && pc_ex == 1'b1)
+    assign imem_web = (alu_result_reg[31:29] == 3'b001 && pc_ex[30] == 1'b1)
                        ? 1'b1 : 1'b0;
     // Instruction Memory
     // Synchronous read: read takes one cycle
@@ -462,7 +462,7 @@ module Riscv151
 
     assign bios_doutb = (pc_plus_wb[31:28] == 4'b0100 ||
                          rtype_output[31:28] == 4'b0100) ? bios_doutb_judge
-                         : bios_doutb;  
+                         : 32'b0;  
 
     //-----------wb stage---------------/
     wb WB (
