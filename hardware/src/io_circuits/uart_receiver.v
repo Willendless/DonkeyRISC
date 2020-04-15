@@ -104,7 +104,7 @@ module uart_receiver #(
     // clock counter
 
     assign clock_counter_next   = clock_counter_val + 1;
-    assign clock_counter_rst    = (is_symbol_edge == 1'b1);
+    assign clock_counter_rst    = (state_reg_val == DONE) | (is_symbol_edge == 1'b1) | rst;
     assign clock_counter_ce     = (state_reg_val == WORK);
 
     // bits shifter
@@ -116,6 +116,6 @@ module uart_receiver #(
     // counter
     assign bit_counter_next = bit_counter_val + 1;
     assign bit_counter_ce   = (state_reg_val == WORK && is_symbol_edge == 1'b1 && bit_counter_val < 10);
-    assign bit_counter_rst  = (state_reg_val == IDLE);
+    assign bit_counter_rst  = (state_reg_val == IDLE) | rst;
     
 endmodule
