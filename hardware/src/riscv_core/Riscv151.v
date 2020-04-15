@@ -36,7 +36,7 @@ module Riscv151
 
     wire [`REG_DBUS]    pc_data_reg;
     wire [`REG_DBUS]    pc_plus_reg;
-
+    wire [`WORD_BUS]    alu_result_reg;
     wire branch_judge;
     //wire [31:0] jal_addr1 = jal_addr<<2;
     
@@ -60,6 +60,8 @@ module Riscv151
     // BIOS Memory
     // Synchronous read: read takes one cycle
     // Synchronous write: write takes one cycle
+    wire [31:0] bios_doutb_judge;
+
     XILINX_SYNC_RAM_DP #(
         .AWIDTH(BIOS_AWIDTH),
         .DWIDTH(BIOS_DWIDTH),
@@ -70,7 +72,7 @@ module Riscv151
         .d0(32'b0),              // intput
         .addr0(bios_addra), // input
         .we0(1'b0),         // input
-        .q1(bios_doutb),    // output
+        .q1(bios_doutb_judge),    // output
         .d1(32'b0),              // input
         .addr1(bios_addrb), // input
         .we1(1'b0),         // input
@@ -93,11 +95,13 @@ module Riscv151
     wire imem_web;
 
     wire [3:0] dmem_wea_reg;
+    wire [`REG_DBUS]  pc_ex;
 
     wire [31:0] pc_in1 = pc_in>>2;
     assign imem_addrb = alu_result_reg1[13:0];
     assign imem_addra = pc_in1[IMEM_AWIDTH-1:0];
-    assign imem_web = dmem_wea_reg;
+    assign imem_web = (alu_result_reg[31:29] == 3'b001 && pc_ex == 1'b1)
+                       ? 1'b1 : 1'b0;
     // Instruction Memory
     // Synchronous read: read takes one cycle
     // Synchronous write: write takes one cycle
@@ -215,7 +219,6 @@ module Riscv151
     wire [4:0] rf2_forward;
     wire [4:0] wb_addr_ex;
 
-    wire [`REG_DBUS]    pc_ex;
     wire [`REG_DBUS]    pc_plus_ex;
 
     wire [1:0] control_forward;
@@ -292,7 +295,6 @@ module Riscv151
 
 //----------------execute stage------------//
 
-    wire [`WORD_BUS]    alu_result_reg;
     wire [`REG_ABUS]    wb_addr_reg;
     wire [1:0]          control_wr_mux_reg2;
     wire [`REG_DBUS]    pc_plus_reg2;
@@ -434,7 +436,8 @@ module Riscv151
 
     assign dmem_addra = {18'b0, alu_result_reg1[13:0]};
 
-    assign dmem_wea = dmem_wea_reg;
+    assign dmem_wea = (alu_result_reg[31:30] == 2'b00 
+                    && alu_result_reg[28] == 1'b1) ? dmem_wea_reg : 4'b0;
     // Data Memory
     // Synchronous read: read takes one cycle
     // Synchronous write: write takes one cycle
@@ -457,7 +460,9 @@ module Riscv151
         .clk(clk), .rst(rst)
     );
 
-    
+    assign bios_doutb = (pc_plus_wb[31:28] == 4'b0100 ||
+                         rtype_output[31:28] == 4'b0100) ? bios_doutb_judge
+                         : bios_doutb;  
 
     //-----------wb stage---------------/
     wb WB (
