@@ -89,7 +89,7 @@ module uart_receiver #(
             if (serial_in == 1'b0) state_reg_next = WORK;
         end
         WORK: begin
-            if (bit_counter_val == 9) state_reg_next = DONE; 
+            if (bit_counter_val == 9 & is_sample_time) state_reg_next = DONE; 
         end
         DONE: begin
             if (data_out_ready == 1'b1) state_reg_next = IDLE;
@@ -116,6 +116,7 @@ module uart_receiver #(
     // counter
     assign bit_counter_next = bit_counter_val + 1;
     assign bit_counter_ce   = (state_reg_val == WORK && is_symbol_edge == 1'b1 && bit_counter_val < 10);
-    assign bit_counter_rst  = (state_reg_val == IDLE) | rst;
+    assign bit_counter_rst  = (state_reg_val == DONE) | rst;
+
     
 endmodule

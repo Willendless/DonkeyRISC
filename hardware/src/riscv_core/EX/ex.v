@@ -153,7 +153,7 @@ module ex (
         .branch_judge(branch_judge)
     );
 
-    assign inst_exec_i = ~(branch_judge == 0 && control_jump_i == 2'b0);
+    assign inst_exec_i = (branch_judge == 0 && control_jump_i == 2'b0);
     
 
 endmodule // ex 
