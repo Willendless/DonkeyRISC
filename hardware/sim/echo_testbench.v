@@ -17,6 +17,7 @@ module echo_testbench();
     wire serial_out;
 
     Riscv151 # (
+        .RESET_PC(32'h40000000),
         .CPU_CLOCK_FREQ(CPU_CLOCK_FREQ),
         .BIOS_MEM_HEX_FILE("echo.mif")
     ) CPU (

@@ -1,0 +1,692 @@
+#-----------------------------------------------------------
+# Vivado v2019.1 (64-bit)
+# SW Build 2552052 on Fri May 24 14:49:42 MDT 2019
+# IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
+# Start of session at: Tue Apr 14 22:46:31 2020
+# Process ID: 12248
+# Current directory: C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware
+# Command line: vivado.exe -mode batch -source scripts/write_bitstream.tcl
+# Log file: C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/vivado.log
+# Journal file: C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware\vivado.jou
+#-----------------------------------------------------------
+source scripts/write_bitstream.tcl
+# set project_name "z1top"
+# set sources_file scripts/${project_name}.tcl
+# if {![file exists $sources_file]} {
+#     puts "Invalid project name!"
+#     exit
+# }
+# open_project ${project_name}_proj/${project_name}_proj.xpr
+INFO: [ProjectBase 1-489] The host OS only allows 260 characters in a normal path. The project is stored in a path with more than 80 characters. If you experience issues with IP, Block Designs, or files not being found, please consider moving the project to a location with a shorter path. Alternately consider using the OS subst command to map part of the path to a drive letter.
+Current project path is 'C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/z1top_proj'
+Scanning sources...
+Finished scanning sources
+# set sources_file scripts/${project_name}.tcl
+# update_compile_order -fileset sources_1
+# reset_run synth_1
+# launch_runs synth_1
+[Tue Apr 14 22:46:37 2020] Launched synth_1...
+Run output will be captured here: C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/z1top_proj/z1top_proj.runs/synth_1/runme.log
+# wait_on_run synth_1 -verbose
+[Tue Apr 14 22:46:38 2020] Waiting for synth_1 to finish...
+
+*** Running vivado
+    with args -log z1top.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source z1top.tcl
+
+
+****** Vivado v2019.1 (64-bit)
+  **** SW Build 2552052 on Fri May 24 14:49:42 MDT 2019
+  **** IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
+    ** Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+
+source z1top.tcl -notrace
+Command: synth_design -top z1top -part xc7z020clg400-1
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7z020'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7z020'
+INFO: [Device 21-403] Loading part xc7z020clg400-1
+INFO: Launching helper process for spawning children vivado processes
+INFO: Helper process launched with PID 26272 
+WARNING: [Synth 8-2490] overwriting previous definition of module Riscv151 [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/Riscv151.v:3]
+WARNING: [Synth 8-2490] overwriting previous definition of module button_parser [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/io_circuits/button_parser.v:2]
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:05 ; elapsed = 00:00:05 . Memory (MB): peak = 709.406 ; gain = 183.656
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'z1top' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/z1top.v:4]
+	Parameter CPU_CLOCK_PERIOD bound to: 20 - type: integer 
+	Parameter CPU_CLOCK_FREQ bound to: 50000000 - type: integer 
+	Parameter B_SAMPLE_CNT_MAX bound to: 25000 - type: integer 
+	Parameter B_PULSE_CNT_MAX bound to: 200 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'clk_wiz' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/clk_wiz.v:58]
+	Parameter CLKIN1_PERIOD bound to: 8 - type: integer 
+	Parameter CLKFBOUT_MULT_F bound to: 8 - type: integer 
+	Parameter DIVCLK_DIVIDE bound to: 1 - type: integer 
+	Parameter CLKOUT0_DIVIDE bound to: 20 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'IBUF' [D:/software/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:32856]
+	Parameter CAPACITANCE bound to: DONT_CARE - type: string 
+	Parameter IBUF_DELAY_VALUE bound to: 0 - type: string 
+	Parameter IBUF_LOW_PWR bound to: TRUE - type: string 
+	Parameter IFD_DELAY_VALUE bound to: AUTO - type: string 
+	Parameter IOSTANDARD bound to: DEFAULT - type: string 
+INFO: [Synth 8-6155] done synthesizing module 'IBUF' (1#1) [D:/software/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:32856]
+INFO: [Synth 8-6157] synthesizing module 'PLLE2_ADV' [D:/software/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:61199]
+	Parameter BANDWIDTH bound to: OPTIMIZED - type: string 
+	Parameter CLKFBOUT_MULT bound to: 8 - type: integer 
+	Parameter CLKFBOUT_PHASE bound to: 0.000000 - type: float 
+	Parameter CLKIN1_PERIOD bound to: 8.000000 - type: float 
+	Parameter CLKIN2_PERIOD bound to: 0.000000 - type: float 
+	Parameter CLKOUT0_DIVIDE bound to: 20 - type: integer 
+	Parameter CLKOUT0_DUTY_CYCLE bound to: 0.500000 - type: float 
+	Parameter CLKOUT0_PHASE bound to: 0.000000 - type: float 
+	Parameter CLKOUT1_DIVIDE bound to: 1 - type: integer 
+	Parameter CLKOUT1_DUTY_CYCLE bound to: 0.500000 - type: float 
+	Parameter CLKOUT1_PHASE bound to: 0.000000 - type: float 
+	Parameter CLKOUT2_DIVIDE bound to: 1 - type: integer 
+	Parameter CLKOUT2_DUTY_CYCLE bound to: 0.500000 - type: float 
+	Parameter CLKOUT2_PHASE bound to: 0.000000 - type: float 
+	Parameter CLKOUT3_DIVIDE bound to: 1 - type: integer 
+	Parameter CLKOUT3_DUTY_CYCLE bound to: 0.500000 - type: float 
+	Parameter CLKOUT3_PHASE bound to: 0.000000 - type: float 
+	Parameter CLKOUT4_DIVIDE bound to: 1 - type: integer 
+	Parameter CLKOUT4_DUTY_CYCLE bound to: 0.500000 - type: float 
+	Parameter CLKOUT4_PHASE bound to: 0.000000 - type: float 
+	Parameter CLKOUT5_DIVIDE bound to: 1 - type: integer 
+	Parameter CLKOUT5_DUTY_CYCLE bound to: 0.500000 - type: float 
+	Parameter CLKOUT5_PHASE bound to: 0.000000 - type: float 
+	Parameter COMPENSATION bound to: ZHOLD - type: string 
+	Parameter DIVCLK_DIVIDE bound to: 1 - type: integer 
+	Parameter IS_CLKINSEL_INVERTED bound to: 1'b0 
+	Parameter IS_PWRDWN_INVERTED bound to: 1'b0 
+	Parameter IS_RST_INVERTED bound to: 1'b0 
+	Parameter REF_JITTER1 bound to: 0.010000 - type: float 
+	Parameter REF_JITTER2 bound to: 0.010000 - type: float 
+	Parameter STARTUP_WAIT bound to: FALSE - type: string 
+INFO: [Synth 8-6155] done synthesizing module 'PLLE2_ADV' (2#1) [D:/software/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:61199]
+INFO: [Synth 8-6157] synthesizing module 'BUFG' [D:/software/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:1075]
+INFO: [Synth 8-6155] done synthesizing module 'BUFG' (3#1) [D:/software/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:1075]
+INFO: [Synth 8-6155] done synthesizing module 'clk_wiz' (4#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/clk_wiz.v:58]
+INFO: [Synth 8-6157] synthesizing module 'button_parser' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/io_circuits/button_parser.v:2]
+	Parameter WIDTH bound to: 4 - type: integer 
+	Parameter SAMPLE_CNT_MAX bound to: 25000 - type: integer 
+	Parameter PULSE_CNT_MAX bound to: 200 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'synchronizer' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/io_circuits/synchronizer.v:1]
+	Parameter WIDTH bound to: 4 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'REGISTER' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:27]
+	Parameter N bound to: 4 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'REGISTER' (5#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:27]
+INFO: [Synth 8-6155] done synthesizing module 'synchronizer' (6#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/io_circuits/synchronizer.v:1]
+INFO: [Synth 8-6157] synthesizing module 'debouncer' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/io_circuits/debouncer.v:1]
+	Parameter WIDTH bound to: 4 - type: integer 
+	Parameter SAMPLE_CNT_MAX bound to: 25000 - type: integer 
+	Parameter PULSE_CNT_MAX bound to: 200 - type: integer 
+	Parameter WRAPPING_CNT_WIDTH bound to: 16 - type: integer 
+	Parameter SAT_CNT_WIDTH bound to: 9 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'REGISTER_R_CE' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:63]
+	Parameter N bound to: 9 - type: integer 
+	Parameter INIT bound to: 9'b000000000 
+INFO: [Synth 8-6155] done synthesizing module 'REGISTER_R_CE' (7#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:63]
+INFO: [Synth 8-6157] synthesizing module 'REGISTER_R' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:49]
+	Parameter N bound to: 16 - type: integer 
+	Parameter INIT bound to: 16'b0000000000000000 
+INFO: [Synth 8-6155] done synthesizing module 'REGISTER_R' (8#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:49]
+INFO: [Synth 8-6157] synthesizing module 'REGISTER_CE' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:38]
+	Parameter N bound to: 4 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'REGISTER_CE' (9#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:38]
+INFO: [Synth 8-6155] done synthesizing module 'debouncer' (10#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/io_circuits/debouncer.v:1]
+INFO: [Synth 8-6157] synthesizing module 'edge_detector' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/io_circuits/edge_detector.v:1]
+	Parameter WIDTH bound to: 4 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'REGISTER_R_CE__parameterized0' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:63]
+	Parameter N bound to: 1 - type: integer 
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-6155] done synthesizing module 'REGISTER_R_CE__parameterized0' (10#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:63]
+INFO: [Synth 8-6155] done synthesizing module 'edge_detector' (11#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/io_circuits/edge_detector.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'button_parser' (12#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/io_circuits/button_parser.v:2]
+INFO: [Synth 8-6157] synthesizing module 'Riscv151' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/Riscv151.v:3]
+	Parameter CPU_CLOCK_FREQ bound to: 50000000 - type: integer 
+	Parameter RESET_PC bound to: 1073741824 - type: integer 
+	Parameter BAUD_RATE bound to: 115200 - type: integer 
+	Parameter BIOS_MEM_HEX_FILE bound to: bios151v3.mif - type: string 
+	Parameter BIOS_AWIDTH bound to: 12 - type: integer 
+	Parameter BIOS_DWIDTH bound to: 32 - type: integer 
+	Parameter BIOS_DEPTH bound to: 4096 - type: integer 
+	Parameter IMEM_AWIDTH bound to: 14 - type: integer 
+	Parameter IMEM_DWIDTH bound to: 32 - type: integer 
+	Parameter IMEM_DEPTH bound to: 16384 - type: integer 
+	Parameter DMEM_AWIDTH bound to: 32 - type: integer 
+	Parameter DMEM_DWIDTH bound to: 32 - type: integer 
+	Parameter DMEM_DEPTH bound to: 16384 - type: integer 
+	Parameter CSR_ADDR bound to: 12'b010100011110 
+INFO: [Synth 8-6157] synthesizing module 'mux_pc' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/mux.v:23]
+INFO: [Synth 8-6155] done synthesizing module 'mux_pc' (13#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/mux.v:23]
+INFO: [Synth 8-6157] synthesizing module 'REGISTER_R__parameterized0' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:49]
+	Parameter N bound to: 32 - type: integer 
+	Parameter INIT bound to: 32'b00111111111111111111111111111100 
+INFO: [Synth 8-6155] done synthesizing module 'REGISTER_R__parameterized0' (13#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:49]
+INFO: [Synth 8-6157] synthesizing module 'XILINX_SYNC_RAM_DP' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:279]
+	Parameter DWIDTH bound to: 32 - type: integer 
+	Parameter AWIDTH bound to: 12 - type: integer 
+	Parameter DEPTH bound to: 4096 - type: integer 
+	Parameter MEM_INIT_HEX_FILE bound to: bios151v3.mif - type: string 
+	Parameter MEM_INIT_BIN_FILE bound to: (null) - type: string 
+INFO: [Synth 8-5534] Detected attribute (* ram_style = "block" *) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:296]
+INFO: [Synth 8-3876] $readmem data file 'bios151v3.mif' is read successfully [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:301]
+INFO: [Synth 8-6155] done synthesizing module 'XILINX_SYNC_RAM_DP' (14#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:279]
+INFO: [Synth 8-6157] synthesizing module 'XILINX_SYNC_RAM_DP__parameterized0' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:279]
+	Parameter DWIDTH bound to: 32 - type: integer 
+	Parameter AWIDTH bound to: 14 - type: integer 
+	Parameter DEPTH bound to: 16384 - type: integer 
+	Parameter MEM_INIT_HEX_FILE bound to: (null) - type: string 
+	Parameter MEM_INIT_BIN_FILE bound to: (null) - type: string 
+INFO: [Synth 8-6155] done synthesizing module 'XILINX_SYNC_RAM_DP__parameterized0' (14#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:279]
+INFO: [Synth 8-6157] synthesizing module 'mux_imem_read' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/mux.v:66]
+INFO: [Synth 8-6155] done synthesizing module 'mux_imem_read' (15#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/mux.v:66]
+INFO: [Synth 8-6157] synthesizing module 'id' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/ID/id.v:17]
+INFO: [Synth 8-6157] synthesizing module 'control_unit' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/ID/control_unit.v:41]
+INFO: [Synth 8-6155] done synthesizing module 'control_unit' (16#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/ID/control_unit.v:41]
+INFO: [Synth 8-6157] synthesizing module 'imm_gen' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/ID/imm_gen.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'imm_gen' (17#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/ID/imm_gen.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'id' (18#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/ID/id.v:17]
+INFO: [Synth 8-6157] synthesizing module 'REGFILE_1W2R' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:455]
+	Parameter DWIDTH bound to: 32 - type: integer 
+	Parameter AWIDTH bound to: 5 - type: integer 
+	Parameter DEPTH bound to: 32 - type: integer 
+	Parameter MEM_INIT_HEX_FILE bound to: (null) - type: string 
+	Parameter MEM_INIT_BIN_FILE bound to: (null) - type: string 
+INFO: [Synth 8-6155] done synthesizing module 'REGFILE_1W2R' (19#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:455]
+INFO: [Synth 8-6157] synthesizing module 'id_ex' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/ID/id_ex.v:28]
+INFO: [Synth 8-6157] synthesizing module 'REGISTER_R__parameterized1' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:49]
+	Parameter N bound to: 1 - type: integer 
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-6155] done synthesizing module 'REGISTER_R__parameterized1' (19#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:49]
+INFO: [Synth 8-6157] synthesizing module 'REGISTER_R__parameterized2' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:49]
+	Parameter N bound to: 32 - type: integer 
+	Parameter INIT bound to: 32'b00000000000000000000000000000000 
+INFO: [Synth 8-6155] done synthesizing module 'REGISTER_R__parameterized2' (19#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:49]
+INFO: [Synth 8-6157] synthesizing module 'REGISTER_R__parameterized3' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:49]
+	Parameter N bound to: 5 - type: integer 
+	Parameter INIT bound to: 5'b00000 
+INFO: [Synth 8-6155] done synthesizing module 'REGISTER_R__parameterized3' (19#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:49]
+INFO: [Synth 8-6157] synthesizing module 'REGISTER_R__parameterized4' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:49]
+	Parameter N bound to: 3 - type: integer 
+	Parameter INIT bound to: 3'b000 
+INFO: [Synth 8-6155] done synthesizing module 'REGISTER_R__parameterized4' (19#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:49]
+INFO: [Synth 8-6157] synthesizing module 'REGISTER_R__parameterized5' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:49]
+	Parameter N bound to: 2 - type: integer 
+	Parameter INIT bound to: 2'b00 
+INFO: [Synth 8-6155] done synthesizing module 'REGISTER_R__parameterized5' (19#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:49]
+INFO: [Synth 8-6155] done synthesizing module 'id_ex' (20#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/ID/id_ex.v:28]
+INFO: [Synth 8-6157] synthesizing module 'ex' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/EX/ex.v:10]
+INFO: [Synth 8-6157] synthesizing module 'dmem_wr' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/EX/dmem_wr.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'dmem_wr' (21#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/EX/dmem_wr.v:3]
+INFO: [Synth 8-6157] synthesizing module 'alu_control' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/EX/alu_control.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'alu_control' (22#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/EX/alu_control.v:3]
+INFO: [Synth 8-6157] synthesizing module 'forwarding_unit' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/EX/forwarding_unit.v:4]
+INFO: [Synth 8-6155] done synthesizing module 'forwarding_unit' (23#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/EX/forwarding_unit.v:4]
+INFO: [Synth 8-6157] synthesizing module 'change_mem_wr' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/EX/change_mem_wr.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'change_mem_wr' (24#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/EX/change_mem_wr.v:1]
+INFO: [Synth 8-6157] synthesizing module 'mux_reg1' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/mux.v:38]
+INFO: [Synth 8-6155] done synthesizing module 'mux_reg1' (25#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/mux.v:38]
+INFO: [Synth 8-6157] synthesizing module 'mux_reg2' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/mux.v:52]
+INFO: [Synth 8-6155] done synthesizing module 'mux_reg2' (26#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/mux.v:52]
+INFO: [Synth 8-6157] synthesizing module 'alu' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/EX/alu.v:4]
+INFO: [Synth 8-6155] done synthesizing module 'alu' (27#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/EX/alu.v:4]
+INFO: [Synth 8-6157] synthesizing module 'branch_comp' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/EX/branch_comp.v:3]
+INFO: [Synth 8-155] case statement is not full and has no default [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/EX/branch_comp.v:14]
+INFO: [Synth 8-6155] done synthesizing module 'branch_comp' (28#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/EX/branch_comp.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'ex' (29#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/EX/ex.v:10]
+INFO: [Synth 8-6157] synthesizing module 'ex_wb' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/EX/ex_wb.v:3]
+INFO: [Synth 8-6157] synthesizing module 'REGISTER_R_CE__parameterized1' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:63]
+	Parameter N bound to: 32 - type: integer 
+	Parameter INIT bound to: 32'b00000000000000000000000000000000 
+INFO: [Synth 8-6155] done synthesizing module 'REGISTER_R_CE__parameterized1' (29#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:63]
+INFO: [Synth 8-6155] done synthesizing module 'ex_wb' (30#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/EX/ex_wb.v:3]
+INFO: [Synth 8-6157] synthesizing module 'uart_receiver' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/io_circuits/uart_receiver.v:1]
+	Parameter CLOCK_FREQ bound to: 50000000 - type: integer 
+	Parameter BAUD_RATE bound to: 115200 - type: integer 
+	Parameter SYMBOL_EDGE_TIME bound to: 434 - type: integer 
+	Parameter SAMPLE_TIME bound to: 217 - type: integer 
+	Parameter CLOCK_COUNTER_WIDTH bound to: 9 - type: integer 
+	Parameter IDLE bound to: 2'b00 
+	Parameter WORK bound to: 2'b01 
+	Parameter DONE bound to: 2'b11 
+INFO: [Synth 8-5534] Detected attribute (* mark_debug = "true" *) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/io_circuits/uart_receiver.v:22]
+INFO: [Synth 8-5534] Detected attribute (* mark_debug = "true" *) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/io_circuits/uart_receiver.v:34]
+INFO: [Synth 8-5534] Detected attribute (* mark_debug = "true" *) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/io_circuits/uart_receiver.v:47]
+INFO: [Synth 8-6157] synthesizing module 'REGISTER_CE__parameterized0' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:38]
+	Parameter N bound to: 10 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'REGISTER_CE__parameterized0' (30#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:38]
+INFO: [Synth 8-6157] synthesizing module 'REGISTER_R_CE__parameterized2' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:63]
+	Parameter N bound to: 4 - type: integer 
+	Parameter INIT bound to: 32'sb00000000000000000000000000000000 
+INFO: [Synth 8-6155] done synthesizing module 'REGISTER_R_CE__parameterized2' (30#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:63]
+INFO: [Synth 8-6157] synthesizing module 'REGISTER_R_CE__parameterized3' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:63]
+	Parameter N bound to: 9 - type: integer 
+	Parameter INIT bound to: 32'sb00000000000000000000000000000000 
+INFO: [Synth 8-6155] done synthesizing module 'REGISTER_R_CE__parameterized3' (30#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:63]
+INFO: [Synth 8-6071] Mark debug on the nets applies keep_hierarchy on instance 'rx_shift'. This will prevent further optimization [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/io_circuits/uart_receiver.v:27]
+INFO: [Synth 8-6071] Mark debug on the nets applies keep_hierarchy on instance 'bit_counter'. This will prevent further optimization [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/io_circuits/uart_receiver.v:39]
+INFO: [Synth 8-6071] Mark debug on the nets applies keep_hierarchy on instance 'clock_counter'. This will prevent further optimization [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/io_circuits/uart_receiver.v:53]
+INFO: [Synth 8-6155] done synthesizing module 'uart_receiver' (31#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/io_circuits/uart_receiver.v:1]
+INFO: [Synth 8-6157] synthesizing module 'uart_transmitter' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/io_circuits/uart_transmitter.v:1]
+	Parameter CLOCK_FREQ bound to: 50000000 - type: integer 
+	Parameter BAUD_RATE bound to: 115200 - type: integer 
+	Parameter SYMBOL_EDGE_TIME bound to: 434 - type: integer 
+	Parameter CLOCK_COUNTER_WIDTH bound to: 9 - type: integer 
+	Parameter IDLE bound to: 1'b0 
+	Parameter WORK bound to: 1'b1 
+INFO: [Synth 8-5534] Detected attribute (* mark_debug = "true" *) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/io_circuits/uart_transmitter.v:20]
+INFO: [Synth 8-5534] Detected attribute (* mark_debug = "true" *) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/io_circuits/uart_transmitter.v:31]
+INFO: [Synth 8-5534] Detected attribute (* mark_debug = "true" *) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/io_circuits/uart_transmitter.v:44]
+INFO: [Synth 8-226] default block is never used [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/io_circuits/uart_transmitter.v:75]
+INFO: [Synth 8-6155] done synthesizing module 'uart_transmitter' (32#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/io_circuits/uart_transmitter.v:1]
+INFO: [Synth 8-6157] synthesizing module 'SYNC_RAM_WBE' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:235]
+	Parameter DWIDTH bound to: 32 - type: integer 
+	Parameter AWIDTH bound to: 32 - type: integer 
+	Parameter DEPTH bound to: 16384 - type: integer 
+	Parameter MEM_INIT_HEX_FILE bound to: (null) - type: string 
+	Parameter MEM_INIT_BIN_FILE bound to: (null) - type: string 
+INFO: [Synth 8-5534] Detected attribute (* ram_style = "block" *) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:246]
+INFO: [Synth 8-6155] done synthesizing module 'SYNC_RAM_WBE' (33#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:235]
+INFO: [Synth 8-6157] synthesizing module 'wb' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/WB/wb.v:3]
+INFO: [Synth 8-6157] synthesizing module 'mux_dmem' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/mux.v:5]
+INFO: [Synth 8-6155] done synthesizing module 'mux_dmem' (34#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/mux.v:5]
+INFO: [Synth 8-6157] synthesizing module 'load_type' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/WB/load_type.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'load_type' (35#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/WB/load_type.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'wb' (36#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/WB/wb.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'Riscv151' (37#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/Riscv151.v:3]
+INFO: [Synth 8-6157] synthesizing module 'REGISTER_IOB' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:76]
+	Parameter N bound to: 1 - type: integer 
+INFO: [Synth 8-5534] Detected attribute (* IOB = "true" *) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:78]
+INFO: [Synth 8-6155] done synthesizing module 'REGISTER_IOB' (38#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v:76]
+INFO: [Synth 8-6155] done synthesizing module 'z1top' (39#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/z1top.v:4]
+WARNING: [Synth 8-3331] design SYNC_RAM_WBE has unconnected port addr[31]
+WARNING: [Synth 8-3331] design SYNC_RAM_WBE has unconnected port addr[30]
+WARNING: [Synth 8-3331] design SYNC_RAM_WBE has unconnected port addr[29]
+WARNING: [Synth 8-3331] design SYNC_RAM_WBE has unconnected port addr[28]
+WARNING: [Synth 8-3331] design SYNC_RAM_WBE has unconnected port addr[27]
+WARNING: [Synth 8-3331] design SYNC_RAM_WBE has unconnected port addr[26]
+WARNING: [Synth 8-3331] design SYNC_RAM_WBE has unconnected port addr[25]
+WARNING: [Synth 8-3331] design SYNC_RAM_WBE has unconnected port addr[24]
+WARNING: [Synth 8-3331] design SYNC_RAM_WBE has unconnected port addr[23]
+WARNING: [Synth 8-3331] design SYNC_RAM_WBE has unconnected port addr[22]
+WARNING: [Synth 8-3331] design SYNC_RAM_WBE has unconnected port addr[21]
+WARNING: [Synth 8-3331] design SYNC_RAM_WBE has unconnected port addr[20]
+WARNING: [Synth 8-3331] design SYNC_RAM_WBE has unconnected port addr[19]
+WARNING: [Synth 8-3331] design SYNC_RAM_WBE has unconnected port addr[18]
+WARNING: [Synth 8-3331] design SYNC_RAM_WBE has unconnected port addr[17]
+WARNING: [Synth 8-3331] design SYNC_RAM_WBE has unconnected port addr[16]
+WARNING: [Synth 8-3331] design SYNC_RAM_WBE has unconnected port addr[15]
+WARNING: [Synth 8-3331] design SYNC_RAM_WBE has unconnected port addr[14]
+WARNING: [Synth 8-3331] design imm_gen has unconnected port opcode_i[1]
+WARNING: [Synth 8-3331] design imm_gen has unconnected port opcode_i[0]
+WARNING: [Synth 8-3331] design imm_gen has unconnected port funct_i[2]
+WARNING: [Synth 8-3331] design imm_gen has unconnected port funct_i[1]
+WARNING: [Synth 8-3331] design imm_gen has unconnected port funct_i[0]
+WARNING: [Synth 8-3331] design z1top has unconnected port SWITCHES[0]
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:10 ; elapsed = 00:00:11 . Memory (MB): peak = 800.672 ; gain = 274.922
+---------------------------------------------------------------------------------
+
+Report Check Netlist: 
++------+------------------+-------+---------+-------+------------------+
+|      |Item              |Errors |Warnings |Status |Description       |
++------+------------------+-------+---------+-------+------------------+
+|1     |multi_driven_nets |      0|        0|Passed |Multi driven nets |
++------+------------------+-------+---------+-------+------------------+
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:11 ; elapsed = 00:00:12 . Memory (MB): peak = 804.785 ; gain = 279.035
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:11 ; elapsed = 00:00:12 . Memory (MB): peak = 804.785 ; gain = 279.035
+---------------------------------------------------------------------------------
+INFO: [Netlist 29-17] Analyzing 1 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Parsing XDC File [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/constrs/pynq-z1.xdc]
+Finished Parsing XDC File [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/constrs/pynq-z1.xdc]
+INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/constrs/pynq-z1.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/z1top_propImpl.xdc].
+Resolution: To avoid this warning, move constraints listed in [.Xil/z1top_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
+INFO: [Timing 38-2] Deriving generated clocks
+Completed Processing XDC Constraints
+
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 934.793 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.025 . Memory (MB): peak = 934.793 ; gain = 0.000
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:21 ; elapsed = 00:00:22 . Memory (MB): peak = 934.793 ; gain = 409.043
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xc7z020clg400-1
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:21 ; elapsed = 00:00:22 . Memory (MB): peak = 934.793 ; gain = 409.043
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:21 ; elapsed = 00:00:23 . Memory (MB): peak = 934.793 ; gain = 409.043
+---------------------------------------------------------------------------------
+INFO: [Synth 8-5587] ROM size for "control_forward" is below threshold of ROM address width. It will be mapped to LUTs
+INFO: [Synth 8-5587] ROM size for "control_forward" is below threshold of ROM address width. It will be mapped to LUTs
+INFO: [Synth 8-3971] The signal "XILINX_SYNC_RAM_DP:/mem_reg" was recognized as a true dual port RAM template.
+INFO: [Synth 8-3971] The signal "XILINX_SYNC_RAM_DP__parameterized0:/mem_reg" was recognized as a true dual port RAM template.
+WARNING: [Synth 8-6841] Block RAM (mem_reg) originally specified as a Byte Wide Write Enable RAM cannot take advantage of ByteWide feature and is implemented with single write enable per RAM due to following reason.
+(address width (14) is more than optimal threshold of 12. Implementing using BWWE will require more logic and timing would be suboptimal. Please use attribute "ram_decomp = power" if BWWE is desired.)
+WARNING: [Synth 8-327] inferring latch for variable 'bios_doutb' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/Riscv151.v:464]
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:23 ; elapsed = 00:00:24 . Memory (MB): peak = 934.793 ; gain = 409.043
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     32 Bit       Adders := 5     
+	   3 Input     32 Bit       Adders := 1     
+	   2 Input     16 Bit       Adders := 1     
+	   2 Input      9 Bit       Adders := 6     
+	   2 Input      4 Bit       Adders := 2     
++---XORs : 
+	   2 Input     32 Bit         XORs := 1     
++---Registers : 
+	               32 Bit    Registers := 18    
+	               16 Bit    Registers := 1     
+	               10 Bit    Registers := 2     
+	                9 Bit    Registers := 6     
+	                5 Bit    Registers := 4     
+	                4 Bit    Registers := 5     
+	                3 Bit    Registers := 3     
+	                2 Bit    Registers := 9     
+	                1 Bit    Registers := 18    
++---RAMs : 
+	             512K Bit         RAMs := 2     
+	             128K Bit         RAMs := 1     
+	             1024 Bit         RAMs := 1     
++---Muxes : 
+	   2 Input     32 Bit        Muxes := 19    
+	   6 Input     32 Bit        Muxes := 1     
+	   8 Input     32 Bit        Muxes := 1     
+	   4 Input     32 Bit        Muxes := 2     
+	   3 Input     32 Bit        Muxes := 2     
+	   2 Input     16 Bit        Muxes := 4     
+	   2 Input     10 Bit        Muxes := 2     
+	   2 Input      8 Bit        Muxes := 1     
+	   4 Input      8 Bit        Muxes := 2     
+	   5 Input      4 Bit        Muxes := 1     
+	   4 Input      4 Bit        Muxes := 1     
+	  10 Input      4 Bit        Muxes := 1     
+	   2 Input      4 Bit        Muxes := 2     
+	  13 Input      4 Bit        Muxes := 1     
+	   2 Input      3 Bit        Muxes := 1     
+	   6 Input      3 Bit        Muxes := 1     
+	   8 Input      3 Bit        Muxes := 1     
+	  11 Input      2 Bit        Muxes := 1     
+	   4 Input      2 Bit        Muxes := 2     
+	   3 Input      2 Bit        Muxes := 2     
+	   2 Input      2 Bit        Muxes := 7     
+	   6 Input      1 Bit        Muxes := 1     
+	   2 Input      1 Bit        Muxes := 7     
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start RTL Hierarchical Component Statistics 
+---------------------------------------------------------------------------------
+Hierarchical RTL Component report 
+Module REGISTER 
+Detailed RTL Component Info : 
++---Registers : 
+	                4 Bit    Registers := 1     
+Module REGISTER_R 
+Detailed RTL Component Info : 
++---Registers : 
+	               16 Bit    Registers := 1     
+Module REGISTER_CE 
+Detailed RTL Component Info : 
++---Registers : 
+	                4 Bit    Registers := 1     
+Module REGISTER_R_CE 
+Detailed RTL Component Info : 
++---Registers : 
+	                9 Bit    Registers := 1     
+Module debouncer 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     16 Bit       Adders := 1     
+	   2 Input      9 Bit       Adders := 4     
+Module REGISTER_R_CE__parameterized0 
+Detailed RTL Component Info : 
++---Registers : 
+	                1 Bit    Registers := 1     
+Module mux_pc 
+Detailed RTL Component Info : 
++---Muxes : 
+	   2 Input     32 Bit        Muxes := 2     
+Module REGISTER_R__parameterized0 
+Detailed RTL Component Info : 
++---Registers : 
+	               32 Bit    Registers := 1     
+Module XILINX_SYNC_RAM_DP 
+Detailed RTL Component Info : 
++---Registers : 
+	               32 Bit    Registers := 2     
++---RAMs : 
+	             128K Bit         RAMs := 1     
+Module XILINX_SYNC_RAM_DP__parameterized0 
+Detailed RTL Component Info : 
++---Registers : 
+	               32 Bit    Registers := 2     
++---RAMs : 
+	             512K Bit         RAMs := 1     
+Module mux_imem_read 
+Detailed RTL Component Info : 
++---Muxes : 
+	   2 Input     32 Bit        Muxes := 1     
+Module control_unit 
+Detailed RTL Component Info : 
++---Muxes : 
+	   2 Input      3 Bit        Muxes := 1     
+	   6 Input      3 Bit        Muxes := 1     
+	  11 Input      2 Bit        Muxes := 1     
+	   4 Input      2 Bit        Muxes := 1     
+	   3 Input      2 Bit        Muxes := 1     
+	   2 Input      2 Bit        Muxes := 2     
+Module imm_gen 
+Detailed RTL Component Info : 
++---Muxes : 
+	   6 Input     32 Bit        Muxes := 1     
+	   8 Input     32 Bit        Muxes := 1     
+	   8 Input      3 Bit        Muxes := 1     
+Module id 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     32 Bit       Adders := 2     
+Module REGFILE_1W2R 
+Detailed RTL Component Info : 
++---RAMs : 
+	             1024 Bit         RAMs := 1     
+Module REGISTER_R__parameterized1 
+Detailed RTL Component Info : 
++---Registers : 
+	                1 Bit    Registers := 1     
+Module REGISTER_R__parameterized2 
+Detailed RTL Component Info : 
++---Registers : 
+	               32 Bit    Registers := 1     
+Module REGISTER_R__parameterized3 
+Detailed RTL Component Info : 
++---Registers : 
+	                5 Bit    Registers := 1     
+Module REGISTER_R__parameterized4 
+Detailed RTL Component Info : 
++---Registers : 
+	                3 Bit    Registers := 1     
+Module REGISTER_R__parameterized5 
+Detailed RTL Component Info : 
++---Registers : 
+	                2 Bit    Registers := 1     
+Module id_ex 
+Detailed RTL Component Info : 
++---Muxes : 
+	   2 Input     32 Bit        Muxes := 2     
+Module dmem_wr 
+Detailed RTL Component Info : 
++---Muxes : 
+	   5 Input      4 Bit        Muxes := 1     
+	   4 Input      4 Bit        Muxes := 1     
+Module alu_control 
+Detailed RTL Component Info : 
++---Muxes : 
+	  10 Input      4 Bit        Muxes := 1     
+	   2 Input      4 Bit        Muxes := 1     
+	  13 Input      4 Bit        Muxes := 1     
+Module forwarding_unit 
+Detailed RTL Component Info : 
++---Muxes : 
+	   3 Input      2 Bit        Muxes := 1     
+	   2 Input      2 Bit        Muxes := 1     
+Module mux_reg1 
+Detailed RTL Component Info : 
++---Muxes : 
+	   4 Input     32 Bit        Muxes := 1     
+Module mux_reg2 
+Detailed RTL Component Info : 
++---Muxes : 
+	   4 Input     32 Bit        Muxes := 1     
+Module alu 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     32 Bit       Adders := 1     
+	   3 Input     32 Bit       Adders := 1     
++---XORs : 
+	   2 Input     32 Bit         XORs := 1     
++---Muxes : 
+	   6 Input      1 Bit        Muxes := 1     
+Module branch_comp 
+Detailed RTL Component Info : 
++---Muxes : 
+	   2 Input      1 Bit        Muxes := 4     
+Module ex 
+Detailed RTL Component Info : 
++---Muxes : 
+	   3 Input     32 Bit        Muxes := 1     
+	   2 Input     32 Bit        Muxes := 3     
+	   2 Input      2 Bit        Muxes := 1     
+Module REGISTER_R_CE__parameterized1 
+Detailed RTL Component Info : 
++---Registers : 
+	               32 Bit    Registers := 1     
+Module ex_wb 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     32 Bit       Adders := 2     
++---Muxes : 
+	   2 Input     32 Bit        Muxes := 1     
+Module REGISTER_CE__parameterized0 
+Detailed RTL Component Info : 
++---Registers : 
+	               10 Bit    Registers := 1     
+Module REGISTER_R_CE__parameterized2 
+Detailed RTL Component Info : 
++---Registers : 
+	                4 Bit    Registers := 1     
+Module REGISTER_R_CE__parameterized3 
+Detailed RTL Component Info : 
++---Registers : 
+	                9 Bit    Registers := 1     
+Module uart_receiver 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input      9 Bit       Adders := 1     
+	   2 Input      4 Bit       Adders := 1     
++---Muxes : 
+	   2 Input     10 Bit        Muxes := 1     
+	   4 Input      2 Bit        Muxes := 1     
+	   2 Input      2 Bit        Muxes := 3     
+Module uart_transmitter 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input      9 Bit       Adders := 1     
+	   2 Input      4 Bit       Adders := 1     
++---Muxes : 
+	   2 Input     10 Bit        Muxes := 1     
+	   2 Input      1 Bit        Muxes := 3     
+Module SYNC_RAM_WBE 
+Detailed RTL Component Info : 
++---Registers : 
+	               32 Bit    Registers := 1     
++---RAMs : 
+	             512K Bit         RAMs := 1     
++---Muxes : 
+	   2 Input     32 Bit        Muxes := 6     
+	   2 Input      8 Bit        Muxes := 1     
+Module mux_dmem 
+Detailed RTL Component Info : 
++---Muxes : 
+	   2 Input     32 Bit        Muxes := 2     
+	   3 Input     32 Bit        Muxes := 1     
+Module load_type 
+Detailed RTL Component Info : 
++---Muxes : 
+	   2 Input     16 Bit        Muxes := 2     
+	   4 Input      8 Bit        Muxes := 1     
+Module wb 
+Detailed RTL Component Info : 
++---Muxes : 
+	   2 Input     32 Bit        Muxes := 2     
+Module Riscv151 
+Detailed RTL Component Info : 
++---Muxes : 
+	   2 Input      4 Bit        Muxes := 1     
+Module REGISTER_IOB 
+Detailed RTL Component Info : 
++---Registers : 
+	                1 Bit    Registers := 1     
+---------------------------------------------------------------------------------
+Finished RTL Hierarchical Component Statistics
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 220 (col length:60)
+BRAMs: 280 (col length: RAMB18 60 RAMB36 30)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+Warning: Parallel synthesis criteria is not met 
+INFO: [Synth 8-5587] ROM size for "cpu/ID/control/control_forward" is below threshold of ROM address width. It will be mapped to LUTs
+WARNING: [Synth 8-3331] design z1top has unconnected port SWITCHES[0]
+WARNING: [Synth 8-6014] Unused sequential element cpu/bios_mem/mem_reg was removed. 
+WARNING: [Synth 8-6014] Unused sequential element cpu/bios_mem/mem_reg was removed. 
+WARNING: [Synth 8-6014] Unused sequential element cpu/imem/mem_reg was removed. 
+WARNING: [Synth 8-6841] Block RAM (cpu/dmem/mem_reg) originally specified as a Byte Wide Write Enable RAM cannot take advantage of ByteWide feature and is implemented with single write enable per RAM due to following reason.
+(address width (14) is more than optimal threshold of 12. Implementing using BWWE will require more logic and timing would be suboptimal. Please use attribute "ram_decomp = power" if BWWE is desired.)
+INFO: [Synth 8-3886] merging instance 'cpu/ID_EX/pc_plus_reg/q_reg[0]' (FDR) to 'cpu/ID_EX/pc_data_reg/q_reg[0]'
+INFO: [Synth 8-3886] merging instance 'cpu/EX_WB/store_offset/q_reg[0]' (FDR) to 'cpu/EX_WB/store_alu/q_reg[0]'
+INFO: [Synth 8-3886] merging instance 'cpu/EX_WB/store_offset/q_reg[1]' (FDR) to 'cpu/EX_WB/store_alu/q_reg[1]'
+INFO: [Common 17-41] Interrupt caught. Command should exit soon.
+[Tue Apr 14 22:49:37 2020] Interrupt received
+wait_on_run: Time (s): cpu = 00:00:00 ; elapsed = 00:03:00 . Memory (MB): peak = 280.020 ; gain = 0.000
+INFO: [Common 17-344] 'wait_on_run' was cancelled
+INFO: [Common 17-344] 'source' was cancelled
+INFO: [Common 17-206] Exiting Vivado at Tue Apr 14 22:49:37 2020...

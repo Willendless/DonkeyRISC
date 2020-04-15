@@ -1,4 +1,5 @@
 `include "../defines.vh"
+`include "../Opcode.vh"
 module branch_comp(
     input [2:0] branch_type,
     input [31:0] a,
@@ -8,6 +9,7 @@ module branch_comp(
 );
 
     always @(*) begin
+        branch_judge = 1'b0;
         if (is_branch == 1) begin
             case(branch_type)
             `BEQ: branch_judge = (a == b);
@@ -15,25 +17,25 @@ module branch_comp(
                 if (a[31] == 0 && b[31] == 0)
                     branch_judge = (a >= b);
                 else if (a[31] == 1 && b[31] == 1)
-                    branch_judge = (a <= b);
-                else if (a[31] == 0 && b[31] == 1)
-                    branch_judge = 0;
-                else
-                    branch_judge = 1;
-                end
-            `BGEU: branch_judge = (a >= b);
-            `BLT: begin
-                if (a[31] == 0 && b[31] == 0)
-                    branch_judge = (a < b);
-                else if (a[31] == 1 && b[31] == 1)
                     branch_judge = (a >= b);
                 else if (a[31] == 0 && b[31] == 1)
                     branch_judge = 1;
                 else
                     branch_judge = 0;
                 end
+            `BGEU: branch_judge = (a >= b);
+            `BLT: begin
+                if (a[31] == 0 && b[31] == 0)
+                    branch_judge = (a < b);
+                else if (a[31] == 1 && b[31] == 1)
+                    branch_judge = (a < b);
+                else if (a[31] == 0 && b[31] == 1)
+                    branch_judge = 0;
+                else
+                    branch_judge = 1;
+                end
             `BLTU: branch_judge = (a < b);
-            `BNE: branch_judge = ~(a==b);
+            `BNE: branch_judge = ~(a == b);
             endcase
         end else begin
             branch_judge = 1'b0;

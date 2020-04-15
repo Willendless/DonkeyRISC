@@ -24,7 +24,9 @@ module isa_testbench();
     reg done = 0;
     reg [31:0] cycle = 0;
     reg [255:0] MIF_FILE;
+    
     initial begin
+   
         if (!$value$plusargs("MIF_FILE=%s", MIF_FILE)) begin
             $display("Must supply mif_file!");
             $finish();
@@ -32,6 +34,8 @@ module isa_testbench();
 
         $readmemh(MIF_FILE, CPU.dmem.mem);
         $readmemh(MIF_FILE, CPU.imem.mem);
+   //     $readmemh("D:/PDF/course/UCB/eecs151/proj/hardware/sim/slti.mif", CPU.dmem.mem);
+     //   $readmemh("D:/PDF/course/UCB/eecs151/proj/hardware/sim/slti.mif", CPU.imem.mem);
 
         rst = 0;
 
@@ -46,7 +50,7 @@ module isa_testbench();
         end
         done = 1;
 
-        if (csr[0] === 1'b1 && csr[31:1] === 31'd0) begin
+        if (csr[0] == 1'b1 && csr[31:1] == 31'd0) begin
             $display("[PASSED] - %s in %d simulation cycles", MIF_FILE, cycle);
         end else begin
             $display("[FAILED] - %s. Failed test: %d", MIF_FILE, csr[31:1]);

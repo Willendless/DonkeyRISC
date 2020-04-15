@@ -6,8 +6,7 @@
 *
 */
 `include "../defines.vh"
-`include "../mux.v"
-
+`include "../Opcode.vh"
 module ex (
     //  forward data
     input wire [31:0] forward_data,
@@ -31,11 +30,14 @@ module ex (
     // control signal
     input wire[1:0] control_forward_i,
     input wire[1:0] alu_op_i,
-    input wire control_uart_i, //TODO
+    input wire [1:0] control_uart_i, //TODO
     input wire control_dmem_i,
     input wire[1:0] control_wr_mux_i,
     input wire control_csr_we_i,
-
+    input wire control_wb_i,
+    input wire control_wb_back,
+    input wire control_branch_i,
+    input wire[1:0] control_jump_i,
 
     output wire[`WORD_BUS]      alu_result_o,
     output wire[`REG_DBUS]      mem_write_o,      
@@ -44,10 +46,18 @@ module ex (
     output wire[`REG_DBUS]      pc_plus_o,
     output wire [3:0]           dmem_we,
     output wire                 control_csr_we_o,
-    output wire[`REG_DBUS]      csr_data_o
+    output wire[`REG_DBUS]      csr_data_o,
+    output wire                 control_wb_o,
+    output wire                 branch_judge,
+    output wire                 inst_exec_i,
+    output wire [1:0]           control_uart_o
     
 );
     wire [31:0] aluout;
+    assign control_uart_o = (aluout == 32'h80000004 || aluout == 32'h80000008
+                            || aluout == 32'h80000000 || aluout == 32'h80000010 || aluout == 32'h80000014) ?
+                            control_uart_i : 2'b0;
+    
     assign alu_result_o = aluout;
     dmem_wr dmem_wr (
         .funct3_i(funct3_i),
@@ -56,10 +66,6 @@ module ex (
         .dmem_we(dmem_we)
     );
 
-    // csr control signal
-    assign control_csr_we_o = control_csr_we_i;
-    assign csr_data_o = funct3_i == 3'b001 ? reg1_data_i : 
-                        funct3_i == 3'b101 ? imm_i : 32'b0;
 
 
     // write back control signal
@@ -85,16 +91,24 @@ module ex (
         .reg1_addr(reg1_addr_i),
         .reg2_addr(reg2_addr_i),
         .wb_addr(wb_addr_i),
+        .is_wb(control_wb_back),
         .control_forward(control_forward_i),
         .reg1_judge(reg1_judge),
         .reg2_judge(reg2_judge),
         .mem_wdata_judge(mem_wdata_judge));
 
+    assign control_wb_o = control_wb_i;
+    
     wire [31:0] aluin1;
     wire [31:0] aluin2;
 
     wire [`REG_DBUS]    mem_wdata;
     assign mem_wdata = mem_wdata_judge == 1'b0 ? reg2_data_i : forward_data;
+
+    // csr control signal
+    assign control_csr_we_o = control_csr_we_i;
+    assign csr_data_o = funct3_i == 3'b001 ? aluin1 : 
+                        funct3_i == 3'b101 ? imm_i : 32'b0;
 
     // memory wirte data
     change_mem_wr change_mem_wr(
@@ -122,6 +136,24 @@ module ex (
         .aluin2(aluin2),
         .aluCtrl(alu_ctrl),
         .aluout(aluout));
+    
+    wire [31:0] branch_comp_a;
+    wire [31:0] branch_comp_b;
+
+    assign branch_comp_a = (control_wb_back && (wb_addr_i == reg1_addr_i))
+                            ? forward_data : reg1_data_i;
+    assign branch_comp_b = (control_wb_back && (wb_addr_i == reg2_addr_i))
+                            ? forward_data : reg2_data_i;
+
+    branch_comp branch_comp(
+        .branch_type(funct3_i),
+        .a(branch_comp_a),
+        .b(branch_comp_b),
+        .is_branch(control_branch_i),
+        .branch_judge(branch_judge)
+    );
+
+    assign inst_exec_i = (branch_judge == 0 && control_jump_i == 2'b0);
     
 
 endmodule // ex 

@@ -4,19 +4,18 @@ module change_mem_wr(
     output reg [31:0] out_data
     );
 
-integer i;
-integer j = 0;
-
-initial begin
-    out_data = 32'b0;
-end
 always @(*) begin
-    for (i = 0; i < 4; i = i + 1) begin
-        if (dmem_we[i]) begin
-            out_data[i*8 +: 8] = in_data[j*8 +: 8];
-            j = j + 1;
-        end
-    end
-    j = 0;
+    out_data = 32'b0;
+    case(dmem_we)
+        4'b1111: out_data = in_data;
+        4'b0011: out_data = {16'b0, in_data[15:0]};
+        4'b0110: out_data = {8'b0, in_data[15:0], 8'b0};
+        4'b1100: out_data = {in_data[15:0], 16'b0};
+        4'b0001: out_data = {24'b0, in_data[7:0]};
+        4'b0010: out_data = {16'b0, in_data[7:0], 8'b0};
+        4'b0100: out_data = {8'b0, in_data[7:0], 16'b0};
+        4'b1000: out_data = {in_data[7:0], 24'b0};
+        default: out_data = 32'b0;
+    endcase
 end
 endmodule

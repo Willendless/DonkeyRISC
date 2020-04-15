@@ -6,8 +6,8 @@ module uart_receiver #(
     input rst,
 
     // Dequeue the received character to the Sink
-    output reg [7:0] data_out,
-    output reg data_out_valid,
+    output [7:0] data_out,
+    output data_out_valid,
     input data_out_ready,
 
     // Serial bit input
@@ -21,14 +21,13 @@ module uart_receiver #(
 
     (* mark_debug = "true" *) wire [9:0] rx_shift_val;
     wire [9:0] rx_shift_next;
-    wire rx_shift_ce, rx_shift_rst;
+    wire rx_shift_ce;
 
     // LSB to MSB
-    REGISTER_R_CE #(.N(10)) rx_shift (
+    REGISTER_CE #(.N(10)) rx_shift (
         .q(rx_shift_val),
         .d(rx_shift_next),
         .ce(rx_shift_ce),
-        .rst(rx_shift_rst),
         .clk(clk)
     );
 
@@ -47,7 +46,7 @@ module uart_receiver #(
 
      (* mark_debug = "true" *) wire [CLOCK_COUNTER_WIDTH-1:0] clock_counter_val;
     wire [CLOCK_COUNTER_WIDTH-1:0] clock_counter_next;
-    reg clock_counter_ce;
+    wire clock_counter_ce;
     wire clock_counter_rst;
 
     // Keep track of sample time and symbol edge time
@@ -67,12 +66,10 @@ module uart_receiver #(
     // a back-pressure handling (i.e., if data_out_ready is LOW for a long time)
     wire data_out_fire = data_out_valid & data_out_ready;
 
-    // TODO: Fill in the remaining logic to implement the UART Receiver
-
     // UART receiver state machine
 
-    localparam IDLE     = 2'b0;
-    localparam WORK     = 2'b1;
+    localparam IDLE     = 2'b00; 
+    localparam WORK     = 2'b01;
     localparam DONE     = 2'b11;
     
     wire [1:0] state_reg_val;
@@ -84,57 +81,42 @@ module uart_receiver #(
         .clk(clk), 
         .rst(rst)
     );
-    
-    always @ (*) begin
-        data_out_valid = 1'b0;
-        data_out = 8'b0;
-        clock_counter_ce = 1'b0;
-        case (state_reg_val) 
-            IDLE: begin
-                if (serial_in == 1'b0) begin
-                    clock_counter_ce = 1'b1;
-                    state_reg_next = WORK;
-                end 
-                else state_reg_next = IDLE;
-            end
-            WORK: begin
-                clock_counter_ce = 1'b1;
-                if (bit_counter_val == 9 && clock_counter_val == SYMBOL_EDGE_TIME - 2) begin
-                    data_out = rx_shift_val[7:0];
-                    state_reg_next = DONE;
-                end
-                else state_reg_next = WORK;
-            end
-            DONE: begin
-                data_out = rx_shift_val[7:0];
-                data_out_valid = 1'b1;
-                if (serial_in == 1'b0) state_reg_next = WORK;
-                else if (data_out_ready == 1'b1) begin
-                    clock_counter_ce = 1'b1;
-                    state_reg_next = IDLE;
-                end
-                else state_reg_next = DONE;
-            end
-            default: begin
-                state_reg_next = IDLE;
-            end
+
+    always @(*) begin
+        state_reg_next = state_reg_val;
+        case (state_reg_val)
+        IDLE: begin
+            if (serial_in == 1'b0) state_reg_next = WORK;
+        end
+        WORK: begin
+            if (bit_counter_val == 9 & is_sample_time) state_reg_next = DONE; 
+        end
+        DONE: begin
+            if (data_out_ready == 1'b1) state_reg_next = IDLE;
+        end
+        default: ;
         endcase
     end
+
+    assign data_out_valid   = (state_reg_val == DONE);
+    assign data_out         = rx_shift_val[8:1];
     
     // clock counter
 
     assign clock_counter_next   = clock_counter_val + 1;
-    assign clock_counter_rst    = (state_reg_val == DONE) || (is_symbol_edge == 1);
+    assign clock_counter_rst    = (state_reg_val == DONE) | (is_symbol_edge == 1'b1) | rst;
+    assign clock_counter_ce     = (state_reg_val == WORK);
 
     // bits shifter
 
-    assign rx_shift_next    = rx_shift_val | (serial_in << (bit_counter_val - 1));
-    assign rx_shift_ce      = is_sample_time && (bit_counter_val > 0);
-    assign rx_shift_rst     = (state_reg_val != WORK);
+    assign rx_shift_next    = serial_in == 1'b1 ? (rx_shift_val | (1'b1 << bit_counter_val))
+                                : (rx_shift_val & ~(1'b1 << bit_counter_val));
+    assign rx_shift_ce      = (state_reg_val == WORK && is_sample_time);
     
     // counter
     assign bit_counter_next = bit_counter_val + 1;
-    assign bit_counter_ce   = (is_symbol_edge == 1);
-    assign bit_counter_rst  = (state_reg_val == DONE);
+    assign bit_counter_ce   = (state_reg_val == WORK && is_symbol_edge == 1'b1 && bit_counter_val < 10);
+    assign bit_counter_rst  = (state_reg_val == DONE) | rst;
+
     
 endmodule
