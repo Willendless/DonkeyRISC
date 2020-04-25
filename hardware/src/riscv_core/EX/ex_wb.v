@@ -22,10 +22,10 @@ module ex_wb (
     output wire[`REG_DBUS]      pc_plus_o,
     output wire[1:0]            addr_offset,
     output wire                 control_wb_o,
-    output [31:0]               uart_data_o,
+    output wire[`REG_DBUS]      uart_data_o,
     output wire[1:0]            control_uart_o
 );
-    REGISTER_R #(.N(2)) store_uart(
+    REGISTER_R #(.N(2)) store_uart_control(
         .q(control_uart_o),
         .clk(clk),
         .rst(rst),
@@ -72,18 +72,9 @@ module ex_wb (
         .clk(clk),
         .rst(rst),
         .d(control_wb_i));
-    /*
-    wire [7:0] store_data;
-    REGISTER_R_CE # (.N(8), .INIT(7'b0)) store_uart_data(
-        .q(store_data),
-        .d(uart_read_i),
-        .clk(clk),
-        .rst(rst),
-        .ce(uart_rx_out_valid)
-    );*/
     
-    wire [31:0] cycle_count1;
-    wire [31:0] cycle_count2;
+    wire [31:0] cycle_count_val;
+    wire [31:0] cycle_count_next;
     wire reset_count;
     wire is_count;
 
@@ -92,21 +83,21 @@ module ex_wb (
     assign is_count = inst_exec_i;
 
     REGISTER_R # (.N(32), .INIT(32'b0)) cycle_counter(
-        .q(cycle_count1),
-        .d(cycle_count2),
+        .q(cycle_count_val),
+        .d(cycle_count_next),
         .rst(reset_count),
         .clk(clk)
     );
 
-    assign cycle_count2 = cycle_count1 + 1;
+    assign cycle_count_next = cycle_count_val + 1;
 
-    wire [31:0] inst_count1;
-    wire [31:0] inst_count2;
-    assign inst_count2 = inst_count1 + 1;
+    wire [31:0] inst_count_val;
+    wire [31:0] inst_count_next;
+    assign inst_count_next = inst_count_val + 1;
 
     REGISTER_R_CE # (.N(32), .INIT(32'b0)) inst_counter(
-        .q(inst_count1),
-        .d(inst_count2),
+        .q(inst_count_val), 
+        .d(inst_count_next),
         .rst(reset_count),
         .clk(clk),
         .ce(is_count)
@@ -118,8 +109,8 @@ always @(*) begin
     case(alu_result_i)
         32'h80000000: uart_data = {30'b0, uart_rx_out_valid, uart_tx_in_ready};
         32'h80000004: uart_data = {24'b0, uart_read_i};
-        32'h80000010: uart_data = cycle_count1;
-        32'h80000014: uart_data = inst_count1;
+        32'h80000010: uart_data = cycle_count_val;
+        32'h80000014: uart_data = inst_count_val;
         default: uart_data = 32'b0;
     endcase
 end

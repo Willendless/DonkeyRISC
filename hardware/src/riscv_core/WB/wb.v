@@ -19,10 +19,10 @@ module wb (
 );
     assign wb_addr_o = wb_addr_i;
     wire [31:0] dmem_load_i;
+    wire [31:0] bios_load_i;
     wire [31:0] wb_data; 
     wire [31:0] before_uart_data;
 
-    wire [31:0] bios_load_i;
 
     mux_dmem mux_dmem(
         .dmem_output(dmem_load_i),
@@ -40,18 +40,15 @@ module wb (
 
     assign wb_data_o = (wb_addr_i == 32'b0) ? 31'b0 : wb_data;
     
-    load_type load_type(
+    load_type dmem_load_type(
         .addr_offset(addr_offset_i),
         .control_load(control_load_i),
         .dmem_load_i(dmem_douta_i),
         .dmem_data_o(dmem_load_i));
-    
-    load_type load_bios(
+    load_type bios_load_type(
         .addr_offset(addr_offset_i),
         .control_load(control_load_i),
         .dmem_load_i(bios_doutb_i),
-        .dmem_data_o(bios_load_i)
-    );
-
+        .dmem_data_o(bios_load_i));
 
 endmodule
