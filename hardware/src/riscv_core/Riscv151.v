@@ -101,7 +101,7 @@ module Riscv151
     assign imem_addrb = alu_result_reg1[13:0];
     assign imem_addra = pc_in1[IMEM_AWIDTH-1:0];
     assign imem_web = (alu_result_reg[31:29] == 3'b001 && pc_ex[30] == 1'b1)
-                       ? 1'b1 : 1'b0;
+                       ? (dmem_wea_reg != 4'b0) : 1'b0;
     // Instruction Memory
     // Synchronous read: read takes one cycle
     // Synchronous write: write takes one cycle

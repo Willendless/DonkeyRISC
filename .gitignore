@@ -19,3 +19,11 @@ _minted*
 *.mif
 *.dump
 *.hex
+
+*.vcd
+*.bit
+
+vivado.jou
+vivado.log
+
+./hardware/vcd_files/*
