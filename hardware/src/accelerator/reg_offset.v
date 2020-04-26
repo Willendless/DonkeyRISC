@@ -65,7 +65,7 @@ REGISTER_R_CE #(.N(32)) status_store(
     .d(status_i),
     .rst(rst),
     .ce(status_ce),
-    .clk(clK)
+    .clk(clk)
 );
 
 wire state_dmem_next = state_dmem_o + 1;
