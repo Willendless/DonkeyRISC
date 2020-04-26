@@ -453,11 +453,11 @@ module Riscv151
 //----------add the conv2d accelerator-------------------//
     reg [31:0] timeout_cycle = 500000;
 
-    reg  start;
+    wire  start;
     wire idle;
     wire done;
-    reg  [31:0] fm_dim;
-    reg  [31:0] wt_offset, ifm_offset, ofm_offset;
+    wire [31:0] fm_dim;
+    wire [31:0] wt_offset, ifm_offset, ofm_offset;
 
     wire [AWIDTH-1:0] req_read_addr;
     wire req_read_addr_valid;
@@ -484,6 +484,12 @@ module Riscv151
     wire [DMEM_AWIDTH-1:0] dmem_addrb;
     wire [3:0] dmem_web;
     wire [DMEM_DWIDTH-1:0] dmem_dinb, dmem_doutb;
+
+    wire [DMEM_AWIDTH-1:0] dmem_addra_conv, dmem_addrb_conv;
+    wire [DMEM_DWIDTH-1:0] dmem_douta_conv, dmem_doutb_conv, dmem_dina_conv, dmem_dinb_conv;
+    wire [3:0] dmem_wea_conv, dmem_web_conv;
+
+    wire [31:0] status_read;
 
     conv2D_naive #(
         .AWIDTH(AWIDTH),
@@ -567,15 +573,15 @@ module Riscv151
         .resp_write_status_ready(resp_write_status_ready), // output
 
         // DMem PortA <---> IO Read
-        .dmem_douta(dmem_douta), // input
-        .dmem_dina(dmem_dina),   // output
-        .dmem_addra(dmem_addra), // output
-        .dmem_wea(dmem_wea),     // output
+        .dmem_douta(dmem_douta_conv), // input
+        .dmem_dina(dmem_dina_conv),   // output
+        .dmem_addra(dmem_addra_conv), // output
+        .dmem_wea(dmem_wea_conv),     // output
 
         // DMem PortB <---> IO Write
-        .dmem_doutb(dmem_doutb), // input
-        .dmem_dinb(dmem_dinb),   // output
-        .dmem_addrb(dmem_addrb), // output
+        .dmem_doutb(dmem_doutb_conv), // input
+        .dmem_dinb(dmem_dinb_conv),   // output
+        .dmem_addrb(dmem_addrb_conv), // output
         .dmem_web(dmem_web)      // output
     );
 
@@ -596,6 +602,23 @@ module Riscv151
         .wbe1(dmem_web),
 
         .clk(clk), .rst(rst));
+    
+    reg_offset conv_reg(
+        .mem_write_i(mem_write_reg),
+        .conv_addr_i(alu_result_reg),
+        .rst(rst),
+        .clk(clk),
+        .idle_i(idle),
+        .done_i(done),
+
+        .ifm_offset_o(ifm_offset),
+        .ofm_offset_o(ofm_offset),
+        .fm_dim_o(fm_dim),
+        .wt_offset_o(wt_offset),
+        .start_o(start),
+        .status_read_o(status_read)
+    );
+
 //-----------------conv2d-------------------//
 
     REGISTER_R_CE #(.N(32)) csr_reg (
@@ -611,6 +634,7 @@ module Riscv151
 
     //-----------wb stage---------------/
     wb WB (
+        .conv_data_i(status_read),
         .uart_data_i(uart_data_out),
         .control_load_i(control_load),
         .control_uart_i(control_load_uart),

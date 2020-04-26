@@ -2,9 +2,10 @@
 `include "../Opcode.vh"
 module wb (
     // from ex_wb
+    input wire[31:0]             conv_data_i,
     input wire[31:0]             alu_result_i,
     input wire[4:0]              wb_addr_i,
-    input wire[1:0]             control_wr_mux_i,
+    input wire[1:0]              control_wr_mux_i,
     input wire[31:0]             pc_plus_i,
     input wire[2:0]              control_load_i,
     input wire[1:0]              addr_offset_i,
@@ -36,7 +37,10 @@ module wb (
     assign wb_data = (control_uart_i > 2'b0 
                       && (alu_result_i == 32'h80000000 || alu_result_i == 32'h80000004
                       ||  alu_result_i == 32'h80000010 || alu_result_i == 32'h80000014))
-                      ? uart_data_i : before_uart_data;
+                      ? uart_data_i :
+                      (control_uart_i == 2'b01 && (alu_result_i == `CONV_WRITE))
+                      ? conv_data_i :
+                      before_uart_data;
 
     assign wb_data_o = (wb_addr_i == 32'b0) ? 31'b0 : wb_data;
     
