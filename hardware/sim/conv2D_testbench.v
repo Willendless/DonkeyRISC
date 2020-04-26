@@ -45,7 +45,7 @@ module conv2D_testbench();
     wire req_write_data_valid;
     wire req_write_data_ready;
 
-    wire [DWIDTH-1:0] resp_write_status;
+    wire resp_write_status;
     wire resp_write_status_valid;
     wire resp_write_status_ready;
 
