@@ -13,7 +13,8 @@ module reg_offset (
     output [31:0] fm_dim_o,
     output [31:0] wt_offset_o,
     output start_o,
-    output [31:0] status_read_o
+    output [31:0] status_read_o,
+    output state_dmem_o
 );
 
 wire feature_ce = (conv_addr_i == `CONV_FEATURE);
@@ -21,6 +22,7 @@ wire weight_ce = (conv_addr_i == `CONV_WEIGHT);
 wire input_ce = (conv_addr_i == `CONV_INPUT);
 wire output_ce = (conv_addr_i == `CONV_OUTPUT);
 wire status_ce = (conv_addr_i == `CONV_READ);
+wire state_ce = (idle_i && done_i) || start_o;
 
 wire status_i = {30'b0, idle_i, done_i};
 
@@ -65,5 +67,15 @@ REGISTER_R_CE #(.N(32)) status_store(
     .ce(status_ce),
     .clk(clK)
 );
+
+wire state_dmem_next = state_dmem_o + 1;
+REGISTER_R_CE #(.N(1), .INIT(0)) conv_state(
+    .q(state_dmem_o),
+    .d(state_dmem_next),
+    .rst(rst),
+    .ce(state_ce),
+    .clk(clk)
+);
+
 
 endmodule

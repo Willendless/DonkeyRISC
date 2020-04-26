@@ -437,15 +437,10 @@ module Riscv151
     wire [DMEM_AWIDTH-1:0] dmem_addra;
     wire [DMEM_DWIDTH-1:0] dmem_dina, dmem_douta;
 
-    assign dmem_dina = mem_write_reg;
     assign imem_dinb = mem_write_reg;
     
     assign alu_result_reg1 = alu_result_reg>>2;
 
-    assign dmem_addra = {18'b0, alu_result_reg1[13:0]};
-
-    assign dmem_wea = (alu_result_reg[31:30] == 2'b00 
-                    && alu_result_reg[28] == 1'b1) ? dmem_wea_reg : 4'b0;
     // Data Memory
     // Synchronous read: read takes one cycle
     // Synchronous write: write takes one cycle
@@ -490,6 +485,7 @@ module Riscv151
     wire [3:0] dmem_wea_conv, dmem_web_conv;
 
     wire [31:0] status_read;
+    wire is_conv_addr;
 
     conv2D_naive #(
         .AWIDTH(AWIDTH),
@@ -616,9 +612,33 @@ module Riscv151
         .fm_dim_o(fm_dim),
         .wt_offset_o(wt_offset),
         .start_o(start),
-        .status_read_o(status_read)
+        .status_read_o(status_read),
+        .state_dmem_o(is_conv_addr)
     );
+    //port a is used for read
 
+assign dmem_dina = (alu_result_reg[31:30] == 2'b00 
+                    && alu_result_reg[28] == 1'b1) ? mem_write_reg : 
+                    is_conv_addr ? dmem_dina_conv :
+                    32'b0;
+
+assign dmem_addra = (alu_result_reg[31:30] == 2'b00 && alu_result_reg[28] == 1'b1) ?
+                    {18'b0, alu_result_reg1[13:0]} : 
+                    is_conv_addr ? dmem_addra_conv :
+                    32'b0;
+
+assign dmem_wea = (alu_result_reg[31:30] == 2'b00 
+                    && alu_result_reg[28] == 1'b1) ? dmem_wea_reg : 
+                    is_conv_addr ? dmem_wea_conv :
+                    4'b0;
+
+assign dmem_douta_conv = dmem_douta;
+
+//port b is used for write
+assign dmem_web = is_conv_addr ? dmem_web_conv : 32'b0;
+assign dmem_dinb = is_conv_addr ? dmem_dinb_conv : 32'b0;
+assign dmem_addrb = is_conv_addr ? dmem_addrb_conv : 4'b0;
+assign dmem_doutb_conv = dmem_doutb;
 //-----------------conv2d-------------------//
 
     REGISTER_R_CE #(.N(32)) csr_reg (
