@@ -14,7 +14,15 @@ module Riscv151
     output FPGA_SERIAL_TX,
     output [31:0] csr
 );
+    localparam FM_DIM    = 8;
+    localparam WT_DIM    = 3;
+    localparam AWIDTH    = 14;
+    localparam DWIDTH    = 32;
+    localparam MEM_DEPTH = 16384;
 
+    localparam WT_OFFSET  = 0;
+    localparam IN_OFFSET  = WT_OFFSET + WT_DIM * WT_DIM;
+    localparam OUT_OFFSET = IN_OFFSET + FM_DIM * FM_DIM;
 /*
     parameter CPU_CLOCK_FREQ    = 50_000_000;
     parameter RESET_PC          = 32'h4000_0000;
@@ -442,16 +450,153 @@ module Riscv151
     // Synchronous read: read takes one cycle
     // Synchronous write: write takes one cycle
     // Byte addressable: select which of the four bytes to write
-    SYNC_RAM_WBE #(
-        .AWIDTH(DMEM_AWIDTH),
-        .DWIDTH(DMEM_DWIDTH),
-        .DEPTH(DMEM_DEPTH)
+//----------add the conv2d accelerator-------------------//
+    reg [31:0] timeout_cycle = 500000;
+
+    reg  start;
+    wire idle;
+    wire done;
+    reg  [31:0] fm_dim;
+    reg  [31:0] wt_offset, ifm_offset, ofm_offset;
+
+    wire [AWIDTH-1:0] req_read_addr;
+    wire req_read_addr_valid;
+    wire req_read_addr_ready;
+    wire [31:0] req_read_len;
+
+    wire [DWIDTH-1:0] resp_read_data;
+    wire resp_read_data_valid;
+    wire resp_read_data_ready;
+
+    wire [AWIDTH-1:0] req_write_addr;
+    wire req_write_addr_valid;
+    wire req_write_addr_ready;
+    wire [31:0] req_write_len;
+
+    wire [DWIDTH-1:0] req_write_data;
+    wire req_write_data_valid;
+    wire req_write_data_ready;
+
+    wire resp_write_status;
+    wire resp_write_status_valid;
+    wire resp_write_status_ready;
+
+    wire [DMEM_AWIDTH-1:0] dmem_addrb;
+    wire [3:0] dmem_web;
+    wire [DMEM_DWIDTH-1:0] dmem_dinb, dmem_doutb;
+
+    conv2D_naive #(
+        .AWIDTH(AWIDTH),
+        .DWIDTH(DWIDTH),
+        .WT_DIM(WT_DIM)
+    ) conv2D_naive (
+        .clk(clk),
+        .rst(rst),
+
+        .start(start),                                     // input
+        .idle(idle),                                       // output
+        .done(done),                                       // output
+
+        .fm_dim(fm_dim),                                   // input
+        .wt_offset(wt_offset),                             // input
+        .ifm_offset(ifm_offset),                           // input
+        .ofm_offset(ofm_offset),                           // input
+
+        // Read Request Address channel
+        .req_read_addr(req_read_addr),                     // output
+        .req_read_addr_valid(req_read_addr_valid),         // output
+        .req_read_addr_ready(req_read_addr_ready),         // input
+        .req_read_len(req_read_len),                       // output
+
+        // Read Response channel
+        .resp_read_data(resp_read_data),                   // input
+        .resp_read_data_valid(resp_read_data_valid),       // input
+        .resp_read_data_ready(resp_read_data_ready),       // output
+
+        // Write Request Address channel
+        .req_write_addr(req_write_addr),                   // output
+        .req_write_addr_valid(req_write_addr_valid),       // output
+        .req_write_addr_ready(req_write_addr_ready),       // input
+        .req_write_len(req_write_len),                     // output
+
+        // Write Request Data channel
+        .req_write_data(req_write_data),                   // output
+        .req_write_data_valid(req_write_data_valid),       // output
+        .req_write_data_ready(req_write_data_ready),       // input
+
+        // Write Response channel
+        .resp_write_status(resp_write_status),             // output
+        .resp_write_status_valid(resp_write_status_valid), // output
+        .resp_write_status_ready(resp_write_status_ready)  // input
+    );
+
+    io_dmem_controller #(
+        .AWIDTH(AWIDTH),
+        .DWIDTH(DWIDTH),
+        .MAX_BURST_LEN(8),
+        .IO_LATENCY(10)
+    ) io_dmem_controller (
+        .clk(clk),
+        .rst(rst),
+
+        // Read Request Address channel
+        .req_read_addr(req_read_addr),                     // input
+        .req_read_addr_valid(req_read_addr_valid),         // input
+        .req_read_addr_ready(req_read_addr_ready),         // output
+        .req_read_len(req_read_len),                       // input
+
+        // Read Response channel
+        .resp_read_data(resp_read_data),                   // output
+        .resp_read_data_valid(resp_read_data_valid),       // output
+        .resp_read_data_ready(resp_read_data_ready),       // input
+
+        // Write Request Address channel
+        .req_write_addr(req_write_addr),                   // input
+        .req_write_addr_valid(req_write_addr_valid),       // input
+        .req_write_addr_ready(req_write_addr_ready),       // output
+        .req_write_len(req_write_len),                     // input
+
+        // Write Request Data channel
+        .req_write_data(req_write_data),                   // input
+        .req_write_data_valid(req_write_data_valid),       // input
+        .req_write_data_ready(req_write_data_ready),       // output
+
+        // Write Response channel
+        .resp_write_status(resp_write_status),             // input
+        .resp_write_status_valid(resp_write_status_valid), // input
+        .resp_write_status_ready(resp_write_status_ready), // output
+
+        // DMem PortA <---> IO Read
+        .dmem_douta(dmem_douta), // input
+        .dmem_dina(dmem_dina),   // output
+        .dmem_addra(dmem_addra), // output
+        .dmem_wea(dmem_wea),     // output
+
+        // DMem PortB <---> IO Write
+        .dmem_doutb(dmem_doutb), // input
+        .dmem_dinb(dmem_dinb),   // output
+        .dmem_addrb(dmem_addrb), // output
+        .dmem_web(dmem_web)      // output
+    );
+
+    // DMem
+    XILINX_SYNC_RAM_DP_WBE #(
+        .AWIDTH(AWIDTH),
+        .DWIDTH(DWIDTH),
+        .DEPTH(MEM_DEPTH)
     ) dmem (
-        .q(dmem_douta),    // output
-        .d(dmem_dina),     // input
-        .addr(dmem_addra), // input
-        .wbe(dmem_wea),    // input
+        .q0(dmem_douta),
+        .d0(dmem_dina),
+        .addr0(dmem_addra),
+        .wbe0(dmem_wea),
+
+        .q1(dmem_doutb),
+        .d1(dmem_dinb),
+        .addr1(dmem_addrb),
+        .wbe1(dmem_web),
+
         .clk(clk), .rst(rst));
+//-----------------conv2d-------------------//
 
     REGISTER_R_CE #(.N(32)) csr_reg (
         .q(csr),
@@ -482,7 +627,6 @@ module Riscv151
     );
     assign rf_wd = wb_data;
     assign rf_we = (wb_addr != 32'b0) ? control_wb_back : 1'b0;
-
 
 
     // Construct your datapath, add as many modules as you want
