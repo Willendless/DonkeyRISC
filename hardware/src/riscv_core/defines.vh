@@ -108,4 +108,13 @@
 `define BLT 3'b100 
 `define BLTU 3'b110 
 `define BNE 3'b001
+
+//-------define of conv2D-----------------//
+`define CONV_WRITE 32'h80000040
+`define CONV_READ 32'h80000044
+`define CONV_FEATURE 32'h80000048
+`define CONV_WEIGHT 32'h8000004c
+`define CONV_INPUT 32'h80000050
+`define CONV_OUTPUT 32'h80000054
+
 `endif
