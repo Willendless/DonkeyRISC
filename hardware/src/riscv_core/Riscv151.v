@@ -1,5 +1,4 @@
-`include "defines.vh"
-`include "Opcode.vh"
+
 module Riscv151
 #(
     parameter CPU_CLOCK_FREQ    = 50_000_000,

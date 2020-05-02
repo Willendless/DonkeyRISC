@@ -117,4 +117,12 @@
 `define CONV_INPUT 32'h80000050
 `define CONV_OUTPUT 32'h80000054
 
+`define CONV_RESET          32'h80000018
+`define CONV_START          32'h80000040
+`define CONV_STATUS         32'h80000044
+`define CONV_FM_DIM         32'h80000048
+`define CONV_WEIGHT_OFF     32'h8000004c
+`define CONV_INPUT_FM       32'h80000050
+`define CONV_OUTPUT_FM      32'h80000054
+
 `endif

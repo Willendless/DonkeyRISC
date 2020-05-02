@@ -1,4 +1,4 @@
-`include "../riscv_core/defines.vh"
+`include "../defines.vh"
 `include "../Opcode.vh"
 
 module conv_controller (
