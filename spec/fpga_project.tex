@@ -67,7 +67,15 @@ Version \projectSpecVersion
 \section{Introduction}
 The goal of this project is to familiarize EECS151/251A students with the methods and tools of digital design.
 Working alone or in a team of two, you will design and implement a 3-stage pipelined RISC-V CPU with a UART for tethering.
+<<<<<<< HEAD
 Afterwards, you will build a 2D Convolutional hardware accelerator and do a system integration with your RISC-V CPU.
+=======
+<<<<<<< HEAD
+Afterwards, you will attach the IO circuits you built in the lab to the CPU, and design a 2D Convolutional filter accelerator for image processing applications.
+=======
+Afterwards, you will build a 2D Convolutional hardware accelerator and do a system integration with your RISC-V CPU.
+>>>>>>> d876782f5951ebb67897a68d2a811cd9a1da2e96
+>>>>>>> dev
 Finally, you will optimize your CPU for performance (maximizing the Iron Law) and cost (FPGA resource utilization).
 
 You will use Verilog to implement this system, targeting the Xilinx PYNQ platform (a PYNQ-Z1 development board with a Zynq 7000-series FPGA).
@@ -87,21 +95,28 @@ The following is a brief description of each checkpoint and approximately how ma
 %The current schedule is summarised at the end of the document in Section \ref{project_timeline}.
 
 \begin{itemize}
-<<<<<<< HEAD
+
   \item \textbf{\blockDiagramDueDate \space - \blockDiagramTaskName \space (\blockDiagramTimeAlloted)} - Submit a report to Gradescope with the following items: a schematic of your processor's datapath and pipeline stages, and your answers to the checkpoint 1 questions. The TA will give you feedback if applicable. In addition, push all of your IO-circuit Verilog modules that you have implemented in the labs to your assigned Github repository: \verb|debouncer|, \verb|edge_detector|, \verb|synchronizer|, \verb|fifo|, \verb|uart_receiver|, \verb|uart_transmitter|, \verb|display_controller|.
   \item \textbf{\ALUDueDate \space - \ALUTaskName \space (\ALUTimeAlloted)} - Go over your RISC-V microarchitecture with the TA (via Zoom). You should have a working ALU module and a complete instructional decoder by this point, and some basic datapath and control logic. This is mainly for the TA to keep track of your current progress.
   \item \textbf{\baseCPUDueDate \space - \baseCPUTaskName \space (\baseCPUTimeAlloted)} - Implement a fully functional RISC-V processor core in Verilog. Your processor core should pass the assembly tests.
   \item \textbf{\imageDueDate \space - \imageTaskName \space (\imageTimeAlloted)} - Attach I/O components from lab to your processor (FIFOs, buttons, switches, display), and 2D Convolutional filter. If time permits, interfacing with off-chip DRAMs using AXI4 bus.
-=======
+
   \item \textbf{\blockDiagramDueDate \space - \blockDiagramTaskName \space (\blockDiagramTimeAlloted)} - Submit a report to Gradescope with the following items: a schematic of your processor's datapath and pipeline stages, and your answers to the checkpoint 1 questions. The TA will give you feedback if applicable. In addition, push all of your IO-circuit Verilog modules that you have implemented in the labs to your assigned Github repository: \verb|debouncer|, \verb|edge_detector|, \verb|synchronizer|, \verb|fifo|, \verb|uart_receiver|, \verb|uart_transmitter|.
   \item \textbf{\ALUDueDate \space - \ALUTaskName \space (\ALUTimeAlloted)} - You should have a working Riscv151 core that can decode and execute all RV32I instructions, including CSR. It is not required that your implementation is high-performance nor integrated with the UART modules.
   \item \textbf{\baseCPUDueDate \space - \baseCPUTaskName \space (\baseCPUTimeAlloted)} - Implement a fully functional RISC-V processor core in Verilog. Your processor core should pass the assembly tests.
+<<<<<<< HEAD
 <<<<<<< HEAD
   \item \textbf{\imageDueDate \space - \imageTaskName \space (\imageTimeAlloted)} - Attach I/O components from lab to your processor (FIFOs, buttons, switches), and \textbf{TBA}.
 >>>>>>> 71cf8e2460eff1d217062926fce09ee05a5afbe9
 =======
   \item \textbf{\imageDueDate \space - \imageTaskName \space (\imageTimeAlloted)} - Implement an IO memory-mapped hardware-accelerated 2D Convolutional filter.
 >>>>>>> d876782f5951ebb67897a68d2a811cd9a1da2e96
+=======
+  
+
+  \item \textbf{\imageDueDate \space - \imageTaskName \space (\imageTimeAlloted)} - Implement an IO memory-mapped hardware-accelerated 2D Convolutional filter.
+
+>>>>>>> dev
   \item \textbf{\finalCheckoffDueDate \space - Final Checkoff + Demo} - Final processor optimization and checkoff
   \item \textbf{\finalReportDueDate \space - Project Report} - Final report due
 \end{itemize}
