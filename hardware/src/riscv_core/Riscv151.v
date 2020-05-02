@@ -173,6 +173,8 @@ module Riscv151
     wire control_branch_reg;
     wire control_wb_reg;
     wire [31:0] branch_addr_reg;
+    wire [3:0] alu_ctrl_reg;
+
     id ID (
         .inst_i(inst_output),
         .pc_data_i(pc_store),
@@ -182,7 +184,6 @@ module Riscv151
         .reg1_addr_o(rf_ra1),
         .reg2_addr_o(rf_ra2),
         .funct3_o(inst_alu_reg),
-        .inst_alu30_o(inst_alu30_reg),
         .pc_data_o(pc_data_reg),
         .pc_plus_o(pc_plus_reg),
         .imm_o(imm_out),
@@ -194,14 +195,14 @@ module Riscv151
         .reg2_data_o(reg2_data_reg),
         .control_forward_o(control_forward_reg),
         .control_jump_o(control_jump_reg),
-        .alu_op_o(aluOp_reg),
         .control_uart_o(control_uart_reg),
         .control_dmem_o(control_dmem_reg),
         .control_wr_mux_o(control_wr_mux_reg),
         .control_csr_we_o(control_csr_we_reg),
         .control_load_o(control_load_reg),
         .control_wb_o(control_wb_reg),
-        .control_branch_o(control_branch_reg)
+        .control_branch_o(control_branch_reg),
+        .alu_ctrl_o(alu_ctrl_reg)
     );
 
     // Asynchronous read: read data is available in the same cycle
@@ -238,7 +239,6 @@ module Riscv151
     wire control_csr_we;
 
     wire [2:0] inst_alu;
-    wire inst_alu30;
 
     wire [2:0] control_load_ex;
     wire control_wb_ex;
@@ -248,6 +248,8 @@ module Riscv151
     wire if_flush;
     assign if_flush = rst || branch_judge || jump_judge[0] || jump_judge[1];
     wire control_wb_back;  
+    wire [3:0] alu_ctrl;
+
     id_ex ID_EX (
         .clk(clk),
         .rst(if_flush),//add jal jalr judge
@@ -260,10 +262,8 @@ module Riscv151
         .reg2_addr_i(reg2_addr_reg),
         .imm_i(imm_out),
         .funct3_i(inst_alu_reg),
-        .inst_alu30_i(inst_alu30_reg),
         .control_forward_i(control_forward_reg),
         .control_jump_i(control_jump_reg),
-        .alu_op_i(aluOp_reg),
         .control_uart_i(control_uart_reg),
         .control_dmem_i(control_dmem_reg),
         .control_wr_mux_i(control_wr_mux_reg),
@@ -275,6 +275,7 @@ module Riscv151
         .wb_data_i(wb_data),
         .wb_addr_i(wb_addr),
         .is_wb_i(control_wb_back),
+        .alu_ctrl_i(alu_ctrl_reg),
 
         .branch_addr_o(branch_addr),
         .pc_data_o(pc_ex),
@@ -287,16 +288,15 @@ module Riscv151
         .imm_o(imm_ex),
         .control_forward_o(control_forward),
         .control_jump_o(control_jump),
-        .alu_op_o(aluOp),
         .control_uart_o(control_uart), // TODO
         .control_dmem_o(control_dmem),
         .control_wr_mux_o(control_wr_mux),
         .control_csr_we_o(control_csr_we),
         .funct3_o(inst_alu),
-        .inst_alu30_o(inst_alu30),
         .control_load_o(control_load_ex),
         .control_wb_o(control_wb_ex),
-        .control_branch_o(control_branch)
+        .control_branch_o(control_branch),
+        .alu_ctrl_o(alu_ctrl)
     );
 
     assign jump_judge = control_jump;
@@ -328,9 +328,7 @@ module Riscv151
         .reg2_addr_i(rf2_forward),
         .imm_i(imm_ex),
         .funct3_i(inst_alu),
-        .inst_alu30_i(inst_alu30),
         .control_forward_i(control_forward),
-        .alu_op_i(aluOp),
         .control_uart_i(control_uart),  //TODO
         .control_dmem_i(control_dmem),
         .control_wr_mux_i(control_wr_mux),
@@ -339,6 +337,7 @@ module Riscv151
         .control_wb_back(control_wb_back),
         .control_branch_i(control_branch),
         .control_jump_i(control_jump),
+        .alu_ctrl_i(alu_ctrl),
 
         .mem_write_o(mem_write_reg),
         .alu_result_o(alu_result_reg),

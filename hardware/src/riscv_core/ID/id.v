@@ -28,7 +28,6 @@ module id (
     output wire[`WORD_BUS]     branch_addr_o,
 
 // data to id_ex
-    output wire                 inst_alu30_o,
     output wire [2:0]                funct3_o,
 
     output wire[`REG_DBUS]      pc_data_o,
@@ -43,14 +42,14 @@ module id (
 
     output [1:0] control_forward_o,
     output [1:0] control_jump_o,
-    output [1:0] alu_op_o,
     output [1:0] control_uart_o, //TODO
     output control_dmem_o,
     output [1:0] control_wr_mux_o,
     output control_csr_we_o,
     output [2:0] control_load_o,
     output control_wb_o,
-    output control_branch_o
+    output control_branch_o,
+    output [3:0] alu_ctrl_o
 );
 
     // decocde
@@ -86,6 +85,7 @@ module id (
 
     // control_unit
     wire control_branch;
+    wire [1:0] alu_op_o;
     control_unit control (
         .opcode(inst_opcode),
         .funct3_i(inst_i[`FIELD_FUNCT3]),
@@ -111,5 +111,11 @@ module id (
         .branch_offset(branch_offset_o));
 
     assign branch_addr_o = branch_offset_o + pc_data_o;
+
+    alu_control alu_control(
+        .inst_alu(funct3_in),
+        .inst_alu30(inst_i[30]),
+        .aluOp(alu_op_o),
+        .aluCtrl(alu_ctrl_o));
 
 endmodule

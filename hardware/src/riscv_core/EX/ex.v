@@ -23,13 +23,12 @@ module ex (
     input wire[`REG_ABUS]   reg1_addr_i,
     input wire[`REG_ABUS]   reg2_addr_i,
     input wire[`IMM32_BUS]    imm_i,
+    input wire[3:0]         alu_ctrl_i,
 
     input wire[2:0]     funct3_i,
-    input wire          inst_alu30_i,
 
     // control signal
     input wire[1:0] control_forward_i,
-    input wire[1:0] alu_op_i,
     input wire [1:0] control_uart_i, //TODO
     input wire control_dmem_i,
     input wire[1:0] control_wr_mux_i,
@@ -76,12 +75,6 @@ module ex (
 
     // alu
     wire [3:0] alu_ctrl;
-
-    alu_control alu_control(
-        .inst_alu(funct3_i),
-        .inst_alu30(inst_alu30_i),
-        .aluOp(alu_op_i),
-        .aluCtrl(alu_ctrl));
         
     wire [1:0]  reg1_judge;
     wire [1:0]  reg2_judge;
@@ -134,7 +127,7 @@ module ex (
     alu alu(
         .aluin1(aluin1),
         .aluin2(aluin2),
-        .aluCtrl(alu_ctrl),
+        .aluCtrl(alu_ctrl_i),
         .aluout(aluout));
     
     wire [31:0] branch_comp_a;

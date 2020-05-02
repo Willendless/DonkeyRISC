@@ -49,12 +49,10 @@ module id_ex (
     output wire[`IMM32_BUS]    imm_o,
 
     input wire[2:0]     funct3_i,
-    input wire          inst_alu30_i,
 
     // control signal
     input wire[1:0] control_forward_i,
     input wire[1:0] control_jump_i,
-    input wire[1:0] alu_op_i,
     input wire [1:0] control_uart_i, //TODO
     input wire control_dmem_i,
     input wire[1:0] control_wr_mux_i,
@@ -66,10 +64,11 @@ module id_ex (
     input [31:0] wb_data_i,
     input [4:0] wb_addr_i,
     input is_wb_i,
+    input [3:0] alu_ctrl_i,
 
+    output [3:0] alu_ctrl_o,
     output [1:0] control_forward_o,
     output [1:0] control_jump_o,
-    output [1:0] alu_op_o,
     output [1:0] control_uart_o, //TODO
     output control_dmem_o,
     output [1:0] control_wr_mux_o,
@@ -79,8 +78,7 @@ module id_ex (
     output wire control_branch_o,
     output [31:0] branch_addr_o,
 
-    output wire[2:0]         funct3_o,
-    output wire              inst_alu30_o
+    output wire[2:0]  funct3_o
 
     // input wire              alu_src1_sel_i,
     // input wire              alu_src2_sel_i,
@@ -175,12 +173,6 @@ module id_ex (
         .rst(rst),
         .d(funct3_i),
         .q(funct3_o));
-    
-    REGISTER_R #(.N(1)) inst_alu30_reg (
-        .clk(clk),
-        .rst(rst),
-        .d(inst_alu30_i),
-        .q(inst_alu30_o));
 
     // control data
     REGISTER_R #(.N(2)) forward_reg(
@@ -189,11 +181,11 @@ module id_ex (
         .q(control_forward_o),
         .d(control_forward_i));
     
-    REGISTER_R #(.N(2)) alu_reg(
+    REGISTER_R #(.N(4)) alu_ctrl_reg(
         .clk(clk),
         .rst(rst),
-        .q(alu_op_o),
-        .d(alu_op_i));
+        .q(alu_ctrl_o),
+        .d(alu_ctrl_i));
     
     REGISTER_R #(.N(2), .INIT(2'b0)) jump_reg(
         .clk(clk),
