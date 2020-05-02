@@ -38,7 +38,7 @@ module wb (
                       && (alu_result_i == 32'h80000000 || alu_result_i == 32'h80000004
                       ||  alu_result_i == 32'h80000010 || alu_result_i == 32'h80000014))
                       ? uart_data_i :
-                      (control_uart_i == 2'b01 && (alu_result_i == `CONV_STATUS))
+                      (control_uart_i == 2'b01 && (alu_result_i == `CONV_READ))
                       ? conv_data_i :
                       before_uart_data;
 
