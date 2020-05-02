@@ -42,7 +42,7 @@ module wb (
                       ? conv_data_i :
                       before_uart_data;
 
-    assign wb_data_o = (wb_addr_i == 32'b0) ? 31'b0 : wb_data;
+    assign wb_data_o = (wb_addr_i == 32'b0) ? 32'b0 : wb_data;
     
     load_type dmem_load_type(
         .addr_offset(addr_offset_i),

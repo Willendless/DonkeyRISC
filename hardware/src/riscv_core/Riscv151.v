@@ -16,7 +16,7 @@ module Riscv151
 );
     localparam FM_DIM    = 8;
     localparam WT_DIM    = 3;
-    localparam AWIDTH    = 14;
+    localparam AWIDTH    = 32;
     localparam DWIDTH    = 32;
     localparam MEM_DEPTH = 16384;
 
@@ -428,7 +428,7 @@ module Riscv151
         .serial_out(FPGA_SERIAL_TX)            // output
     );
 
-    localparam DMEM_AWIDTH = 14;
+    localparam DMEM_AWIDTH = 32;
     localparam DMEM_DWIDTH = 32;
     localparam DMEM_DEPTH = 16384;
     localparam CSR_ADDR = 12'h51e;
@@ -576,7 +576,7 @@ module Riscv151
         .dmem_wea(),     // output
 
         // DMem PortB <---> IO Write
-        .dmem_doutb(_), // input
+        .dmem_doutb(), // input
         .dmem_dinb(dmem_dinb_conv),   // output
         .dmem_addrb(dmem_addrb_conv), // output
         .dmem_web(dmem_web_conv)      // output
@@ -626,9 +626,9 @@ assign dmem_dina = (alu_result_reg[31:30] == 2'b00
                     32'b0;
 
 assign dmem_addra = (alu_result_reg[31:30] == 2'b00 && alu_result_reg[28] == 1'b1) ?
-                    alu_result_reg1[13:0] : 
+                    {18'b0, alu_result_reg1[13:0]} : 
                     is_conv_addr ? dmem_addra_conv :
-                    14'b0;
+                    32'b0;
 
 assign dmem_wea = (alu_result_reg[31:30] == 2'b00 
                     && alu_result_reg[28] == 1'b1) ? dmem_wea_reg : 
@@ -639,7 +639,7 @@ assign dmem_douta_conv = dmem_douta;
 //port b is used for write
 assign dmem_web = is_conv_addr ? dmem_web_conv : 4'b0;
 assign dmem_dinb = is_conv_addr ? dmem_dinb_conv : 32'b0;
-assign dmem_addrb = is_conv_addr ? dmem_addrb_conv : 14'b0;
+assign dmem_addrb = is_conv_addr ? dmem_addrb_conv : 32'b0;
 // assign dmem_doutb_conv = dmem_doutb;
 //-----------------conv2d-------------------//
 

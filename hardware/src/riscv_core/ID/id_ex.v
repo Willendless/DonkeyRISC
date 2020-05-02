@@ -121,7 +121,7 @@ module id_ex (
         .q(reg1_data_o),
         .d(reg1_data_o1));
 
-    assign reg1_data_o1 = (reg1_addr_i == wb_addr_i && is_wb_i)
+    assign reg1_data_o1 = ((reg1_addr_i == wb_addr_i) && is_wb_i)
                          ? wb_data_i : reg1_data_i;
     
     wire [31:0] reg2_data_o1;
