@@ -448,12 +448,16 @@ module Riscv151
 //----------add the conv2d accelerator-------------------//
     reg [31:0] timeout_cycle = 500000;
 
-    wire  start;
+    // conv controller
     wire idle;
     wire done;
     wire [31:0] fm_dim;
     wire [31:0] wt_offset, ifm_offset, ofm_offset;
+    wire conv_start, conv_rst;
+    wire [31:0] status_read;
+    wire is_conv_addr;
 
+    // channel
     wire [AWIDTH-1:0] req_read_addr;
     wire req_read_addr_valid;
     wire req_read_addr_ready;
@@ -478,14 +482,12 @@ module Riscv151
 
     wire [DMEM_AWIDTH-1:0] dmem_addrb;
     wire [3:0] dmem_web;
-    wire [DMEM_DWIDTH-1:0] dmem_dinb, dmem_doutb;
+    wire [DMEM_DWIDTH-1:0] dmem_dinb; //dmem_doutb;
 
     wire [DMEM_AWIDTH-1:0] dmem_addra_conv, dmem_addrb_conv;
     wire [DMEM_DWIDTH-1:0] dmem_douta_conv, dmem_doutb_conv, dmem_dina_conv, dmem_dinb_conv;
     wire [3:0] dmem_wea_conv, dmem_web_conv;
 
-    wire [31:0] status_read;
-    wire is_conv_addr;
 
     conv2D_naive #(
         .AWIDTH(AWIDTH),
@@ -493,9 +495,9 @@ module Riscv151
         .WT_DIM(WT_DIM)
     ) conv2D_naive (
         .clk(clk),
-        .rst(rst),
+        .rst(rst || conv_rst),
 
-        .start(start),                                     // input
+        .start(conv_start),                                // input
         .idle(idle),                                       // output
         .done(done),                                       // output
 
@@ -570,12 +572,12 @@ module Riscv151
 
         // DMem PortA <---> IO Read
         .dmem_douta(dmem_douta_conv), // input
-        .dmem_dina(dmem_dina_conv),   // output
+        .dmem_dina(),   // output
         .dmem_addra(dmem_addra_conv), // output
-        .dmem_wea(dmem_wea_conv),     // output
+        .dmem_wea(),     // output
 
         // DMem PortB <---> IO Write
-        .dmem_doutb(dmem_doutb_conv), // input
+        .dmem_doutb(_), // input
         .dmem_dinb(dmem_dinb_conv),   // output
         .dmem_addrb(dmem_addrb_conv), // output
         .dmem_web(dmem_web)      // output
@@ -592,34 +594,36 @@ module Riscv151
         .addr0(dmem_addra),
         .wbe0(dmem_wea),
 
-        .q1(dmem_doutb),
+        .q1(),
         .d1(dmem_dinb),
         .addr1(dmem_addrb),
         .wbe1(dmem_web),
 
         .clk(clk), .rst(rst));
     
-    reg_offset conv_reg(
-        .mem_write_i(mem_write_reg),
-        .conv_addr_i(alu_result_reg),
+    conv_controller conv_reg(
         .rst(rst),
         .clk(clk),
-        .idle_i(idle),
-        .done_i(done),
 
-        .ifm_offset_o(ifm_offset),
-        .ofm_offset_o(ofm_offset),
-        .fm_dim_o(fm_dim),
-        .wt_offset_o(wt_offset),
-        .start_o(start),
-        .status_read_o(status_read),
-        .state_dmem_o(is_conv_addr)
+        .cont_data_i(mem_write_reg),
+        .cont_addr_i(alu_result_reg),
+        .cont_data_o(status_read),
+
+        .conv_idle_i(idle),
+        .conv_done_i(done),
+        .conv_start_o(conv_start),
+        .conv_rst_o(conv_rst),
+        .conv_ifm_offset_o(ifm_offset),
+        .conv_ofm_offset_o(ofm_offset),
+        .conv_fm_dim_o(fm_dim),
+        .conv_wt_offset_o(wt_offset),
+
+        .conv_active_o(is_conv_addr)
     );
     //port a is used for read
 
 assign dmem_dina = (alu_result_reg[31:30] == 2'b00 
                     && alu_result_reg[28] == 1'b1) ? mem_write_reg : 
-                    is_conv_addr ? dmem_dina_conv :
                     32'b0;
 
 assign dmem_addra = (alu_result_reg[31:30] == 2'b00 && alu_result_reg[28] == 1'b1) ?
@@ -629,16 +633,15 @@ assign dmem_addra = (alu_result_reg[31:30] == 2'b00 && alu_result_reg[28] == 1'b
 
 assign dmem_wea = (alu_result_reg[31:30] == 2'b00 
                     && alu_result_reg[28] == 1'b1) ? dmem_wea_reg : 
-                    is_conv_addr ? dmem_wea_conv :
                     4'b0;
 
 assign dmem_douta_conv = dmem_douta;
 
 //port b is used for write
-assign dmem_web = is_conv_addr ? dmem_web_conv : 4'b0;
+assign dmem_web = is_conv_addr ? 4'b1111 : 4'b0;
 assign dmem_dinb = is_conv_addr ? dmem_dinb_conv : 32'b0;
 assign dmem_addrb = is_conv_addr ? dmem_addrb_conv : 14'b0;
-assign dmem_doutb_conv = dmem_doutb;
+// assign dmem_doutb_conv = dmem_doutb;
 //-----------------conv2d-------------------//
 
     REGISTER_R_CE #(.N(32)) csr_reg (
