@@ -580,7 +580,7 @@ module Riscv151
         .dmem_doutb(_), // input
         .dmem_dinb(dmem_dinb_conv),   // output
         .dmem_addrb(dmem_addrb_conv), // output
-        .dmem_web(dmem_web)      // output
+        .dmem_web(dmem_web_conv)      // output
     );
 
     // DMem
@@ -638,7 +638,7 @@ assign dmem_wea = (alu_result_reg[31:30] == 2'b00
 assign dmem_douta_conv = dmem_douta;
 
 //port b is used for write
-assign dmem_web = is_conv_addr ? 4'b1111 : 4'b0;
+assign dmem_web = is_conv_addr ? dmem_web_conv : 4'b0;
 assign dmem_dinb = is_conv_addr ? dmem_dinb_conv : 32'b0;
 assign dmem_addrb = is_conv_addr ? dmem_addrb_conv : 14'b0;
 // assign dmem_doutb_conv = dmem_doutb;

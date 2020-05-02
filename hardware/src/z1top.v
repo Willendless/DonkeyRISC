@@ -1,4 +1,3 @@
-
 module z1top (
     input  CLK_125MHZ_FPGA,
     input  [3:0] BUTTONS,
