@@ -110,6 +110,13 @@
 `define BNE 3'b001
 
 //-------define of conv2D-----------------//
+`define CONV_WRITE 32'h80000040
+`define CONV_READ 32'h80000044
+`define CONV_FEATURE 32'h80000048
+`define CONV_WEIGHT 32'h8000004c
+`define CONV_INPUT 32'h80000050
+`define CONV_OUTPUT 32'h80000054
+
 `define CONV_RESET          32'h80000018
 `define CONV_START          32'h80000040
 `define CONV_STATUS         32'h80000044

@@ -38,11 +38,11 @@ module wb (
                       && (alu_result_i == 32'h80000000 || alu_result_i == 32'h80000004
                       ||  alu_result_i == 32'h80000010 || alu_result_i == 32'h80000014))
                       ? uart_data_i :
-                      (control_uart_i == 2'b01 && (alu_result_i == `CONV_STATUS))
+                      (control_uart_i == 2'b01 && (alu_result_i == `CONV_READ))
                       ? conv_data_i :
                       before_uart_data;
 
-    assign wb_data_o = (wb_addr_i == 32'b0) ? 31'b0 : wb_data;
+    assign wb_data_o = (wb_addr_i == 32'b0) ? 32'b0 : wb_data;
     
     load_type dmem_load_type(
         .addr_offset(addr_offset_i),

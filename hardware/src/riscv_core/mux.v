@@ -1,7 +1,7 @@
 `ifndef MUX
 `define MUX
-`include "defines.vh"
-`include "Opcode.vh"
+`include "../defines.vh"
+`include "../Opcode.vh"
 module mux_dmem(
     input [31:0] dmem_output,
     input [31:0] bios_output,

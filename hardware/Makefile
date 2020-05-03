@@ -2,9 +2,6 @@
 VERILOG_SRCS := $(wildcard src/*.v)
 VERILOG_SRCS += $(wildcard src/io_circuits/*.v)
 VERILOG_SRCS += $(wildcard src/riscv_core/*.v)
-VERILOG_SRCS += $(wildcard src/riscv_core/EX/*.v)
-VERILOG_SRCS += $(wildcard src/riscv_core/ID/*.v)
-VERILOG_SRCS += $(wildcard src/riscv_core/WB/*.v)
 
 Z1TOP_XPR := z1top_proj/z1top_proj.xpr
 
@@ -20,6 +17,8 @@ else ifeq ($(tb), c_testbench)
 sw = c_test
 else ifeq ($(tb), strcmp_testbench)
 sw = strcmp
+else ifeq ($(tb), conv2D_hw_testbench)
+sw = conv2D_hw
 else ifeq ($(tb), isa_testbench)
 sw = riscv-isa-tests
 test = all
