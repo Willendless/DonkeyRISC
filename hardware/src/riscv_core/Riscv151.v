@@ -606,6 +606,7 @@ module Riscv151
         .cont_data_i(mem_write_reg),
         .cont_addr_i(alu_result_reg),
         .cont_data_o(status_read),
+        .conv_we_i(dmem_wea_reg),
 
         .conv_idle_i(idle),
         .conv_done_i(done),

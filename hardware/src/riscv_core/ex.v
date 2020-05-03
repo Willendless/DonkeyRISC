@@ -79,7 +79,6 @@ module ex (
         
     wire [1:0]  reg1_judge;
     wire [1:0]  reg2_judge;
-    wire        mem_waddr_judge; 
 
     forwarding_unit forwarding_unit(
         .reg1_addr(reg1_addr_i),

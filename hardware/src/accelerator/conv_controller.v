@@ -33,7 +33,8 @@ module conv_controller (
     assign conv_start_o = (cont_addr_i == `CONV_START);
 
     wire conv_state_next = ~conv_active_o;
-    wire conv_state_ce = ((cont_addr_i == `CONV_START) && conv_idle_i) || conv_done_i;
+    wire conv_state_ce = (((cont_addr_i == `CONV_START) && conv_idle_i) && conv_state_next)
+                         || (conv_done_i && (conv_state_next == 0));
     REGISTER_R_CE #(.N(1), .INIT(1'b0)) conv_state_reg(
         .q(conv_active_o),
         .d(conv_state_next),
@@ -75,7 +76,7 @@ module conv_controller (
     // scalar signals
     REGISTER_R_CE #(.N(32)) feature_store(
         .q(conv_fm_dim_o),
-        .d(conv_data_we),
+        .d({16'b0, conv_data_we[15:0]}),
         .ce((cont_addr_i == `CONV_FM_DIM) && (conv_we_i > 4'b0)),
         .rst(rst),
         .clk(clk)
@@ -83,7 +84,7 @@ module conv_controller (
 
     REGISTER_R_CE #(.N(32)) weight_store(
         .q(conv_wt_offset_o),
-        .d(conv_data_we),
+        .d({16'b0, conv_data_we[15:0]}),
         .ce((cont_addr_i == `CONV_WEIGHT_OFF) && (conv_we_i > 4'b0)),
         .rst(rst),
         .clk(clk)
@@ -91,7 +92,7 @@ module conv_controller (
 
     REGISTER_R_CE #(.N(32)) ofm_store(
         .q(conv_ofm_offset_o),
-        .d(conv_data_we),
+        .d({16'b0, conv_data_we[15:0]}),
         .ce((cont_addr_i == `CONV_OUTPUT_FM) && (conv_we_i > 4'b0)),
         .rst(rst),
         .clk(clk)
@@ -99,7 +100,7 @@ module conv_controller (
 
     REGISTER_R_CE #(.N(32)) ifm_store(
         .q(conv_ifm_offset_o),
-        .d(conv_data_we),
+        .d({16'b0, conv_data_we[15:0]}),
         .ce((cont_addr_i == `CONV_INPUT_FM) && (conv_we_i > 4'b0)),
         .rst(rst),
         .clk(clk)
