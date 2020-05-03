@@ -1,0 +1,59 @@
+#-----------------------------------------------------------
+# Vivado v2019.1 (64-bit)
+# SW Build 2552052 on Fri May 24 14:49:42 MDT 2019
+# IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
+# Start of session at: Sun May  3 00:21:33 2020
+# Process ID: 24836
+# Current directory: C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/z1top_proj/z1top_proj.runs/synth_1
+# Command line: vivado.exe -log Riscv151.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source Riscv151.tcl
+# Log file: C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/z1top_proj/z1top_proj.runs/synth_1/Riscv151.vds
+# Journal file: C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/z1top_proj/z1top_proj.runs/synth_1\vivado.jou
+#-----------------------------------------------------------
+source Riscv151.tcl -notrace
+Command: synth_design -top Riscv151 -part xc7z020clg400-1
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7z020'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7z020'
+INFO: Launching helper process for spawning children vivado processes
+INFO: Helper process launched with PID 30632 
+---------------------------------------------------------------------------------
+Starting Synthesize : Time (s): cpu = 00:00:05 ; elapsed = 00:00:12 . Memory (MB): peak = 444.918 ; gain = 154.578
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'Riscv151' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/Riscv151.v:3]
+	Parameter CPU_CLOCK_FREQ bound to: 50000000 - type: integer 
+	Parameter RESET_PC bound to: 1073741824 - type: integer 
+	Parameter BAUD_RATE bound to: 115200 - type: integer 
+	Parameter BIOS_MEM_HEX_FILE bound to: bios151v3.mif - type: string 
+	Parameter FM_DIM bound to: 8 - type: integer 
+	Parameter WT_DIM bound to: 3 - type: integer 
+	Parameter AWIDTH bound to: 32 - type: integer 
+	Parameter DWIDTH bound to: 32 - type: integer 
+	Parameter MEM_DEPTH bound to: 16384 - type: integer 
+	Parameter WT_OFFSET bound to: 0 - type: integer 
+	Parameter IN_OFFSET bound to: 9 - type: integer 
+	Parameter OUT_OFFSET bound to: 73 - type: integer 
+	Parameter BIOS_AWIDTH bound to: 12 - type: integer 
+	Parameter BIOS_DWIDTH bound to: 32 - type: integer 
+	Parameter BIOS_DEPTH bound to: 4096 - type: integer 
+	Parameter IMEM_AWIDTH bound to: 14 - type: integer 
+	Parameter IMEM_DWIDTH bound to: 32 - type: integer 
+	Parameter IMEM_DEPTH bound to: 16384 - type: integer 
+	Parameter DMEM_AWIDTH bound to: 32 - type: integer 
+	Parameter DMEM_DWIDTH bound to: 32 - type: integer 
+	Parameter DMEM_DEPTH bound to: 16384 - type: integer 
+	Parameter CSR_ADDR bound to: 12'b010100011110 
+INFO: [Synth 8-6157] synthesizing module 'mux_pc' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/mux.v:23]
+INFO: [Synth 8-6155] done synthesizing module 'mux_pc' (1#1) [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/mux.v:23]
+ERROR: [Synth 8-439] module 'REGISTER_R' not found [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/Riscv151.v:62]
+	Parameter N bound to: 32'sb00000000000000000000000000100000 
+	Parameter INIT bound to: 32'b00111111111111111111111111111100 
+ERROR: [Synth 8-6156] failed synthesizing module 'Riscv151' [C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/riscv_core/Riscv151.v:3]
+---------------------------------------------------------------------------------
+Finished Synthesize : Time (s): cpu = 00:00:07 ; elapsed = 00:00:15 . Memory (MB): peak = 507.383 ; gain = 217.043
+---------------------------------------------------------------------------------
+synthesize failed
+INFO: [Common 17-83] Releasing license: Synthesis
+5 Infos, 0 Warnings, 0 Critical Warnings and 3 Errors encountered.
+synth_design failed
+ERROR: [Common 17-69] Command failed: Vivado Synthesis failed
+INFO: [Common 17-206] Exiting Vivado at Sun May  3 00:21:58 2020...
