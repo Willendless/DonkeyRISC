@@ -1,4 +1,5 @@
-
+`include "../defines.vh"
+`include "../Opcode.vh"
 module Riscv151
 #(
     parameter CPU_CLOCK_FREQ    = 50_000_000,
@@ -161,7 +162,6 @@ module Riscv151
     wire [1:0] control_forward_reg;
     wire control_dmem_reg;
     wire [1:0] control_jump_reg;    
-    wire [1:0] aluOp_reg;
     wire [1:0] control_uart_reg;
     wire [1:0] control_wr_mux_reg;
     wire control_csr_we_reg;

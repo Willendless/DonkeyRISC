@@ -6,6 +6,7 @@ module conv_controller (
     input clk,
     
     // IO memory map
+    input [3:0] conv_we_i,
     input [`WORD_BUS] cont_data_i,
     input [`WORD_BUS] cont_addr_i,
     output[`WORD_BUS] cont_data_o,
@@ -55,39 +56,51 @@ module conv_controller (
         .rst(rst),
         .clk(clk)
     );
-    
-    assign cont_data_o = (cont_addr_i == `CONV_STATUS) ?
-                         {30'b0, idle_val, done_val} : 0;
-    
+
+    wire [31:0] cont_read = {30'b0, idle_val, done_val};
+
+    REGISTER_R #(.N(32)) reg_start(
+        .q(cont_data_o),
+        .d(cont_read),
+        .clk(clk),
+        .rst(rst)
+    );
+
+    wire [31:0] conv_data_we;
+    change_mem_wr change_conv(
+    .dmem_we(conv_we_i),
+    .in_data(cont_data_i),
+    .out_data(conv_data_we)
+    );
     // scalar signals
     REGISTER_R_CE #(.N(32)) feature_store(
         .q(conv_fm_dim_o),
-        .d(cont_data_i),
-        .ce(cont_addr_i == `CONV_FM_DIM),
+        .d(conv_data_we),
+        .ce((cont_addr_i == `CONV_FM_DIM) && (conv_we_i > 4'b0)),
         .rst(rst),
         .clk(clk)
     );
 
     REGISTER_R_CE #(.N(32)) weight_store(
         .q(conv_wt_offset_o),
-        .d(cont_data_i),
-        .ce(cont_addr_i == `CONV_WEIGHT_OFF),
+        .d(conv_data_we),
+        .ce((cont_addr_i == `CONV_WEIGHT_OFF) && (conv_we_i > 4'b0)),
         .rst(rst),
         .clk(clk)
     );
 
     REGISTER_R_CE #(.N(32)) ofm_store(
         .q(conv_ofm_offset_o),
-        .d(cont_data_i),
-        .ce(cont_addr_i == `CONV_OUTPUT_FM),
+        .d(conv_data_we),
+        .ce((cont_addr_i == `CONV_OUTPUT_FM) && (conv_we_i > 4'b0)),
         .rst(rst),
         .clk(clk)
     );
 
     REGISTER_R_CE #(.N(32)) ifm_store(
         .q(conv_ifm_offset_o),
-        .d(cont_data_i),
-        .ce(cont_addr_i == `CONV_INPUT_FM),
+        .d(conv_data_we),
+        .ce((cont_addr_i == `CONV_INPUT_FM) && (conv_we_i > 4'b0)),
         .rst(rst),
         .clk(clk)
     );

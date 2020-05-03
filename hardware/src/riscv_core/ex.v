@@ -54,7 +54,8 @@ module ex (
 );
     wire [31:0] aluout;
     assign control_uart_o = (aluout == 32'h80000004 || aluout == 32'h80000008
-                            || aluout == 32'h80000000 || aluout == 32'h80000010 || aluout == 32'h80000014) ?
+                            || aluout == 32'h80000000 || aluout == 32'h80000010 || aluout == 32'h80000014
+                            || aluout == `CONV_READ) ?
                             control_uart_i : 2'b0;
     
     assign alu_result_o = aluout;
