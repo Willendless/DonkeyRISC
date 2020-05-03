@@ -1,4 +1,3 @@
-
 module z1top (
     input  CLK_125MHZ_FPGA,
     input  [3:0] BUTTONS,
@@ -11,7 +10,7 @@ module z1top (
 
     wire cpu_clk;
 
-    localparam CPU_CLOCK_PERIOD    = 20;
+    localparam CPU_CLOCK_PERIOD    = 100;
     localparam CPU_CLOCK_FREQ      = 1_000_000_000 / CPU_CLOCK_PERIOD;
     // Clocking wizard IP from Vivado (wrapper of the PLLE module)
     // Generate CPU_CLOCK_FREQ clock from 125 MHz clock

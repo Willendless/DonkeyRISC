@@ -110,10 +110,10 @@ module conv2D_naive #(
         .ofm_offset(ofm_offset),                           // input
 
         // Read Request Address channel
-        .req_read_addr(req_read_addr),                     // input
-        .req_read_addr_valid(req_read_addr_valid),         // input
-        .req_read_addr_ready(req_read_addr_ready),         // output
-        .req_read_len(req_read_len),                       // input
+        .req_read_addr(req_read_addr),                     // output
+        .req_read_addr_valid(req_read_addr_valid),         // output
+        .req_read_addr_ready(req_read_addr_ready),         // input
+        .req_read_len(req_read_len),                       // output
 
         // Write Request Address channel
         .req_write_addr(req_write_addr),                   // input
@@ -158,9 +158,9 @@ module conv2D_naive #(
         .fm_dim(fm_dim),                    // input
 
         // Read data from DMem
-        .rdata(resp_read_data),             // output
-        .rdata_valid(resp_read_data_valid), // output
-        .rdata_ready(resp_read_data_ready), // input
+        .rdata(resp_read_data),             // input
+        .rdata_valid(resp_read_data_valid), // input
+        .rdata_ready(resp_read_data_ready), // output
 
         // Write data to mem_if
         .wdata(wdata),                      // output

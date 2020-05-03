@@ -31,10 +31,13 @@ module conv_controller (
     assign conv_rst_o = (cont_addr_i == `CONV_RESET);
     assign conv_start_o = (cont_addr_i == `CONV_START);
 
-    wire conv_state_next = ~conv_active_o;
+    wire conv_active_val;
+    assign conv_active_o = conv_active_val;
+
+    wire conv_state_next = conv_active_val + 1;
     wire conv_state_ce = ((cont_addr_i == `CONV_START) && conv_idle_i) || conv_done_i;
-    REGISTER_R_CE #(.N(1), .INIT(1'b0)) conv_state_reg(
-        .q(conv_active_o),
+    REGISTER_R_CE #(.N(1), .INIT(0)) conv_state_reg(
+        .q(conv_active_val),
         .d(conv_state_next),
         .ce(conv_state_ce),
         .clk(clk),

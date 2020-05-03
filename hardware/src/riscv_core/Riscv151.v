@@ -580,7 +580,7 @@ module Riscv151
         .dmem_doutb(_), // input
         .dmem_dinb(dmem_dinb_conv),   // output
         .dmem_addrb(dmem_addrb_conv), // output
-        .dmem_web(dmem_web)      // output
+        .dmem_web(dmem_web_conv)      // output
     );
 
     // DMem
@@ -605,8 +605,8 @@ module Riscv151
         .rst(rst),
         .clk(clk),
 
-        .cont_data_i(mem_write_reg),
-        .cont_addr_i(alu_result_reg),
+        .cont_data_i(dmem_dina),
+        .cont_addr_i(dmem_addra),
         .cont_data_o(status_read),
 
         .conv_idle_i(idle),
@@ -626,10 +626,9 @@ assign dmem_dina = (alu_result_reg[31:30] == 2'b00
                     && alu_result_reg[28] == 1'b1) ? mem_write_reg : 
                     32'b0;
 
-assign dmem_addra = (alu_result_reg[31:30] == 2'b00 && alu_result_reg[28] == 1'b1) ?
-                    alu_result_reg1[13:0] : 
-                    is_conv_addr ? dmem_addra_conv :
-                    14'b0;
+assign dmem_addra = is_conv_addr ? dmem_addra_conv :
+                    (alu_result_reg[31:30] == 2'b00 && alu_result_reg[28] == 1'b1) ?
+                    alu_result_reg1[13:0] : 14'b0;
 
 assign dmem_wea = (alu_result_reg[31:30] == 2'b00 
                     && alu_result_reg[28] == 1'b1) ? dmem_wea_reg : 
@@ -638,7 +637,7 @@ assign dmem_wea = (alu_result_reg[31:30] == 2'b00
 assign dmem_douta_conv = dmem_douta;
 
 //port b is used for write
-assign dmem_web = is_conv_addr ? 4'b1111 : 4'b0;
+assign dmem_web = is_conv_addr ? dmem_web_conv : 4'b0;
 assign dmem_dinb = is_conv_addr ? dmem_dinb_conv : 32'b0;
 assign dmem_addrb = is_conv_addr ? dmem_addrb_conv : 14'b0;
 // assign dmem_doutb_conv = dmem_doutb;

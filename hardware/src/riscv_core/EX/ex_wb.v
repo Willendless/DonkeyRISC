@@ -1,5 +1,6 @@
 `include "../defines.vh"
 `include "../Opcode.vh"
+
 module ex_wb (
     input clk,
     input rst,

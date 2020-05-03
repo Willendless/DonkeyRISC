@@ -1,4 +1,7 @@
 
+// A 2D Convolution hardware implementation with donkey optimization.
+// conv2D_opt_mem_if <-------> conv2D_opt_compute 
+
 module conv2D_opt #(
     parameter AWIDTH  = 32,
     parameter DWIDTH  = 32,
@@ -46,6 +49,10 @@ module conv2D_opt #(
     output               resp_write_status_ready
 );
 
-    // TODO: Your code to implement an optimized conv2D hardware generator
+    // mem interface
+
+
+    // compute stream engine
+
 
 endmodule

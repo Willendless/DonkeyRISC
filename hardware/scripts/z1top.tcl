@@ -1,4 +1,7 @@
 add_files -norecurse [glob src/riscv_core/*.v]
+add_files -norecurse [glob src/riscv_core/EX/*.v]
+add_files -norecurse [glob src/riscv_core/ID/*.v]
+add_files -norecurse [glob src/riscv_core/WB/*.v]
 add_files -norecurse [glob src/riscv_core/*.vh]
 add_files -norecurse [glob src/io_circuits/*.v]
 add_files -norecurse [glob src/accelerator/*.v]
