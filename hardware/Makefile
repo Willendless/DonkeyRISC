@@ -2,6 +2,10 @@
 VERILOG_SRCS := $(wildcard src/*.v)
 VERILOG_SRCS += $(wildcard src/io_circuits/*.v)
 VERILOG_SRCS += $(wildcard src/riscv_core/*.v)
+VERILOG_SRCS += $(wildcard src/riscv_core/EX/*.v)
+VERILOG_SRCS += $(wildcard src/riscv_core/ID/*.v)
+VERILOG_SRCS += $(wildcard src/riscv_core/WB/*.v)
+VERILOG_SRCS += $(wildcard src/accelerator/*.v)
 
 Z1TOP_XPR := z1top_proj/z1top_proj.xpr
 
