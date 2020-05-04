@@ -37,7 +37,7 @@ module conv_controller (
 
     wire conv_state_next = ~conv_active_val;
     wire conv_state_ce = (((cont_addr_i == `CONV_START) && conv_idle_i) && conv_state_next)
-                         || (conv_done_i && (conv_state_next == 0));
+                        || (conv_done_i && (conv_state_next == 0));
 
     REGISTER_R_CE #(.N(1), .INIT(0)) conv_state_reg(
         .q(conv_active_val),

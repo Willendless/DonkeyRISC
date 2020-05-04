@@ -605,8 +605,8 @@ module Riscv151
         .rst(rst),
         .clk(clk),
 
-        .cont_data_i(dmem_dina),
-        .cont_addr_i(dmem_addra),
+        .cont_data_i(mem_write_reg),
+        .cont_addr_i(alu_result_reg),
         .cont_data_o(status_read),
         .conv_we_i(dmem_wea_reg),
 
