@@ -141,7 +141,8 @@ module conv2D_opt_compute #(
     );
 
 
-    wire [31:0] write_counter_d, write_counter_q;
+    wire [31:0] write_counter_d;
+    wire [31:0] write_counter_q;
     wire write_counter_ce, write_counter_rst;
     REGISTER_R_CE #(.N(32)) write_counter (
         .q(write_coutner_q),
