@@ -163,7 +163,7 @@ module conv2D_opt_compute #(
 
     wire wdata_addr_valid_reg_d, wdata_addr_valid_reg_q;
     wire wdata_addr_valid_reg_rst, wdata_addr_valid_reg_ce;
-    REGISTER_R_CE #(.N(1)) wdata_reg (
+    REGISTER_R_CE #(.N(1)) wdata_addr_valid_reg (
         .q(wdata_addr_valid_reg_q),
         .d(wdata_addr_valid_reg_d),
         .ce(wdata_addr_valid_reg_ce),
