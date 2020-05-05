@@ -222,9 +222,7 @@ module conv2D_opt_compute #(
         end
     endgenerate
 
-
-    wire halo       = x_cnt_q <= 0 | x_cnt_q > fm_dim | y_cnt_q <= 0 | y_cnt_q > fm_dim;
-
+    wire halo;
 
     always @(*) begin
         state_d = state_q;
