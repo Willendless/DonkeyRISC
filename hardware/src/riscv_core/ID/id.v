@@ -16,7 +16,9 @@
 
 module id (
     input wire[`IMEM_DBUS]      inst_i,
-    input wire[`REG_DBUS]       pc_data_i,    
+    input wire[`REG_DBUS]       pc_data_i,
+    input clk,
+    input rst,  
 
     // reg data from regfile
     input wire[`REG_DBUS] reg1_data_i,
@@ -49,8 +51,9 @@ module id (
     output [2:0] control_load_o,
     output control_wb_o,
     output control_branch_o,
-    output [3:0] alu_ctrl_o
+    output [3:0] alu_ctrl_o,
 );
+
 
     // decocde
     wire[`REG_ABUS] inst_rd, inst_rs1, inst_rs2;

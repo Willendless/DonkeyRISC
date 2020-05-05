@@ -60,11 +60,11 @@ module id_ex (
     input wire [2:0] control_load_i,
     input wire control_wb_i,
     input wire control_branch_i,
-    input [31:0] branch_addr_i,
     input [31:0] wb_data_i,
     input [4:0] wb_addr_i,
     input is_wb_i,
     input [3:0] alu_ctrl_i,
+    input [31:0] branch_addr_i,
 
     output [3:0] alu_ctrl_o,
     output [1:0] control_forward_o,
@@ -76,8 +76,7 @@ module id_ex (
     output wire [2:0] control_load_o,
     output wire control_wb_o,
     output wire control_branch_o,
-    output [31:0] branch_addr_o,
-
+    output wire [31:0] branch_addr_o,
     output wire[2:0]  funct3_o
 
     // input wire              alu_src1_sel_i,
@@ -230,14 +229,10 @@ module id_ex (
         .d(control_load_i)
     );
 
-    REGISTER_R #(.N(32)) branch_addr_load(
+    REGISTER_R #(.N(32)) branch_store(
         .clk(clk),
         .rst(rst),
         .q(branch_addr_o),
         .d(branch_addr_i)
     );
-
-
-
-
 endmodule // id_ex

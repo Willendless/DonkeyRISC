@@ -22,16 +22,51 @@ endmodule
 
 module mux_pc(
     input [31:0] pc_plus,
+    input [31:0] pc_plus_reg,
     input [31:0] jal_addr,
     input [31:0] branch_addr,
+    input [31:0] branch_addr_after,
     input [1:0] jump_judge,
+    input [1:0] branch_predict,
     input branch_judge,
-    output [31:0] pc_o
+    input clk, 
+    input rst,
+    output reg [31:0] pc_o
 );
 //define the input of jump signal
-assign pc_o = (jump_judge > 0) ? jal_addr :
-              (jump_judge == 0 && branch_judge == 1) ? branch_addr :
-              pc_plus;
+wire [31:0] pc_normal;
+
+wire [1:0] branch_predict_before;
+REGISTER_R #(.N(2), .INIT(2'b0)) store_predict(
+    .q(branch_predict_before),
+    .d(branch_predict),
+    .rst(rst),
+    .clk(clk)
+);
+
+
+
+always @(*) begin
+    pc_o = pc_plus;
+    case(branch_predict)
+         2'b10: pc_o = branch_addr;
+         2'b01: pc_o = pc_normal;
+         2'b00: begin
+         if (branch_predict_before == 2'b10 && branch_judge == 1)
+            pc_o <= pc_normal;
+         else if (branch_predict_before == 2'b01 && branch_judge == 1)
+            pc_o <= branch_addr_after;
+         else if (branch_predict_before == 2'b10 && branch_judge == 0)
+            pc_o <= pc_plus_reg;
+         else if (branch_predict_before == 2'b01 && branch_judge == 0)
+            pc_o <= pc_normal;
+         else
+            pc_o <= pc_normal;
+         end
+    endcase
+end
+
+assign pc_normal = (jump_judge > 0) ? jal_addr : pc_plus;
 
 endmodule
 

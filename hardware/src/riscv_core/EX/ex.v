@@ -49,7 +49,8 @@ module ex (
     output wire                 control_wb_o,
     output wire                 branch_judge,
     output wire                 inst_exec_i,
-    output wire [1:0]           control_uart_o
+    output wire [1:0]           control_uart_o,
+    output wire [1:0]           branch_predict_o
     
 );
     wire [31:0] aluout;
@@ -148,5 +149,20 @@ module ex (
 
     assign inst_exec_i = (branch_judge == 0 && control_jump_i == 2'b0);
     
+    wire [1:0] branch_state_val;
+    wire [1:0] branch_state_next;
+    REGISTER_R_CE #(.N(2), .INIT(0)) state_branch(
+        .q(branch_state_val),
+        .d(branch_state_next),
+        .ce(control_branch_i),
+        .rst(rst),
+        .clk(clk)
+    );
 
+    assign branch_state_next = (branch_judge == 1) ? branch_state_val + 1 :
+                               (branch_judge == 1 && branch_state_val == 2'b11) ? branch_state_val :
+                               (branch_judge == 0 && branch_state_val == 2'b00) ? branch_state_val :
+                               branch_state_val - 1;
+
+    assign branch_predict_o = (branch_state_val > 2'b01) ? 2'b10 : 2'b01;
 endmodule // ex 
