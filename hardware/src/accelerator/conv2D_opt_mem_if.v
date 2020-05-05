@@ -26,6 +26,11 @@ module conv2D_op_mem_if #(
     input                req_read_addr_ready,
     output [31:0]        req_read_len, // burst length
 
+    // Read Request Data channel
+    input [DWIDTH-1:0]   req_read_data,
+    input                req_read_data_valid,
+    output               req_read_data_ready,
+
     // Write Request Address channel
     output [AWIDTH-1:0]  req_write_addr,
     output               req_write_addr_valid,
@@ -46,11 +51,30 @@ module conv2D_op_mem_if #(
     output [31:0] y,
 
     input [DWIDTH-1:0]   wdata,
-    input                wdata_valid
+    input                wdata_valid,
+    output               rdata,
+    output               rdata_valid
 );
     // one read data response and one write data request per memory request
     assign req_read_len  = 32'd1; // no burst mode
     assign req_write_len = 32'd1; // no burst mode
+
+    // Buffering read data responses
+    wire [DWIDTH-1:0] fifo_deq_read_data;
+    wire fifo_deq_read_valid, fifo_deq_read_ready;
+    fifo #(.WIDTH(AWIDTH), .LOGDEPTH(4)) fifo_read_data (
+        .clk(clk),
+        .rst(rst),
+
+        .enq_valid(req_read_data_valid),
+        .enq_data(req_read_data),
+        .enq_ready(req_read_data_ready),
+
+        .deq_valid(fifo_deq_read_valid),    // controlled by FSM
+        .deq_data(fifo_deq_read_data),
+        .deq_ready(fifo_deq_read_ready)     // controlled by compute unit
+    );
+
 
     // Buffering write_addr and write_data requests
     // Set the buffer large enough so that we don't have to handle back-pressure
@@ -84,6 +108,7 @@ module conv2D_op_mem_if #(
         .deq_ready(req_write_data_ready)
     );
 
+    wire req_read_data_fire       = req_read_data_valid       & req_read_data_ready;
     wire req_read_addr_fire       = req_read_addr_valid       & req_read_addr_ready;
     wire req_write_addr_fire      = req_write_addr_valid      & req_write_addr_ready;
     wire req_write_data_fire      = req_write_data_valid      & req_write_data_ready;
@@ -214,7 +239,7 @@ module conv2D_op_mem_if #(
             end
             // Submit read requests for IFM elements of current sliding window
             STATE_READ_IFM: begin
-                if (n_cnt_q == WT_DIM - 1 & m_cnt_q == WT_DIM - 1 & read_mem)
+                if (wdata_valid)
                     state_d = STATE_WRITE_OFM;
             end
             // Submit a write request to OFM
