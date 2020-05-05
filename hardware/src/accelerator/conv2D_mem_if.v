@@ -47,8 +47,8 @@ module conv2D_mem_if #(
 );
 
     // one read data response and one write data request per memory request
-    assign req_read_len  = 32'd1; // no burst mode
-    assign req_write_len = 32'd1; // no burst mode
+    assign req_read_len  = 32'd8; // no burst mode
+    assign req_write_len = 32'd8; // no burst mode
 
     // Buffering write_addr and write_data requests
     // Set the buffer large enough so that we don't have to handle back-pressure
