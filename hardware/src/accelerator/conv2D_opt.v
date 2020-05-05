@@ -1,5 +1,5 @@
 `include "conv2D_pe.v"
-
+`include "../EECS151.v"
 module conv2D_opt_compute #(
     parameter AWIDTH = 32,
     parameter DWIDTH = 32,
