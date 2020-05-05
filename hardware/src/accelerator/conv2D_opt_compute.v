@@ -313,7 +313,7 @@ module conv2D_opt_compute #(
     always @(*) begin
         pe_data_valid = 1'b0;
         for (j = 0; j < WT_DIM; j = j + 1) begin
-            pe_data_valid = pe_data_valid & pe_fifo_deq_valids[i];
+            pe_data_valid = pe_data_valid & pe_fifo_deq_valids[j];
         end
     end
 

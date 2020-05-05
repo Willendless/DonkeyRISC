@@ -1,0 +1,12 @@
+0.6
+2019.1
+May 24 2019
+15:06:07
+C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/sim/conv2D_testbench.v,1588715243,verilog,,,,conv2D_testbench,,,,,,,,
+C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/EECS151.v,1586942528,verilog,,C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/accelerator/conv2D_opt.v,,ASYNC_RAM;ASYNC_ROM;REGFILE_1W2R;REGISTER;REGISTER_CE;REGISTER_IOB;REGISTER_R;REGISTER_R_CE;SYNC_RAM;SYNC_RAM_WBE;SYNC_ROM;XILINX_ASYNC_RAM_DP;XILINX_SYNC_RAM_DP;XILINX_SYNC_RAM_DP_WBE,,,,,,,,
+C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/accelerator/conv2D_opt.v,1588714818,verilog,,C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/accelerator/conv2D_opt_compute.v,,conv2D_opt,,,,,,,,
+C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/accelerator/conv2D_opt_compute.v,1588715305,verilog,,C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/accelerator/conv2D_pe.v,C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/accelerator/conv2D_pe.v,conv2D_opt_compute,,,,,,,,
+C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/accelerator/conv2D_pe.v,1588658974,verilog,,C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/io_circuits/fifo.v,,conv2D_pe,,,,,,,,
+C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/accelerator/io_dmem_controller.v,1587872210,verilog,,C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/sim/conv2D_testbench.v,,io_dmem_controller,,,,,,,,
+C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/io_circuits/fifo.v,1587872210,verilog,,C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/src/accelerator/io_dmem_controller.v,,fifo,,,,,,,,
+C:/Users/Jerry/Desktop/eecs151/workspace/project_skeleton_sp20/hardware/z1top_proj/z1top_proj.sim/sim_1/behav/xsim/glbl.v,1558713910,verilog,,,,glbl,,,,,,,,

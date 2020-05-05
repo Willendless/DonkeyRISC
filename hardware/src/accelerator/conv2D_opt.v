@@ -73,7 +73,7 @@ module conv2D_opt #(
         .clk(clk),
         .rst(rst),
 
-        .start(start_q),
+        .start(start),
         .idle(compute_idle),
 
         .fm_dim(fm_dim),

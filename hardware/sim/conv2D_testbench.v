@@ -55,11 +55,11 @@ module conv2D_testbench();
 
     // conv2D_naive <---> io_dmem_controller <---> DMem
 
-    conv2D_naive #(
+    conv2D_opt #(
         .AWIDTH(AWIDTH),
         .DWIDTH(DWIDTH),
         .WT_DIM(WT_DIM)
-    ) conv2D_naive (
+    ) conv2D_opt (
         .clk(clk),
         .rst(rst),
 
