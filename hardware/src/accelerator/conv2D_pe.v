@@ -155,7 +155,7 @@ module conv2D_pe #(
 
     wire pe_out_fire_d, pe_out_fire_q;
     wire pe_out_fire_rst, pe_out_fire_en;
-    REGISTER_R_CE #(.N(DWIDTH), .INIT(32'b0)) pe_out_fire (
+    REGISTER_R_CE #(.N(1), .INIT(0)) pe_out_fire (
         .q(pe_out_fire_q),
         .d(pe_out_fire_d),
         .ce(pe_out_fire_en),
