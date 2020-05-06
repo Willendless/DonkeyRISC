@@ -168,7 +168,7 @@ module conv2D_mem_if #(
     wire halo              = idx < 0 | idx >= fm_dim | idy < 0 | idy >= fm_dim;
 
     // DMEM addresses for weights, IFM, and OFM
-    wire [31:0] wt_idx  = m_ct_q * WT_DIM + n_cnt_q;
+    wire [31:0] wt_idx  = m_cnt_q * WT_DIM + n_cnt_q;
     wire [31:0] ifm_idx = idy * fm_dim + idx;
     wire [31:0] ofm_idx = y_cnt_q * fm_dim + x_cnt_q;
 
