@@ -25,8 +25,8 @@ module conv2D_hw_testbench();
 
     initial begin
         #1;
-        $readmemh("conv2D_hw.mif", CPU.imem.mem);
-        $readmemh("conv2D_hw.mif", CPU.dmem.mem);
+        $readmemh("conv2D_hw53.mif", CPU.imem.mem);
+        $readmemh("conv2D_hw53.mif", CPU.dmem.mem);
 
         rst = 1;
 

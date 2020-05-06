@@ -1,7 +1,5 @@
-`include "../defines.vh"
-`include "../Opcode.vh"
-`include "../EECS151.v"
-
+`include "defines.vh"
+`include "Opcode.vh"
 module Riscv151
 #(
     parameter CPU_CLOCK_FREQ    = 50_000_000,
@@ -489,11 +487,11 @@ module Riscv151
     wire [3:0] dmem_wea_conv, dmem_web_conv;
 
 
-    conv2D_naive #(
+    conv2D_opt #(
         .AWIDTH(AWIDTH),
         .DWIDTH(DWIDTH),
         .WT_DIM(WT_DIM)
-    ) conv2D_naive (
+    ) conv2D_opt (
         .clk(clk),
         .rst(rst || conv_rst),
 
@@ -536,9 +534,7 @@ module Riscv151
 
     io_dmem_controller #(
         .AWIDTH(AWIDTH),
-        .DWIDTH(DWIDTH),
-        .MAX_BURST_LEN(8),
-        .IO_LATENCY(10)
+        .DWIDTH(DWIDTH)
     ) io_dmem_controller (
         .clk(clk),
         .rst(rst),

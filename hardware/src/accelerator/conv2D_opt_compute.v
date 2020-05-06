@@ -50,7 +50,7 @@ module conv2D_opt_compute #(
     wire [DWIDTH-1:0] fifo_deq_read_data;
     wire fifo_deq_read_data_valid, fifo_deq_read_data_ready;
     wire fifo_rdata_fire;
-    fifo #(.WIDTH(DWIDTH), .LOGDEPTH(10)) data_in_fifo(
+    fifo #(.WIDTH(DWIDTH), .LOGDEPTH(15)) data_in_fifo(
         .clk(clk),
         .rst(rst),
 
@@ -66,7 +66,7 @@ module conv2D_opt_compute #(
     // write data to io_mem
     wire [DWIDTH-1:0] fifo_enq_write_data;
     wire fifo_enq_write_data_valid, fifo_enq_write_data_ready;
-    fifo #(.WIDTH(DWIDTH), .LOGDEPTH(10)) data_out_fifo(
+    fifo #(.WIDTH(DWIDTH), .LOGDEPTH(15)) data_out_fifo(
         .clk(clk),
         .rst(rst),
 
@@ -200,7 +200,6 @@ module conv2D_opt_compute #(
     endgenerate
 
     // Generate fifo for each pe
-    // LOGDEPTH: 2^5 = 32
     // enq
     wire pe_fifo_enq_ready[WT_DIM-1:0] ;
     // deq
@@ -210,7 +209,7 @@ module conv2D_opt_compute #(
 
     generate
         for (i = 0; i < WT_DIM; i = i + 1) begin:FIFO
-            fifo #(.WIDTH(32), .LOGDEPTH(7)) fifo (
+            fifo #(.WIDTH(32), .LOGDEPTH(15)) fifo (
                 .clk(clk),
                 .rst(rst),
 
@@ -299,12 +298,6 @@ module conv2D_opt_compute #(
     assign y_cnt_ce     = (state_q == STATE_LOAD_FM) & (x_cnt_q == fm_dim + 1) & (fifo_rdata_fire | halo);
     assign y_cnt_rst    = (state_q == STATE_LOAD_FM & x_cnt_q == fm_dim + 1 & y_cnt_q == fm_dim + 1 & (fifo_rdata_fire | halo)) | rst;
 
-    // data from pe to pe_fifo
-    generate
-        for (i = 0; i < WT_DIM; i = i + 1) begin
-            assign pe_fifo_enq_ready[i] = (state_q == STATE_LAST_WRITE) | (state_q == STATE_LOAD_FM);
-        end
-    endgenerate
 
     // data from pe_fifo to write fifo
     reg pe_data_valid;

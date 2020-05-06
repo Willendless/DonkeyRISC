@@ -1,6 +1,5 @@
 `include "../defines.vh"
 `include "../Opcode.vh"
-
 /**
 *   1. Integer Computational Instructions
 *   - Register-Register
