@@ -6,7 +6,7 @@ Disassembly of section .text:
 
 10000000 <_start>:
 10000000:	10010137          	lui	x2,0x10010
-10000004:	ff010113          	addi	x2,x2,-16 # 1000fff0 <ifm+0xb958>
+10000004:	ff010113          	addi	x2,x2,-16 # 1000fff0 <ifm+0xb998>
 10000008:	554000ef          	jal	x1,1000055c <main>
 
 1000000c <checksum>:
@@ -15,11 +15,11 @@ Disassembly of section .text:
 
 10000014 <generate_matrices>:
 10000014:	00004597          	auipc	x11,0x4
-10000018:	68458593          	addi	x11,x11,1668 # 10004698 <ifm>
+10000018:	64458593          	addi	x11,x11,1604 # 10004658 <ifm>
 1000001c:	00000517          	auipc	x10,0x0
-10000020:	67c50513          	addi	x10,x10,1660 # 10000698 <ofm_hw>
+10000020:	63c50513          	addi	x10,x10,1596 # 10000658 <ofm_hw>
 10000024:	00008817          	auipc	x16,0x8
-10000028:	67480813          	addi	x16,x16,1652 # 10008698 <ifm+0x4000>
+10000028:	63480813          	addi	x16,x16,1588 # 10008658 <ifm+0x4000>
 1000002c:	04000613          	li	x12,64
 10000030:	00050693          	mv	x13,x10
 10000034:	00058713          	mv	x14,x11
@@ -300,7 +300,7 @@ Disassembly of section .text:
 
 10000438 <uwrite_int8>:
 10000438:	80000737          	lui	x14,0x80000
-1000043c:	00072783          	lw	x15,0(x14) # 80000000 <ifm+0x6fffb968>
+1000043c:	00072783          	lw	x15,0(x14) # 80000000 <ifm+0x6fffb9a8>
 10000440:	0017f793          	andi	x15,x15,1
 10000444:	fe078ce3          	beqz	x15,1000043c <uwrite_int8+0x4>
 10000448:	00a72423          	sw	x10,8(x14)
@@ -311,7 +311,7 @@ Disassembly of section .text:
 10000454:	02060463          	beqz	x12,1000047c <uwrite_int8s+0x2c>
 10000458:	00150693          	addi	x13,x10,1
 1000045c:	80000737          	lui	x14,0x80000
-10000460:	00072783          	lw	x15,0(x14) # 80000000 <ifm+0x6fffb968>
+10000460:	00072783          	lw	x15,0(x14) # 80000000 <ifm+0x6fffb9a8>
 10000464:	0017f793          	andi	x15,x15,1
 10000468:	fe078ce3          	beqz	x15,10000460 <uwrite_int8s+0x10>
 1000046c:	00c72423          	sw	x12,8(x14)
@@ -322,7 +322,7 @@ Disassembly of section .text:
 
 10000480 <uread_int8>:
 10000480:	80000737          	lui	x14,0x80000
-10000484:	00072783          	lw	x15,0(x14) # 80000000 <ifm+0x6fffb968>
+10000484:	00072783          	lw	x15,0(x14) # 80000000 <ifm+0x6fffb9a8>
 10000488:	0027f793          	andi	x15,x15,2
 1000048c:	fe078ce3          	beqz	x15,10000484 <uread_int8+0x4>
 10000490:	00472683          	lw	x13,4(x14)
@@ -330,7 +330,7 @@ Disassembly of section .text:
 10000498:	80000737          	lui	x14,0x80000
 1000049c:	0ff6f513          	andi	x10,x13,255
 100004a0:	00f50e63          	beq	x10,x15,100004bc <uread_int8+0x3c>
-100004a4:	00072783          	lw	x15,0(x14) # 80000000 <ifm+0x6fffb968>
+100004a4:	00072783          	lw	x15,0(x14) # 80000000 <ifm+0x6fffb9a8>
 100004a8:	0017f793          	andi	x15,x15,1
 100004ac:	fe078ce3          	beqz	x15,100004a4 <uread_int8+0x24>
 100004b0:	0ff6f693          	andi	x13,x13,255
@@ -385,11 +385,11 @@ Disassembly of section .text.startup:
 
 1000055c <main>:
 1000055c:	00004317          	auipc	x6,0x4
-10000560:	13c30313          	addi	x6,x6,316 # 10004698 <ifm>
+10000560:	0fc30313          	addi	x6,x6,252 # 10004658 <ifm>
 10000564:	00000597          	auipc	x11,0x0
-10000568:	13458593          	addi	x11,x11,308 # 10000698 <ofm_hw>
+10000568:	0f458593          	addi	x11,x11,244 # 10000658 <ofm_hw>
 1000056c:	00008897          	auipc	x17,0x8
-10000570:	12c88893          	addi	x17,x17,300 # 10008698 <ifm+0x4000>
+10000570:	0ec88893          	addi	x17,x17,236 # 10008658 <ifm+0x4000>
 10000574:	00058813          	mv	x16,x11
 10000578:	00030513          	mv	x10,x6
 1000057c:	04000613          	li	x12,64
@@ -406,7 +406,7 @@ Disassembly of section .text.startup:
 100005a8:	10080813          	addi	x16,x16,256
 100005ac:	fd151ae3          	bne	x10,x17,10000580 <main+0x24>
 100005b0:	80000737          	lui	x14,0x80000
-100005b4:	04f72423          	sw	x15,72(x14) # 80000048 <ifm+0x6fffb9b0>
+100005b4:	04f72423          	sw	x15,72(x14) # 80000048 <ifm+0x6fffb9f0>
 100005b8:	00000797          	auipc	x15,0x0
 100005bc:	07c78793          	addi	x15,x15,124 # 10000634 <wt>
 100005c0:	0027d793          	srli	x15,x15,0x2
@@ -421,7 +421,7 @@ Disassembly of section .text.startup:
 100005e4:	0017f793          	andi	x15,x15,1
 100005e8:	fe078ce3          	beqz	x15,100005e0 <main+0x84>
 100005ec:	00004697          	auipc	x13,0x4
-100005f0:	0ac68693          	addi	x13,x13,172 # 10004698 <ifm>
+100005f0:	06c68693          	addi	x13,x13,108 # 10004658 <ifm>
 100005f4:	00000793          	li	x15,0
 100005f8:	0005a703          	lw	x14,0(x11)
 100005fc:	00458593          	addi	x11,x11,4
@@ -464,42 +464,14 @@ Disassembly of section .data:
 10000650:	0002                	c.slli64	x0
 10000652:	0000                	unimp
 10000654:	0001                	nop
-10000656:	0000                	unimp
-10000658:	00000003          	lb	x0,0(x0) # 0 <_start-0x10000000>
-1000065c:	0004                	0x4
-1000065e:	0000                	unimp
-10000660:	0005                	c.nop	1
-10000662:	0000                	unimp
-10000664:	0002                	c.slli64	x0
-10000666:	0000                	unimp
-10000668:	00000003          	lb	x0,0(x0) # 0 <_start-0x10000000>
-1000066c:	0004                	0x4
-1000066e:	0000                	unimp
-10000670:	0005                	c.nop	1
-10000672:	0000                	unimp
-10000674:	0002                	c.slli64	x0
-10000676:	0000                	unimp
-10000678:	0004                	0x4
-1000067a:	0000                	unimp
-1000067c:	0006                	c.slli	x0,0x1
-1000067e:	0000                	unimp
-10000680:	0001                	nop
-10000682:	0000                	unimp
-10000684:	0004                	0x4
-10000686:	0000                	unimp
-10000688:	00000003          	lb	x0,0(x0) # 0 <_start-0x10000000>
-1000068c:	0002                	c.slli64	x0
-1000068e:	0000                	unimp
-10000690:	0001                	nop
-10000692:	0000                	unimp
-10000694:	00000003          	lb	x0,0(x0) # 0 <_start-0x10000000>
+	...
 
 Disassembly of section .bss:
 
-10000698 <ofm_hw>:
+10000658 <ofm_hw>:
 	...
 
-10004698 <ifm>:
+10004658 <ifm>:
 	...
 
 Disassembly of section .comment:
@@ -513,7 +485,7 @@ Disassembly of section .comment:
    e:	38204343          	fmadd.s	f6,f0,f2,f7,rmm
   12:	322e                	fld	f4,232(x2)
   14:	302e                	fld	f0,232(x2)
-  16:	322d                	jal	fffff940 <ifm+0xefffb2a8>
+  16:	322d                	jal	fffff940 <ifm+0xefffb2e8>
   18:	3130                	fld	f12,96(x10)
   1a:	2e39                	jal	338 <_start-0xffffcc8>
   1c:	3530                	fld	f12,104(x10)
