@@ -175,9 +175,9 @@ module conv2D_pe #(
                 assign inputs_reg_en[i]     = y_cnt_reg_q >= index_i & (pe_fm_data_valid | halo == 1'b1);
                 assign inputs_reg_rst[i]    =  ~weight_done_q | rst; 
             end else begin
-                assign inputs_reg_d[i]      = inputs_reg_d[i - 1];
+                assign inputs_reg_d[i]      = inputs_reg_q[i - 1];
                 assign inputs_reg_en[i]     = weight_done_q;
-                assign inputs_reg_rst[i]    = (x_cnt_reg_q == WT_DIM + 1 & pe_fm_data_valid) & (~weight_done_q | rst);
+                assign inputs_reg_rst[i]    = ((x_cnt_reg_q == WT_DIM + 1 & pe_fm_data_valid) & ~weight_done_q) | rst;
             end
         end
     endgenerate
@@ -185,7 +185,7 @@ module conv2D_pe #(
     wire [DWIDTH-1:0] mult_result[WT_DIM-1:0];
     generate
         for (i = 0; i < WT_DIM; i = i + 1) begin
-            assign mult_result[i] = inputs_reg_q[i] * weight_reg_q[i];
+            assign mult_result[i] = inputs_reg_q[i] * weight_reg_q[WT_DIM - 1 - i];
         end
     endgenerate
 
