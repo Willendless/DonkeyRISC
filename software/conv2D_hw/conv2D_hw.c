@@ -5,10 +5,10 @@
     asm volatile ("csrw 0x51e,%[v]" :: [v]"r"(csr_val)); \
 }
 
-#define LOG2_FM_DIM 3
+#define LOG2_FM_DIM 6
 #define FM_DIM      1 << LOG2_FM_DIM
 #define FM_SIZE     FM_DIM * FM_DIM
-#define WT_DIM      3
+#define WT_DIM      5
 #define WT_SIZE     WT_DIM * WT_DIM
 
 // input/output feature map matrices
@@ -16,7 +16,7 @@ static int32_t ifm[FM_SIZE]    = {0};
 static int32_t ofm_hw[FM_SIZE] = {0};
 
 // weight matrix
-static int32_t wt[WT_SIZE] = {1, 2, 1, 4, 5, 4, 1, 2, 1};
+static int32_t wt[WT_SIZE] = {1, 2, 1, 4, 5, 4, 1, 2, 1, 3, 4, 5, 2, 3, 4, 5, 2, 4, 6, 1, 4, 3, 2, 1, 3};
 
 uint32_t checksum(uint32_t *array) {
     int checksum = 0;
