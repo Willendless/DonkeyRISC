@@ -66,7 +66,7 @@ module conv2D_pe #(
 
     genvar i;
     generate
-        for (i = 0; i < WT_DIM; i = i + 1) begin:weight
+        for (i = WT_DIM; i >= 0; i = i - 1) begin:weight
             REGISTER_R_CE #(.N(DWIDTH), .INIT(32'b0)) weight_reg (
                 .q(weight_reg_q[i]),
                 .d(weight_reg_d[i]),
@@ -164,9 +164,9 @@ module conv2D_pe #(
     );
 
     assign pe_out_fire_d    = 1'b1;
-    assign pe_out_fire_en   = weight_done_q & (y_cnt_reg_q >= index_i & x_cnt_reg_q > WT_DIM - 1)
+    assign pe_out_fire_en   = weight_done_q & (y_cnt_reg_q >= index_i & x_cnt_reg_q >= WT_DIM - 1)
                                 & (pe_fm_data_valid | halo);
-    assign pe_out_fire_rst  = ~weight_done_q | rst;
+    assign pe_out_fire_rst  = ~weight_done_q | rst | (y_cnt_reg_q < index_i | x_cnt_reg_q < WT_DIM - 1);
 
     generate
         for (i = 0; i < WT_DIM; i = i + 1) begin
@@ -175,7 +175,7 @@ module conv2D_pe #(
                 assign inputs_reg_en[i]     = y_cnt_reg_q >= index_i & (pe_fm_data_valid | halo == 1'b1);
                 assign inputs_reg_rst[i]    =  ~weight_done_q | rst; 
             end else begin
-                assign inputs_reg_d[i]      = inputs_reg_d[i - 1];
+                assign inputs_reg_d[i]      = inputs_reg_q[i-1];
                 assign inputs_reg_en[i]     = weight_done_q;
                 assign inputs_reg_rst[i]    = (x_cnt_reg_q == WT_DIM + 1 & pe_fm_data_valid) & (~weight_done_q | rst);
             end
