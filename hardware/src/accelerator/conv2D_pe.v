@@ -66,7 +66,7 @@ module conv2D_pe #(
 
     genvar i;
     generate
-        for (i = WT_DIM; i >= 0; i = i - 1) begin:weight
+        for (i = WT_DIM - 1; i >= 0; i = i - 1) begin:weight
             REGISTER_R_CE #(.N(DWIDTH), .INIT(32'b0)) weight_reg (
                 .q(weight_reg_q[i]),
                 .d(weight_reg_d[i]),

@@ -489,7 +489,7 @@ module Riscv151
     wire [3:0] dmem_wea_conv, dmem_web_conv;
 
 
-    conv2D_naive #(
+    conv2D_opt #(
         .AWIDTH(AWIDTH),
         .DWIDTH(DWIDTH),
         .WT_DIM(WT_DIM)
