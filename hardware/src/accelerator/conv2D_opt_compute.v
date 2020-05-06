@@ -180,7 +180,6 @@ module conv2D_opt_compute #(
     wire [DWIDTH-1:0] pe_data_outputs[WT_DIM-1:0];
     wire pe_data_valids[WT_DIM-1:0];
     wire pe_rst;
-    wire pe_weight_data_valid;
     genvar i;
     generate
         for (i = 0; i < WT_DIM; i = i + 1) begin:PE
@@ -351,7 +350,7 @@ module conv2D_opt_compute #(
     
     // data from write fifo to mem
     assign wdata_addr_valid_reg_d   = 1;
-    assign wdata_addr_valid_reg_ce  = (state_d == STATE_STORE_FM & state_q == STATE_LAST_WRITE); 
+    assign wdata_addr_valid_reg_ce  = (state_d == STATE_STORE_FM); 
     assign wdata_addr_valid_reg_rst = wdata_addr_valid_reg_d & req_write_addr_ready;
 
 
