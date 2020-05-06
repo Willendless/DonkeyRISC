@@ -59,7 +59,7 @@ module conv2D_testbench();
         .AWIDTH(AWIDTH),
         .DWIDTH(DWIDTH),
         .WT_DIM(WT_DIM)
-    ) conv2D_naive (
+    ) conv2D_opt (
         .clk(clk),
         .rst(rst),
 

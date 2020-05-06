@@ -179,7 +179,8 @@ module conv2D_opt_compute #(
 
     wire [DWIDTH-1:0] pe_data_outputs[WT_DIM-1:0];
     wire pe_data_valids[WT_DIM-1:0];
-    wire pe_rst = rst;
+    wire pe_rst;
+    wire pe_weight_data_valid;
     genvar i;
     generate
         for (i = 0; i < WT_DIM; i = i + 1) begin:PE
@@ -187,7 +188,7 @@ module conv2D_opt_compute #(
                         .DWIDTH(DWIDTH),
                         .WT_DIM(WT_DIM)) pe (
                             .clk(clk),
-                            .rst(pe_rst),
+                            .rst(rst),
                             .index_i(i),
                             .fm_dim(fm_dim),
                             .pe_weight_data_i(pe_weight_data),
@@ -210,7 +211,7 @@ module conv2D_opt_compute #(
 
     generate
         for (i = 0; i < WT_DIM; i = i + 1) begin:FIFO
-            fifo #(.WIDTH(32), .LOGDEPTH(5)) fifo (
+            fifo #(.WIDTH(32), .LOGDEPTH(7)) fifo (
                 .clk(clk),
                 .rst(rst),
 
@@ -277,7 +278,7 @@ module conv2D_opt_compute #(
 
     assign m_cnt_d      = m_cnt_q + 1;
     assign m_cnt_ce     = (state_q == STATE_LOAD_WT) & fifo_rdata_fire & (n_cnt_q == WT_DIM - 1);
-    assign m_cnt_rst    = ((n_cnt_q == WT_DIM - 1) & (m_cnt_q == WT_DIM - 1) & fifo_rdata_fire) | rst;
+    assign m_cnt_rst    = ((m_cnt_q == WT_DIM - 1) & (n_cnt_q == WT_DIM - 1) & fifo_rdata_fire) | rst;
 
     assign n_cnt_d      = n_cnt_q + 1;
     assign n_cnt_ce     = (state_q == STATE_LOAD_WT) & fifo_rdata_fire;
@@ -285,7 +286,7 @@ module conv2D_opt_compute #(
 
 
     // load fm
-    assign pe_fm_data_valid         = ((state_q == STATE_LOAD_FM) || (state_q == STATE_LAST_WRITE))
+    assign pe_fm_data_valid         = ((state_q == STATE_LOAD_FM) | (state_q == STATE_LAST_WRITE))
                                         & fifo_rdata_fire;
     assign pe_fm_data               = fifo_deq_read_data;
 
@@ -345,7 +346,7 @@ module conv2D_opt_compute #(
     // write counter
     assign write_counter_d      = write_counter_q + 1;
     assign write_counter_ce     = pe_data_fire;
-    assign write_counter_rst    = ((write_counter_q == fm_dim * fm_dim) & pe_data_fire) | rst;
+    assign write_counter_rst    = (write_counter_q == fm_dim * fm_dim & pe_data_fire) | rst;
     
     
     // data from write fifo to mem
