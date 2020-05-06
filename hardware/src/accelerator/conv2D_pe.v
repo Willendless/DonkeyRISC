@@ -164,9 +164,9 @@ module conv2D_pe #(
     );
 
     assign pe_out_fire_d    = 1'b1;
-    assign pe_out_fire_en   = weight_done_q & (y_cnt_reg_q >= index_i & x_cnt_reg_q > WT_DIM - 1)
+    assign pe_out_fire_en   = weight_done_q & (y_cnt_reg_q >= index_i & x_cnt_reg_q >= WT_DIM - 1)
                                 & (pe_fm_data_valid | halo);
-    assign pe_out_fire_rst  = ~weight_done_q | rst;
+    assign pe_out_fire_rst  = ~weight_done_q | rst | (y_cnt_reg_q < index_i | x_cnt_reg_q < WT_DIM - 1);
 
     generate
         for (i = 0; i < WT_DIM; i = i + 1) begin

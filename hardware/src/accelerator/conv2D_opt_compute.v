@@ -345,22 +345,14 @@ module conv2D_opt_compute #(
     // write counter
     assign write_counter_d      = write_counter_q + 1;
     assign write_counter_ce     = pe_data_fire;
-    assign write_counter_rst    = (write_counter_q == fm_dim * fm_dim & pe_data_fire) | rst;
+    assign write_counter_rst    = (write_counter_q == fm_dim * fm_dim) | rst;
     
-    
-    // data from write fifo to mem
-    assign wdata_addr_valid_reg_d   = 1;
-    assign wdata_addr_valid_reg_ce  = (state_d == STATE_STORE_FM & state_q == STATE_LAST_WRITE); 
-    assign wdata_addr_valid_reg_rst = wdata_addr_valid_reg_d & req_write_addr_ready;
+    assign wdata_addr_valid_reg_d   = 1'b1;
+    assign wdata_addr_valid_reg_ce  = (state_d == STATE_STORE_FM); 
+    assign wdata_addr_valid_reg_rst = (wdata_addr_valid_reg_q == 1'b1) & req_write_addr_ready;
 
-
-    assign req_write_addr       = ofm_offset;
-    assign req_write_addr_valid = wdata_addr_valid_reg_q;
-    assign req_write_addr_len   = fm_dim * fm_dim;
-
-
-
-    assign req_write_data_valid  = (state_q == STATE_STORE_FM);
+    assign req_write_addr        = ofm_offset;
+    assign req_write_addr_valid  = wdata_addr_valid_reg_q;
     assign req_write_len         = fm_dim * fm_dim; 
-    
+
 endmodule // conv2D_opt_compute
