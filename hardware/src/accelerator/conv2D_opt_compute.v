@@ -145,17 +145,17 @@ module conv2D_opt_compute #(
     wire [31:0] write_counter_q;
     wire write_counter_ce, write_counter_rst;
     REGISTER_R_CE #(.N(32)) write_counter (
-        .q(write_coutner_q),
+        .q(write_counter_q),
         .d(write_counter_d),
-        .ce(write_coutner_ce),
-        .rst(write_coutner_rst),
+        .ce(write_counter_ce),
+        .rst(write_counter_rst),
         .clk(clk)
     );
 
     wire rdata_addr_valid_reg_d, rdata_addr_valid_reg_q;
     wire rdata_addr_valid_reg_rst, rdata_addr_valid_reg_ce;
     REGISTER_R_CE #(.N(1)) rdata_addr_valid_reg (
-        .q(rdata_addr_valid_req_q),
+        .q(rdata_addr_valid_reg_q),
         .d(rdata_addr_valid_reg_d),
         .ce(rdata_addr_valid_reg_ce),
         .rst(rdata_addr_valid_reg_rst),
@@ -179,6 +179,7 @@ module conv2D_opt_compute #(
     wire [DWIDTH-1:0] pe_data_outputs[WT_DIM-1:0];
     wire pe_data_valids[WT_DIM-1:0];
     wire pe_rst;
+    wire pe_weight_data_valid;
     genvar i;
     generate
         for (i = 0; i < WT_DIM; i = i + 1) begin:PE
@@ -186,7 +187,7 @@ module conv2D_opt_compute #(
                         .DWIDTH(DWIDTH),
                         .WT_DIM(WT_DIM)) pe (
                             .clk(clk),
-                            .rst(pe_rst),
+                            .rst(rst),
                             .index_i(i),
                             .fm_dim(fm_dim),
                             .pe_weight_data_i(pe_weight_data),
@@ -209,7 +210,7 @@ module conv2D_opt_compute #(
 
     generate
         for (i = 0; i < WT_DIM; i = i + 1) begin:FIFO
-            fifo #(.WIDTH(32), .LOGDEPTH(5)) fifo (
+            fifo #(.WIDTH(32), .LOGDEPTH(7)) fifo (
                 .clk(clk),
                 .rst(rst),
 
@@ -275,8 +276,8 @@ module conv2D_opt_compute #(
     assign pe_weight_data           = fifo_deq_read_data;
 
     assign m_cnt_d      = m_cnt_q + 1;
-    assign m_cnt_ce     = (state_q == STATE_LOAD_WT) & fifo_rdata_fire;
-    assign m_cnt_rst    = ((n_cnt_q == WT_DIM - 1) & (m_cnt_q == WT_DIM - 1) & fifo_rdata_fire) | rst;
+    assign m_cnt_ce     = (state_q == STATE_LOAD_WT) & fifo_rdata_fire & (n_cnt_q == WT_DIM - 1);
+    assign m_cnt_rst    = ((m_cnt_q == WT_DIM - 1) & (n_cnt_q == WT_DIM - 1) & fifo_rdata_fire) | rst;
 
     assign n_cnt_d      = n_cnt_q + 1;
     assign n_cnt_ce     = (state_q == STATE_LOAD_WT) & fifo_rdata_fire;
@@ -284,7 +285,7 @@ module conv2D_opt_compute #(
 
 
     // load fm
-    assign pe_fm_data_valid         = ((state_q == STATE_LOAD_FM) && (state_q == STATE_LAST_WRITE))
+    assign pe_fm_data_valid         = ((state_q == STATE_LOAD_FM) | (state_q == STATE_LAST_WRITE))
                                         & fifo_rdata_fire;
     assign pe_fm_data               = fifo_deq_read_data;
 
@@ -312,7 +313,7 @@ module conv2D_opt_compute #(
 
     integer j;
     always @(*) begin
-        pe_data_valid = 1'b0;
+        pe_data_valid = 1'b1;
         for (j = 0; j < WT_DIM; j = j + 1) begin
             pe_data_valid = pe_data_valid & pe_fifo_deq_valids[j];
         end
@@ -330,7 +331,7 @@ module conv2D_opt_compute #(
     always @(*) begin
         pe_data_out = 32'b0;
         for (j = 0; j < WT_DIM; j = j + 1) begin
-            pe_data_out = pe_fifo_deq_datas[j];
+            pe_data_out = pe_data_out + pe_fifo_deq_datas[j];
         end
         
     end
@@ -342,9 +343,9 @@ module conv2D_opt_compute #(
     assign fifo_enq_write_data_valid    = pe_data_valid;
 
     // write counter
-    assign write_counter_d      = write_coutner_q + 1;
+    assign write_counter_d      = write_counter_q + 1;
     assign write_counter_ce     = pe_data_fire;
-    assign write_coutner_rst    = (write_counter_q == fm_dim * fm_dim & pe_data_fire) | rst;
+    assign write_counter_rst    = (write_counter_q == fm_dim * fm_dim & pe_data_fire) | rst;
     
     
     // data from write fifo to mem
