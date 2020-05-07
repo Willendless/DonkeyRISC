@@ -72,6 +72,9 @@ module conv2D_naive #(
     wire [DWIDTH-1:0] wdata;
     wire wdata_valid;
     wire mem_if_idle, compute_idle;
+    wire done_q;
+
+    assign done = ~start & done_q;
 
     // start register -- asserts when 'start', and stays HIGH until reset
     wire start_q;
@@ -79,15 +82,15 @@ module conv2D_naive #(
         .q(start_q),
         .d(1'b1),
         .ce(start),
-        .rst(rst),
+        .rst(done | rst),
         .clk(clk));
 
     // done register -- asserts when the conv2D is done, and stay HIGH until reset
     REGISTER_R_CE #(.N(1), .INIT(0)) done_reg (
-        .q(done),
+        .q(done_q),
         .d(1'b1),
         .ce(start_q & mem_if_idle & compute_idle),
-        .rst(rst),
+        .rst(start | rst),
         .clk(clk));
 
     assign idle = mem_if_idle & compute_idle;
@@ -110,10 +113,10 @@ module conv2D_naive #(
         .ofm_offset(ofm_offset),                           // input
 
         // Read Request Address channel
-        .req_read_addr(req_read_addr),                     // output
-        .req_read_addr_valid(req_read_addr_valid),         // output
-        .req_read_addr_ready(req_read_addr_ready),         // input
-        .req_read_len(req_read_len),                       // output
+        .req_read_addr(req_read_addr),                     // input
+        .req_read_addr_valid(req_read_addr_valid),         // input
+        .req_read_addr_ready(req_read_addr_ready),         // output
+        .req_read_len(req_read_len),                       // input
 
         // Write Request Address channel
         .req_write_addr(req_write_addr),                   // input
@@ -158,9 +161,9 @@ module conv2D_naive #(
         .fm_dim(fm_dim),                    // input
 
         // Read data from DMem
-        .rdata(resp_read_data),             // input
-        .rdata_valid(resp_read_data_valid), // input
-        .rdata_ready(resp_read_data_ready), // output
+        .rdata(resp_read_data),             // output
+        .rdata_valid(resp_read_data_valid), // output
+        .rdata_ready(resp_read_data_ready), // input
 
         // Write data to mem_if
         .wdata(wdata),                      // output

@@ -12,7 +12,7 @@ if os.name == 'nt':
     ser.port = 'COM3' # CHANGE THIS COM PORT
     ser.open()
 else:
-    ser = serial.Serial('/dev/ttyUSB1')
+    ser = serial.Serial('/dev/ttyUSB0')
     ser.baudrate = 115200
 
 if len(sys.argv) != 3:
@@ -42,8 +42,8 @@ for inst_num, inst in enumerate(program):
         time.sleep(0.001)
     time.sleep(0.001)
     if (inst_num == len(program)-1):
-        print ("Sent ", 4+inst_num*4, "/",  size, "bytes", "\n")
+        print "Sent ", 4+inst_num*4, "/",  size, "bytes", "\n"
     else:
-        print ("Sent ", 4+inst_num*4, "/",  size, "bytes", "\r")
+        print "Sent ", 4+inst_num*4, "/",  size, "bytes", "\r"
 
 print("Done")
