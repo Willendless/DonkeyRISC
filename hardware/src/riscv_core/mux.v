@@ -27,11 +27,12 @@ module mux_pc(
     input [31:0] branch_addr,
     input [31:0] branch_addr_after,
     input [1:0] jump_judge,
-    input [1:0] branch_predict,
+    input [1:0] branch_predict_i,
     input branch_judge,
     input clk, 
     input rst,
-    output reg [31:0] pc_o
+    output reg [31:0] pc_o,
+    output reg flush_wrong
 );
 //define the input of jump signal
 wire [31:0] pc_normal;
@@ -39,7 +40,7 @@ wire [31:0] pc_normal;
 wire [1:0] branch_predict_before;
 REGISTER_R #(.N(2), .INIT(2'b0)) store_predict(
     .q(branch_predict_before),
-    .d(branch_predict),
+    .d(branch_predict_i),
     .rst(rst),
     .clk(clk)
 );
@@ -47,23 +48,38 @@ REGISTER_R #(.N(2), .INIT(2'b0)) store_predict(
 
 
 always @(*) begin
+    flush_wrong = 1'b0;
     pc_o = pc_plus;
-    case(branch_predict)
-         2'b10: pc_o = branch_addr;
-         2'b01: pc_o = pc_normal;
-         2'b00: begin
-         if (branch_predict_before == 2'b10 && branch_judge == 1)
-            pc_o <= pc_normal;
-         else if (branch_predict_before == 2'b01 && branch_judge == 1)
+    if (branch_judge == 1) begin
+        case(branch_predict_before)
+            2'b10: pc_o <= pc_normal;
+            2'b01: begin 
             pc_o <= branch_addr_after;
-         else if (branch_predict_before == 2'b10 && branch_judge == 0)
-            pc_o <= pc_plus_reg;
-         else if (branch_predict_before == 2'b01 && branch_judge == 0)
-            pc_o <= pc_normal;
-         else
-            pc_o <= pc_normal;
-         end
+            flush_wrong <= 1'b1;
+            end
+            default: pc_o <= pc_normal;
+        endcase
+    end
+    else begin
+    case(branch_predict_before)
+        2'b00: begin
+            if (branch_predict_i == 2'b10)
+                pc_o <= branch_addr;
+            else
+                pc_o <= pc_normal;
+            end
+        2'b01: begin
+            if (branch_predict_i == 2'b10)
+                pc_o <= branch_addr;
+            else
+                pc_o <= pc_normal;
+            end
+        2'b10: begin
+                flush_wrong = 1'b1;
+                pc_o <= pc_plus_reg;
+            end
     endcase
+    end
 end
 
 assign pc_normal = (jump_judge > 0) ? jal_addr : pc_plus;

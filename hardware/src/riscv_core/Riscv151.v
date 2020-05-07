@@ -1,10 +1,5 @@
-<<<<<<< HEAD
 `include "../defines.vh"
 `include "../Opcode.vh"
-=======
-`include "defines.vh"
-`include "Opcode.vh"
->>>>>>> 71a70bf888199e55218a3f5a8872c4c56150810f
 module Riscv151
 #(
     parameter CPU_CLOCK_FREQ    = 50_000_000,
@@ -56,7 +51,10 @@ module Riscv151
     wire branch_judge;
     //wire [31:0] jal_addr1 = jal_addr<<2;
     wire [1:0] branch_predict;
+    wire predict_wrong;
     mux_pc mux_pc(
+        .clk(clk),
+        .rst(rst),
         .pc_plus(pc_plus_reg),
         .pc_plus_reg(pc_plus_ex),
         .jal_addr(jal_addr),//remain some questions
@@ -65,7 +63,8 @@ module Riscv151
         .jump_judge(jump_judge),
         .branch_predict_i(branch_predict),
         .branch_judge(branch_judge),
-        .pc_o(pc_in));
+        .pc_o(pc_in),
+        .flush_wrong(predict_wrong));
 
 
     wire [31:0] pc_store;
@@ -255,7 +254,7 @@ module Riscv151
     wire [31:0] wb_data;
 
     wire if_flush;
-    assign if_flush = rst || branch_judge || jump_judge[0] || jump_judge[1];
+    assign if_flush = rst || predict_wrong || jump_judge[0] || jump_judge[1];
     wire control_wb_back;  
     wire [3:0] alu_ctrl;
 
@@ -349,6 +348,8 @@ module Riscv151
         .control_branch_i(control_branch),
         .control_jump_i(control_jump),
         .alu_ctrl_i(alu_ctrl),
+        .clk(clk),
+        .rst(rst),
 
         .mem_write_o(mem_write_reg),
         .alu_result_o(alu_result_reg),

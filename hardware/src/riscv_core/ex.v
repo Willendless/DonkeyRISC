@@ -11,6 +11,8 @@ module ex (
     //  forward data
     input wire [31:0] forward_data,
     input wire[`REG_ABUS]   wb_addr_i,
+    input clk,
+    input rst,
 
     // pc & pc+4
     input wire[`REG_DBUS]      pc_data_i,
@@ -76,7 +78,6 @@ module ex (
     assign pc_plus_o = pc_plus_i;
 
     // alu
-    wire [3:0] alu_ctrl;
         
     wire [1:0]  reg1_judge;
     wire [1:0]  reg2_judge;
@@ -162,7 +163,8 @@ module ex (
     assign branch_state_next = (branch_judge == 1) ? branch_state_val + 1 :
                                (branch_judge == 1 && branch_state_val == 2'b11) ? branch_state_val :
                                (branch_judge == 0 && branch_state_val == 2'b00) ? branch_state_val :
-                               branch_state_val - 1;
+                               (branch_judge == 0 && control_branch_i) ? branch_state_val - 1 :
+                               branch_state_val;
 
     assign branch_predict_o = (branch_state_val > 2'b01) ? 2'b10 : 2'b01;
 endmodule // ex 
