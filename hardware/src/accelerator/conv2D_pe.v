@@ -20,6 +20,11 @@ module conv2D_pe #(
     output                  pe_data_valid
 );
 
+    localparam halo_cnt  = (WT_DIM - 1);
+    localparam half_halo_cnt = halo_cnt >> 1;
+    wire [31:0] x_cnt_edge = (fm_dim + halo_cnt - 1);
+    wire [31:0] y_cnt_edge = (fm_dim + halo_cnt - 1);
+
     localparam WT_SIZE      = WT_DIM * WT_DIM;
 
     wire halo;
@@ -119,18 +124,18 @@ module conv2D_pe #(
 
     assign x_cnt_reg_d      = x_cnt_reg_q + 1;
     assign x_cnt_reg_ce     = weight_done_q & (pe_fm_data_valid | halo);
-    assign x_cnt_reg_rst    = (x_cnt_reg_q == fm_dim + 1) & (pe_fm_data_valid | halo);
+    assign x_cnt_reg_rst    = (x_cnt_reg_q == x_cnt_edge) & (pe_fm_data_valid | halo);
 
     assign y_cnt_reg_d      = y_cnt_reg_q + 1;
-    assign y_cnt_reg_ce     = weight_done_q & (x_cnt_reg_q == fm_dim + 1)
+    assign y_cnt_reg_ce     = weight_done_q & (x_cnt_reg_q == x_cnt_edge)
                                             & (pe_fm_data_valid | halo);
-    assign y_cnt_reg_rst    = weight_done_q & (x_cnt_reg_q == fm_dim + 1)
-                                            & (y_cnt_reg_q == fm_dim + 1)
+    assign y_cnt_reg_rst    = weight_done_q & (x_cnt_reg_q == x_cnt_edge)
+                                            & (y_cnt_reg_q == y_cnt_edge)
                                             & (pe_fm_data_valid | halo);
 
-    assign halo             = (x_cnt_reg_q == 32'b0) | (y_cnt_reg_q == 32'b0)
-                                                     | (x_cnt_reg_q == fm_dim + 1)
-                                                     | (y_cnt_reg_q == fm_dim + 1);
+    assign halo         = (x_cnt_reg_q < half_halo_cnt) | (y_cnt_reg_q < half_halo_cnt)
+                                                    | (x_cnt_reg_q > (x_cnt_edge - half_halo_cnt))
+                                                    | (y_cnt_reg_q > (y_cnt_edge - half_halo_cnt));
 
     assign weight_done_d    = ~weight_done_q;
     assign weight_done_ce   = (m_cnt_q == WT_DIM - 1) & (n_cnt_q == WT_DIM - 1) & pe_weight_data_valid;

@@ -46,11 +46,16 @@ module conv2D_opt_compute #(
     output               resp_write_status_ready 
 );
 
+    localparam halo_cnt  = (WT_DIM - 1);
+    localparam half_halo_cnt = halo_cnt >> 1;
+    wire [31:0] x_cnt_edge = (fm_dim + halo_cnt - 1);
+    wire [31:0] y_cnt_edge = (fm_dim + halo_cnt - 1);
+
     // read data from io_mem
     wire [DWIDTH-1:0] fifo_deq_read_data;
     wire fifo_deq_read_data_valid, fifo_deq_read_data_ready;
     wire fifo_rdata_fire;
-    fifo #(.WIDTH(DWIDTH), .LOGDEPTH(15)) data_in_fifo(
+    fifo #(.WIDTH(DWIDTH), .LOGDEPTH(13)) data_in_fifo(
         .clk(clk),
         .rst(rst),
 
@@ -66,7 +71,7 @@ module conv2D_opt_compute #(
     // write data to io_mem
     wire [DWIDTH-1:0] fifo_enq_write_data;
     wire fifo_enq_write_data_valid, fifo_enq_write_data_ready;
-    fifo #(.WIDTH(DWIDTH), .LOGDEPTH(15)) data_out_fifo(
+    fifo #(.WIDTH(DWIDTH), .LOGDEPTH(13)) data_out_fifo(
         .clk(clk),
         .rst(rst),
 
@@ -209,7 +214,7 @@ module conv2D_opt_compute #(
 
     generate
         for (i = 0; i < WT_DIM; i = i + 1) begin:FIFO
-            fifo #(.WIDTH(32), .LOGDEPTH(15)) fifo (
+            fifo #(.WIDTH(32), .LOGDEPTH(9)) fifo (
                 .clk(clk),
                 .rst(rst),
 
@@ -239,7 +244,7 @@ module conv2D_opt_compute #(
                     state_d = STATE_LOAD_FM;
             end
             STATE_LOAD_FM: begin
-                if (x_cnt_q == fm_dim + 1 & y_cnt_q == fm_dim + 1 & (fifo_rdata_fire | halo))
+                if (x_cnt_q == x_cnt_edge & y_cnt_q == y_cnt_edge & (fifo_rdata_fire | halo))
                     state_d = STATE_LAST_WRITE;
             end
             STATE_LAST_WRITE: begin
@@ -288,15 +293,17 @@ module conv2D_opt_compute #(
                                         & fifo_rdata_fire;
     assign pe_fm_data               = fifo_deq_read_data;
 
-    assign halo         = (x_cnt_q == 32'b0) | (y_cnt_q == 32'b0) | (x_cnt_q == fm_dim + 1) | (y_cnt_q == fm_dim + 1);
+    assign halo         = (x_cnt_q < half_halo_cnt) | (y_cnt_q < half_halo_cnt)
+                                                    | (x_cnt_q > (x_cnt_edge - half_halo_cnt))
+                                                    | (y_cnt_q > (y_cnt_edge - half_halo_cnt));
 
     assign x_cnt_d      = x_cnt_q + 1;
     assign x_cnt_ce     = (state_q == STATE_LOAD_FM) & (fifo_rdata_fire | halo);
-    assign x_cnt_rst    = (state_q == STATE_LOAD_FM & x_cnt_q == fm_dim + 1 & (fifo_rdata_fire | halo)) | rst;
+    assign x_cnt_rst    = (state_q == STATE_LOAD_FM & x_cnt_q == x_cnt_edge & (fifo_rdata_fire | halo)) | rst;
 
     assign y_cnt_d      = y_cnt_q + 1;
-    assign y_cnt_ce     = (state_q == STATE_LOAD_FM) & (x_cnt_q == fm_dim + 1) & (fifo_rdata_fire | halo);
-    assign y_cnt_rst    = (state_q == STATE_LOAD_FM & x_cnt_q == fm_dim + 1 & y_cnt_q == fm_dim + 1 & (fifo_rdata_fire | halo)) | rst;
+    assign y_cnt_ce     = (state_q == STATE_LOAD_FM) & (x_cnt_q == x_cnt_edge) & (fifo_rdata_fire | halo);
+    assign y_cnt_rst    = (state_q == STATE_LOAD_FM & x_cnt_q ==  x_cnt_edge & y_cnt_q == y_cnt_edge & (fifo_rdata_fire | halo)) | rst;
 
 
     // data from pe_fifo to write fifo
