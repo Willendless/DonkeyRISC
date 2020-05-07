@@ -6,7 +6,7 @@ module conv2D_testbench();
     parameter CPU_CLOCK_PERIOD = 20;
     parameter CPU_CLOCK_FREQ   = 1_000_000_000 / CPU_CLOCK_PERIOD;
 
-    localparam FM_DIM    = 64;
+    localparam FM_DIM    = 32;
     localparam WT_DIM    = 3;
     localparam AWIDTH    = 14;
     localparam DWIDTH    = 32;

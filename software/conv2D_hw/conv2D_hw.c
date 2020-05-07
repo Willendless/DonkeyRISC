@@ -5,7 +5,7 @@
     asm volatile ("csrw 0x51e,%[v]" :: [v]"r"(csr_val)); \
 }
 
-#define LOG2_FM_DIM 3
+#define LOG2_FM_DIM 6
 #define FM_DIM      1 << LOG2_FM_DIM
 #define FM_SIZE     FM_DIM * FM_DIM
 #define WT_DIM      3

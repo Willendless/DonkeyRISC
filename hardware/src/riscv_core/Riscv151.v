@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 `include "../defines.vh"
 `include "../Opcode.vh"
+=======
+`include "defines.vh"
+`include "Opcode.vh"
+>>>>>>> 71a70bf888199e55218a3f5a8872c4c56150810f
 module Riscv151
 #(
     parameter CPU_CLOCK_FREQ    = 50_000_000,
@@ -534,8 +539,7 @@ module Riscv151
 
     io_dmem_controller #(
         .AWIDTH(AWIDTH),
-        .DWIDTH(DWIDTH),
-        .IO_LATENCY(10)
+        .DWIDTH(DWIDTH)
     ) io_dmem_controller (
         .clk(clk),
         .rst(rst),
