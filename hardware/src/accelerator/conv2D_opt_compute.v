@@ -45,6 +45,7 @@ module conv2D_opt_compute #(
     input                resp_write_status_valid,
     output               resp_write_status_ready 
 );
+    assign resp_write_status_ready = 1'b1;
 
     // read data from io_mem
     wire [DWIDTH-1:0] fifo_deq_read_data;
@@ -300,11 +301,6 @@ module conv2D_opt_compute #(
     assign y_cnt_rst    = (state_q == STATE_LOAD_FM & x_cnt_q == fm_dim + 1 & y_cnt_q == fm_dim + 1 & (fifo_rdata_fire | halo)) | rst;
 
     // data from pe to pe_fifo
-    generate
-        for (i = 0; i < WT_DIM; i = i + 1) begin
-            assign pe_fifo_enq_ready[i] = (state_q == STATE_LAST_WRITE) | (state_q == STATE_LOAD_FM);
-        end
-    endgenerate
 
     // data from pe_fifo to write fifo
     reg pe_data_valid;
