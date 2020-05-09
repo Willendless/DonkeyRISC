@@ -26,14 +26,9 @@ module isa_testbench();
     reg [255:0] MIF_FILE;
     
     initial begin
-   
-        if (!$value$plusargs("MIF_FILE=%s", MIF_FILE)) begin
-            $display("Must supply mif_file!");
-            $finish();
-        end
 
-        $readmemh(MIF_FILE, CPU.dmem.mem);
-        $readmemh(MIF_FILE, CPU.imem.mem);
+        $readmemh("beq.mif", CPU.dmem.mem);
+        $readmemh("beq.mif", CPU.imem.mem);
    //     $readmemh("D:/PDF/course/UCB/eecs151/proj/hardware/sim/slti.mif", CPU.dmem.mem);
      //   $readmemh("D:/PDF/course/UCB/eecs151/proj/hardware/sim/slti.mif", CPU.imem.mem);
 

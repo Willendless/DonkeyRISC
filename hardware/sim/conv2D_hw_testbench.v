@@ -25,8 +25,8 @@ module conv2D_hw_testbench();
 
     initial begin
         #1;
-        $readmemh("conv2D_hw53.mif", CPU.imem.mem);
-        $readmemh("conv2D_hw53.mif", CPU.dmem.mem);
+        $readmemh("conv2D_hw35.mif", CPU.imem.mem);
+        $readmemh("conv2D_hw35.mif", CPU.dmem.mem);
 
         rst = 1;
 
@@ -59,7 +59,7 @@ module conv2D_hw_testbench();
             @(posedge clk);
         end
 
-        for (cycle = 0; cycle < 50000; cycle = cycle + 1) begin
+        for (cycle = 0; cycle < 300000; cycle = cycle + 1) begin
             if (!done) @(posedge clk);
         end
 

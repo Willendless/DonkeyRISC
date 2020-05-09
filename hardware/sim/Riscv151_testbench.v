@@ -1,6 +1,6 @@
 `timescale 1ns/1ns
-`include "../src/riscv_core/defines.vh"
-`include "../src/riscv_core/Opcode.vh"
+`include "../src/defines.vh"
+`include "../src/Opcode.vh"
 `include "../src/EECS151.v"
 `define FNC7_0  7'b0000000 // ADD, SRL
 `define FNC7_1  7'b0100000 // SUB, SRA
