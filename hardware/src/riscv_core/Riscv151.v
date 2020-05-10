@@ -52,6 +52,14 @@ module Riscv151
     //wire [31:0] jal_addr1 = jal_addr<<2;
     wire [1:0] branch_predict;
     wire predict_wrong;
+    wire is_load_hazard;
+
+    wire is_load;
+    wire [31:0] wb_alu_data;
+    wire is_load_before;
+
+    wire load_flush = is_load_hazard & is_load_before;
+    
     mux_pc mux_pc(
         .clk(clk),
         .rst(rst),
@@ -61,6 +69,7 @@ module Riscv151
         .branch_addr(branch_addr),
         .branch_addr_after(branch_addr_after),
         .jump_judge(jump_judge),
+        .is_load_hazard_i(load_flush),
         .branch_predict_i(branch_predict),
         .branch_judge(branch_judge),
         .pc_o(pc_in),
@@ -254,15 +263,17 @@ module Riscv151
     wire [31:0] wb_data;
 
     wire if_flush;
-    assign if_flush = rst || predict_wrong || jump_judge[0] || jump_judge[1];
+    assign if_flush = load_flush || predict_wrong || jump_judge[0] || jump_judge[1];
     wire control_wb_back;  
     wire [3:0] alu_ctrl;
 
     assign branch_addr_reg = branch_addr;
-
+    wire [`REG_ABUS]    wb_addr_reg;
     id_ex ID_EX (
         .clk(clk),
-        .rst(if_flush),//add jal jalr judge
+        .rst(rst),//add jal jalr judge
+        .flush_i(if_flush),
+
         .pc_data_i(pc_data_reg),
         .pc_plus_i(pc_plus_reg),
         .reg1_data_i(reg1_data_reg),
@@ -282,7 +293,8 @@ module Riscv151
         .control_wb_i(control_wb_reg),
         .control_branch_i(control_branch_reg),
         .wb_data_i(wb_data),
-        .wb_addr_i(wb_addr),
+        .wb_addr_i(wb_addr_reg),
+        .wb_hazard_addr_i(wb_addr),
         .is_wb_i(control_wb_back),
         .alu_ctrl_i(alu_ctrl_reg),
         .branch_addr_i(branch_addr_reg),
@@ -306,14 +318,14 @@ module Riscv151
         .control_wb_o(control_wb_ex),
         .control_branch_o(control_branch),
         .alu_ctrl_o(alu_ctrl),
-        .branch_addr_o(branch_addr_after)
+        .branch_addr_o(branch_addr_after),
+        .is_load_hazard_o(is_load_hazard)
     );
 
     assign jump_judge = control_jump;
 
 //----------------execute stage------------//
 
-    wire [`REG_ABUS]    wb_addr_reg;
     wire [1:0]          control_wr_mux_reg2;
     wire [`REG_DBUS]    pc_plus_reg2;
     wire [`REG_DBUS]    mem_write_reg;   
@@ -326,8 +338,10 @@ module Riscv151
     wire is_inst_exec;
     wire [1:0] control_uart_wb;
     wire [1:0] branch_predict_reg;
+
+    wire control_load_wb = control_wb_back & (~is_load);
     ex EX (
-        .forward_data(wb_data),     // DATA from write back stage
+        .forward_data(wb_alu_data),     // DATA from write back stage
         .pc_data_i(pc_ex),
         .pc_plus_i(pc_plus_ex),
         .reg1_data_i(reg1_output),
@@ -344,7 +358,7 @@ module Riscv151
         .control_wr_mux_i(control_wr_mux),
         .control_csr_we_i(control_csr_we),
         .control_wb_i(control_wb_ex),
-        .control_wb_back(control_wb_back),
+        .control_wb_back(control_load_wb),
         .control_branch_i(control_branch),
         .control_jump_i(control_jump),
         .alu_ctrl_i(alu_ctrl),
@@ -363,7 +377,8 @@ module Riscv151
         .branch_judge(branch_judge),
         .inst_exec_i(is_inst_exec),
         .control_uart_o(control_uart_wb),
-        .branch_predict_o(branch_predict_reg)
+        .branch_predict_o(branch_predict_reg),
+        .is_load_o(is_load_before)
     );
 
     assign branch_predict = (inst_output[6:0] == `OPC_BRANCH) ? branch_predict_reg : 2'b0;
@@ -683,7 +698,9 @@ assign dmem_addrb = is_conv_addr ? dmem_addrb_conv : 32'b0;
         .bios_doutb_i(bios_doutb),
 
         .wb_addr_o(rf_wa),
-        .wb_data_o(wb_data)              
+        .wb_data_o(wb_data),
+        .wb_alu_data_o(wb_alu_data),
+        .is_load_o(is_load)
     );
     assign rf_wd = wb_data;
     assign rf_we = (wb_addr != 32'b0) ? control_wb_back : 1'b0;

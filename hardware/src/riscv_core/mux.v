@@ -5,20 +5,38 @@
 module mux_dmem(
     input [31:0] dmem_output,
     input [31:0] bios_output,
-    input [31:0] pc_output,
-    input [31:0] rtype_output,
-    output [31:0] wb_data,
+    input [31:0] conv_data_i,
+    input [31:0] uart_data_i,
 
     input [1:0] control_data,
-    input [3:0] addr
+    input [31:0] addr,
+    input [1:0] control_uart_i,
+
+    output [31:0] wb_dmem_data
 );
 //writeback mux
-assign wb_data = (control_data == 2'b01) ? rtype_output://choose the result of alu
-                 (control_data == 2'b11) ? pc_output://choose the result of jal / jalr
-                 (control_data == 2'b10 && (addr == 4'b0001 || addr == 4'b0011)) ? dmem_output://choose the result of dmem
-                 (control_data == 2'b10 && addr == 4'b0100) ? bios_output://choose bios memory
+assign wb_dmem_data = (control_data == 2'b10 && (addr[31:28] == 4'b0001 || addr[31:28] == 4'b0011)) ? dmem_output://choose the result of dmem
+                 (control_data == 2'b10 && addr[31:28] == 4'b0100) ? bios_output://choose bios memory
+                 (control_uart_i > 2'b0 && (addr == 32'h80000000 || addr == 32'h80000004
+                 ||  addr == 32'h80000010 || addr == 32'h80000014))
+                 ? uart_data_i : (control_uart_i == 2'b01 && (addr == `CONV_READ))
+                 ? conv_data_i :
                  32'b0;
+
 endmodule
+
+module mux_alu_wb(
+    input [31:0] pc_output,
+    input [31:0] rtype_output,
+    input [1:0] control_data,
+    output [31:0] wb_alu_data
+);
+
+assign wb_alu_data = (control_data == 2'b01) ? rtype_output:
+                     (control_data == 2'b11) ? pc_output:
+                     32'b0;
+endmodule
+
 
 module mux_pc(
     input [31:0] pc_plus,
@@ -29,6 +47,7 @@ module mux_pc(
     input [1:0] jump_judge,
     input [1:0] branch_predict_i,
     input branch_judge,
+    input is_load_hazard_i,
     input clk, 
     input rst,
     output reg [31:0] pc_o,
@@ -50,7 +69,10 @@ REGISTER_R #(.N(2), .INIT(2'b0)) store_predict(
 always @(*) begin
     flush_wrong <= 1'b0;
     pc_o <= pc_plus;
-    if (branch_judge == 1) begin
+    if (is_load_hazard_i == 1'b1) begin
+        pc_o <= pc_plus_reg;
+    end
+    else if (branch_judge == 1) begin
         case(branch_predict_before)
             2'b10: pc_o <= pc_normal;
             2'b01: begin 
@@ -59,6 +81,9 @@ always @(*) begin
             end
             default: pc_o <= pc_normal;
         endcase
+    end
+    else if (jump_judge > 2'b0) begin
+            pc_o <= jal_addr;
     end
     else begin
     case(branch_predict_before)

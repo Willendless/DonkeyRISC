@@ -52,9 +52,10 @@ module ex (
     output wire                 branch_judge,
     output wire                 inst_exec_i,
     output wire [1:0]           control_uart_o,
-    output wire [1:0]           branch_predict_o
-    
+    output wire [1:0]           branch_predict_o,
+    output wire                 is_load_o
 );
+    assign is_load_o = (control_wr_mux_i == 2'b10);
     wire [31:0] aluout;
     assign control_uart_o = (aluout == 32'h80000004 || aluout == 32'h80000008
                             || aluout == 32'h80000000 || aluout == 32'h80000010 || aluout == 32'h80000014
