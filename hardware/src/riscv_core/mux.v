@@ -48,8 +48,8 @@ REGISTER_R #(.N(2), .INIT(2'b0)) store_predict(
 
 
 always @(*) begin
-    flush_wrong = 1'b0;
-    pc_o = pc_plus;
+    flush_wrong <= 1'b0;
+    pc_o <= pc_plus;
     if (branch_judge == 1) begin
         case(branch_predict_before)
             2'b10: pc_o <= pc_normal;
