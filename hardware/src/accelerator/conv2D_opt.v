@@ -44,7 +44,7 @@ module conv2D_opt #(
     input                resp_write_status_valid,
     output               resp_write_status_ready
 );
-
+    assign resp_write_status_ready = 1'b1;
     wire compute_idle;
     // TODO: Your code to implement an optimized conv2D hardware generator
     wire start_q;
