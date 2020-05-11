@@ -108,12 +108,12 @@ module id_ex (
     // pc & pc + 4
     REGISTER_R #(.N(`REG_DWIDTH)) pc_data_reg ( 
         .clk(clk),
-        .rst(rst),
+        .rst(is_flush),
         .q(pc_data_o),
         .d(pc_data_i));
     REGISTER_R #(.N(`REG_DWIDTH)) pc_plus_reg ( 
         .clk(clk),
-        .rst(rst),
+        .rst(is_flush),
         .q(pc_plus_o),
         .d(pc_plus_i));
 

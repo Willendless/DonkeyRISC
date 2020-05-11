@@ -74,7 +74,12 @@ always @(*) begin
     end
     else if (branch_judge == 1) begin
         case(branch_predict_before)
-            2'b10: pc_o <= pc_normal;
+            2'b10: begin
+            if (branch_predict_i == 2'b10) begin
+                pc_o <= branch_addr;
+            end else begin 
+                pc_o <= pc_normal;
+            end end
             2'b01: begin 
             pc_o <= branch_addr_after;
             flush_wrong <= 1'b1;

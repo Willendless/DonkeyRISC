@@ -703,7 +703,7 @@ assign dmem_addrb = is_conv_addr ? dmem_addrb_conv : 32'b0;
         .is_load_o(is_load)
     );
     assign rf_wd = wb_data;
-    assign rf_we = (wb_addr != 32'b0) ? control_wb_back : 1'b0;
+    assign rf_we = (wb_addr !== 32'b0) ? control_wb_back : 1'b0;
 
 
     // Construct your datapath, add as many modules as you want
