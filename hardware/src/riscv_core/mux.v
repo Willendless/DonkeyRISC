@@ -100,7 +100,7 @@ always @(*) begin
                 pc_o <= pc_normal;
             end
         2'b10: begin
-                flush_wrong = 1'b1;
+                flush_wrong <= 1'b1;
                 pc_o <= pc_plus_reg;
             end
     endcase
