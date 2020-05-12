@@ -59,11 +59,11 @@ module Riscv151
 
     mux_pc mux_pc(
         .pc_plus(pc_plus_reg),
+        .pc_data(pc_ex),
         .jal_addr(jal_addr),//remain some questions
         .branch_addr(branch_addr),
         .jump_judge(jump_judge),
         .is_load_hazard_i(load_flush),
-        .branch_predict_i(branch_predict),
         .branch_judge(branch_judge),
         .pc_o(pc_in));
 

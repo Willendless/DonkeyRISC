@@ -39,7 +39,7 @@ endmodule
 
 module mux_pc(
     input [31:0] pc_plus,
-    input [31:0] pc_plus_reg,
+    input [31:0] pc_data,
     input [31:0] jal_addr,
     input [31:0] branch_addr,
     input [1:0] jump_judge,
@@ -49,7 +49,7 @@ module mux_pc(
     output [31:0] pc_o
 );
 //define the input of jump signal
-assign pc_o = (is_load_hazard_i == 1'b1) ? pc_plus_reg :
+assign pc_o = (is_load_hazard_i == 1'b1) ? pc_data :
               (jump_judge > 0) ? jal_addr :
               (jump_judge == 0 && branch_judge == 1) ? branch_addr :
               pc_plus;
