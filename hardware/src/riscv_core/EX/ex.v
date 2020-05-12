@@ -26,7 +26,7 @@ module ex (
     input wire[3:0]         alu_ctrl_i,
 
     input wire[2:0]     funct3_i,
-    input wire branch_judge_i,
+    input wire if_flush_i,
 
     // control signal
     input wire[1:0] control_forward_i,
@@ -153,7 +153,7 @@ module ex (
     wire [31:0] branch_comp_a;
     wire [31:0] branch_comp_b;
 
-    assign inst_exec_i = (branch_judge_i == 0 && control_jump_i == 2'b0);
+    assign inst_exec_i = ~if_flush_i;
     
 
 endmodule // ex 

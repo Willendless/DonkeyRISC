@@ -257,7 +257,7 @@ module Riscv151
     wire [31:0] wb_data;
 
     wire if_flush;
-    assign if_flush = load_flush || jump_judge[0] || jump_judge[1];
+    assign if_flush = load_flush || branch_judge_reg || jump_judge[0] || jump_judge[1];
     wire control_wb_back;  
     wire [3:0] alu_ctrl;
 
@@ -293,6 +293,7 @@ module Riscv151
         .control_wb_i(control_wb_reg),
         .control_branch_i(control_branch_reg),
 
+        .branch_addr_i(branch_addr),
         .wb_data_i(wb_data),
         .is_wb_i(control_wb_back),
         .alu_ctrl_i(alu_ctrl_reg),
@@ -317,9 +318,9 @@ module Riscv151
         .control_branch_o(control_branch),
         .alu_ctrl_o(alu_ctrl),
 
-        .branch_judge_o(branch_judge),
         .branch_judge_reg_o(branch_judge_reg),
-        .is_load_hazard_o(is_load_hazard)
+        .is_load_hazard_o(is_load_hazard),
+        .branch_addr_o(branch_addr_reg)
 
     );
 
@@ -364,7 +365,7 @@ module Riscv151
         .control_jump_i(control_jump),
         .alu_ctrl_i(alu_ctrl),
 
-        .branch_judge_i(branch_judge_reg),
+        .if_flush_i(if_flush),
 
         .mem_write_o(mem_write_reg),
         .alu_result_o(alu_result_reg),

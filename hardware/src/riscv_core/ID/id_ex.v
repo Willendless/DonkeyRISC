@@ -69,7 +69,6 @@ module id_ex (
     input [3:0] alu_ctrl_i,
 
 
-
     input [4:0] wb_hazard_addr_i,
     input wire [31:0] forward_data_i,
 
