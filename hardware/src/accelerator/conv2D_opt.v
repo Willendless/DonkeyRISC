@@ -105,6 +105,6 @@ module conv2D_opt #(
     );
 // keep it simple
 
-    assign resp_write_status_ready = 1'b1; // keep it simple
+// keep it simple
 
 endmodule
