@@ -26,6 +26,7 @@ module ex (
     input wire[3:0]         alu_ctrl_i,
 
     input wire[2:0]     funct3_i,
+    input wire branch_judge_i,
 
     // control signal
     input wire[1:0] control_forward_i,
@@ -47,7 +48,7 @@ module ex (
     output wire                 control_csr_we_o,
     output wire[`REG_DBUS]      csr_data_o,
     output wire                 control_wb_o,
-    output wire                 branch_judge,
+
     output wire                 inst_exec_i,
     output wire [1:0]           control_uart_o,
     output wire                 is_load_o,
@@ -152,20 +153,7 @@ module ex (
     wire [31:0] branch_comp_a;
     wire [31:0] branch_comp_b;
 
-    assign branch_comp_a = (control_wb_back && (wb_addr_i == reg1_addr_i))
-                            ? forward_data : reg1_data_i;
-    assign branch_comp_b = (control_wb_back && (wb_addr_i == reg2_addr_i))
-                            ? forward_data : reg2_data_i;
-
-    branch_comp branch_comp(
-        .branch_type(funct3_i),
-        .a(branch_comp_a),
-        .b(branch_comp_b),
-        .is_branch(control_branch_i),
-        .branch_judge(branch_judge)
-    );
-
-    assign inst_exec_i = (branch_judge == 0 && control_jump_i == 2'b0);
+    assign inst_exec_i = (branch_judge_i == 0 && control_jump_i == 2'b0);
     
 
 endmodule // ex 

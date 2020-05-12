@@ -68,6 +68,8 @@ module id_ex (
     input is_wb_i,
     input [3:0] alu_ctrl_i,
 
+
+
     input [4:0] wb_hazard_addr_i,
     input wire [31:0] forward_data_i,
 
@@ -84,7 +86,8 @@ module id_ex (
     output [31:0] branch_addr_o,
 
     output wire is_load_hazard_o,
-
+    output wire branch_judge_reg_o,
+    output wire branch_judge_o,
     output wire[2:0]  funct3_o
 
     // input wire              alu_src1_sel_i,
@@ -102,7 +105,28 @@ module id_ex (
     //output pc_sel
 
 );
+    wire [31:0] reg1_branch;
+    wire [31:0] reg2_branch;
+    wire branch_judge;
+
     wire is_flush = flush_i || rst;
+
+    branch_comp branch_comp(
+    .branch_type(funct3_i),
+    .a(reg1_branch),
+    .b(reg2_branch),
+    .is_branch(control_branch_i),
+    .branch_judge(branch_judge) 
+);
+    assign branch_judge_o = branch_judge;
+    REGISTER_R #(.N(1), .INIT(0)) branch_judge_store(
+    .q(branch_judge_reg_o),
+    .d(branch_judge),
+    .rst(rst),
+    .clk(clk)
+    );
+
+
 
     REGISTER_R #(.N(1)) control_wb_reg ( 
         .clk(clk),
@@ -120,7 +144,6 @@ module id_ex (
         .rst(rst),
         .q(pc_plus_o),
         .d(pc_plus_i));
-
 
     // reg data & addr
     wire [31:0] reg1_data_o1;
@@ -142,6 +165,10 @@ module id_ex (
     assign reg2_data_o1 = (reg2_addr_i == wb_hazard_addr_i && is_wb_i)
                          ? wb_data_i : reg2_data_i;
     
+    assign reg1_branch = (reg1_addr_i == wb_addr_i) ? forward_data_i : reg1_data_o1;
+    assign reg2_branch = (reg2_addr_i == wb_addr_i) ? forward_data_i : reg2_data_o1;
+
+
     REGISTER_R #(.N(`REG_AWIDTH)) reg1_addr_store(
         .q(reg1_addr_o),
         .clk(clk),
