@@ -103,7 +103,6 @@ module conv2D_opt #(
         .resp_write_status_valid(resp_write_status_valid),
         .resp_write_status_ready(resp_write_status_ready)
     );
-
-    assign resp_write_status_ready = 1'b1; // keep it simple
+// keep it simple
 
 endmodule

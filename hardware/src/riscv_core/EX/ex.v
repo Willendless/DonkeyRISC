@@ -50,9 +50,13 @@ module ex (
     output wire                 branch_judge,
     output wire                 inst_exec_i,
     output wire [1:0]           control_uart_o,
-    output wire [31:0]          alu_addr_result_o
-    
+    output wire                 is_load_o,
+    output wire [31:0]          alu_addr_result_o,
+    output wire [31:0]          wb_alu_data_o
+
 );
+    assign is_load_o = (control_wr_mux_i == 2'b10);
+
     wire [31:0] alu_addr_result;
     wire [31:0] aluout;
     assign alu_addr_result_o = alu_addr_result;
@@ -69,7 +73,6 @@ module ex (
         .funct3_i(funct3_i),
         .control_dmem(control_dmem_i),
         .addr_offset(alu_addr_result[1:0]),
-        .addr_offset(aluout[1:0]),
         .dmem_we(dmem_we)
     );
 
@@ -86,6 +89,14 @@ module ex (
         
     wire [1:0]  reg1_judge;
     wire [1:0]  reg2_judge;
+
+    mux_alu_wb mux_alu_ex(
+    .pc_output(pc_plus_i),
+    .rtype_output(aluout),
+    .control_data(control_wr_mux_i),
+    .wb_alu_data(wb_alu_data_o)
+);
+
 
     forwarding_unit forwarding_unit(
         .reg1_addr(reg1_addr_i),

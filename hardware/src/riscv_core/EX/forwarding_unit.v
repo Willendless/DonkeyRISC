@@ -12,14 +12,13 @@ module forwarding_unit(
     output mem_wdata_judge
 );
 
-
-assign reg1_judge = (reg1_addr == wb_addr &&
+assign reg1_judge = (reg1_addr == wb_addr && wb_addr !== 5'b0 &&
                     (control_forward == `FORWARD_REG || control_forward == `FORWARD_STORE || control_forward == `FORWARD_IMM)
                     && is_wb == 1'b1) ? `REG1_MUX_WB :
                     (control_forward == `FORWARD_PC1) ? `REG1_MUX_PC :
                     `REG1_MUX_REG;
 
-assign reg2_judge = (reg2_addr == wb_addr && 
+assign reg2_judge = (reg2_addr == wb_addr && wb_addr !== 5'b0 &&
                     (control_forward == `FORWARD_REG)
                     && is_wb == 1'b1) ? `REG2_MUX_WB :
                     (control_forward == `FORWARD_IMM || control_forward == `FORWARD_PC1 || control_forward == `FORWARD_STORE) ? `REG2_MUX_IMM :

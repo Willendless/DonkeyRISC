@@ -45,6 +45,7 @@ module conv2D_opt_compute #(
     input                resp_write_status_valid,
     output               resp_write_status_ready 
 );
+    assign resp_write_status_ready = 1'b1;
 
     localparam halo_cnt  = (WT_DIM - 1);
     localparam half_halo_cnt = halo_cnt >> 1;
