@@ -52,7 +52,7 @@ module conv2D_opt #(
         .q(start_q),
         .d(1'b1),
         .ce(start),
-        .rst(rst),
+        .rst(rst | (done & ~start)),
         .clk(clk)
     );
 
@@ -60,7 +60,7 @@ module conv2D_opt #(
         .q(done),
         .d(1'b1),
         .ce(start_q & compute_idle),
-        .rst(rst),
+        .rst(rst | (done & start)),
         .clk(clk)
     );
 
@@ -71,7 +71,7 @@ module conv2D_opt #(
                          .WT_DIM(WT_DIM)
     ) conv2D (
         .clk(clk),
-        .rst(rst),
+        .rst(rst | done & ~start),
 
         .start(start),
         .idle(compute_idle),
@@ -103,5 +103,7 @@ module conv2D_opt #(
         .resp_write_status_valid(resp_write_status_valid),
         .resp_write_status_ready(resp_write_status_ready)
     );
+
+    assign resp_write_status_ready = 1'b1; // keep it simple
 
 endmodule

@@ -10,7 +10,7 @@ from PIL import Image
 if os.name == 'nt':
     ser = serial.Serial()
     ser.baudrate = 115200
-    ser.port = 'COM11' # CHANGE THIS COM PORT
+    ser.port = 'COM3' # CHANGE THIS COM PORT
     ser.open()
 else:
     ser = serial.Serial('/dev/ttyUSB0')

@@ -59,7 +59,7 @@ module conv2D_testbench();
         .AWIDTH(AWIDTH),
         .DWIDTH(DWIDTH),
         .WT_DIM(WT_DIM)
-    ) conv2D_opt (
+    ) conv2D_naive (
         .clk(clk),
         .rst(rst),
 
@@ -262,6 +262,31 @@ module conv2D_testbench();
         repeat (10) @(posedge clk);
 
         rst = 1'b0;
+        init_data();
+
+        repeat (10) @(posedge clk);
+
+        @(negedge clk);
+        start = 1'b1;
+        $display("Start conv2D ...");
+
+        @(negedge clk);
+        start = 1'b0;
+
+        while (done === 1'b0) begin
+            @(posedge clk);
+            cycle = cycle + 1;
+        end
+
+        $display("Simulation cycles. %d", cycle);
+        check_result();
+        start = 1'b0;
+
+        fm_dim     = FM_DIM;
+        wt_offset  = WT_OFFSET;
+        ifm_offset = IN_OFFSET;
+        ofm_offset = OUT_OFFSET;
+
         init_data();
 
         repeat (10) @(posedge clk);
