@@ -57,9 +57,10 @@ module Riscv151
 
     wire load_flush = is_load_hazard & is_load_before;
 
+    wire [`REG_DBUS]  pc_ex;
     mux_pc mux_pc(
         .pc_plus(pc_plus_reg),
-        .pc_data(pc_ex),
+        .pc_data(pc_plus_ex),
         .jal_addr(jal_addr),//remain some questions
         .branch_addr(branch_addr),
         .jump_judge(jump_judge),
@@ -114,7 +115,6 @@ module Riscv151
     wire imem_web;
 
     wire [3:0] dmem_wea_reg;
-    wire [`REG_DBUS]  pc_ex;
 
     wire [31:0] pc_in1 = pc_in>>2;
     assign imem_addrb = alu_result_reg1[13:0];
@@ -254,7 +254,7 @@ module Riscv151
     wire [31:0] wb_data;
 
     wire if_flush;
-    assign if_flush = load_flush || jump_judge[0] || jump_judge[1];
+    assign if_flush = branch_judge || load_flush || jump_judge[0] || jump_judge[1];
     wire control_wb_back;  
     wire [3:0] alu_ctrl;
 
