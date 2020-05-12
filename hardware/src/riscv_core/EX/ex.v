@@ -26,6 +26,7 @@ module ex (
     input wire[3:0]         alu_ctrl_i,
 
     input wire[2:0]     funct3_i,
+    
     input wire if_flush_i,
 
     // control signal

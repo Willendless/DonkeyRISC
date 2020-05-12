@@ -321,7 +321,6 @@ module Riscv151
         .branch_judge_reg_o(branch_judge_reg),
         .is_load_hazard_o(is_load_hazard),
         .branch_addr_o(branch_addr_reg)
-
     );
 
     assign jump_judge = control_jump;

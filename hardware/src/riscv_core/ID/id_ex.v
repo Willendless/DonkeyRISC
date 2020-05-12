@@ -86,7 +86,6 @@ module id_ex (
 
     output wire is_load_hazard_o,
     output wire branch_judge_reg_o,
-    output wire branch_judge_o,
     output wire[2:0]  funct3_o
 
     // input wire              alu_src1_sel_i,
@@ -121,7 +120,7 @@ module id_ex (
     REGISTER_R #(.N(1), .INIT(0)) branch_judge_store(
     .q(branch_judge_reg_o),
     .d(branch_judge),
-    .rst(rst),
+    .rst(is_flush),
     .clk(clk)
     );
 
@@ -271,7 +270,7 @@ module id_ex (
 
     REGISTER_R #(.N(32)) branch_addr_load(
         .clk(clk),
-        .rst(rst),
+        .rst(is_flush),
         .q(branch_addr_o),
         .d(branch_addr_i)
     );
