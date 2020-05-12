@@ -206,11 +206,19 @@ module conv2D_pe #(
     always @(*) begin
         sum_val = 32'b0;
         for (j = 0; j < WT_DIM; j = j + 1) begin
-            sum_val = sum_val + mult_result[j];
+            sum_val = sum_val + result_store[j];
         end
     end
 
+    wire pe_fire;
+    REGISTER_R #(.N(1)) pe_fire_reg (
+        .q(pe_fire),
+        .d(pe_out_fire_q),
+        .clk(clk),
+        .rst(rst)
+    );
+
     assign pe_data_o        = sum_val;
-    assign pe_data_valid    = pe_out_fire_q; 
+    assign pe_data_valid    = pe_fire; 
 
 endmodule // conv_pe
