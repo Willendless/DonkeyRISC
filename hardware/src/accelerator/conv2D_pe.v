@@ -188,9 +188,16 @@ module conv2D_pe #(
     endgenerate
 
     wire [DWIDTH-1:0] mult_result[WT_DIM-1:0];
+    wire [DWIDTH-1:0] result_store[WT_DIM-1:0];
     generate
         for (i = 0; i < WT_DIM; i = i + 1) begin
             assign mult_result[i] = inputs_reg_q[i] * weight_reg_q[WT_DIM - 1 - i];
+            REGISTER_R #(.N(32)) result_store (
+                .q(result_store[i]),
+                .d(mult_result[i]),
+                .clk(clk),
+                .rst(rst)
+            );
         end
     endgenerate
 
