@@ -49,19 +49,26 @@ module ex (
     output wire                 control_wb_o,
     output wire                 branch_judge,
     output wire                 inst_exec_i,
-    output wire [1:0]           control_uart_o
+    output wire [1:0]           control_uart_o,
+    output wire [31:0]          alu_addr_result_o
     
 );
+    wire [31:0] alu_addr_result;
     wire [31:0] aluout;
-    assign control_uart_o = (aluout == 32'h80000004 || aluout == 32'h80000008
-                            || aluout == 32'h80000000 || aluout == 32'h80000010 || aluout == 32'h80000014
-                            || aluout == `CONV_READ) ?
+    assign alu_addr_result_o = alu_addr_result;
+
+    
+    wire is_uart_data = alu_addr_result == 32'h80000004 || alu_addr_result == 32'h80000008
+                            || alu_addr_result == 32'h80000000 || alu_addr_result == 32'h80000010 
+                            || alu_addr_result == 32'h80000014;
+    assign control_uart_o = (is_uart_data || alu_addr_result == `CONV_READ) ?
                             control_uart_i : 2'b0;
     
     assign alu_result_o = aluout;
     dmem_wr dmem_wr (
         .funct3_i(funct3_i),
         .control_dmem(control_dmem_i),
+        .addr_offset(alu_addr_result[1:0]),
         .addr_offset(aluout[1:0]),
         .dmem_we(dmem_we)
     );
@@ -128,6 +135,7 @@ module ex (
         .aluin1(aluin1),
         .aluin2(aluin2),
         .aluCtrl(alu_ctrl_i),
+        .alu_addr_out(alu_addr_result),
         .aluout(aluout));
     
     wire [31:0] branch_comp_a;

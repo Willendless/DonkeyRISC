@@ -73,9 +73,12 @@ wire csr_type_signal = (opcode == `OPC_CSR);
 wire opc_lui_signal = (opcode == 7'b0110111);
 wire opc_auipc_signal = (opcode == 7'b0010111);
 
-assign alu_op = (i_type_signal_lw || s_type_signal || 
+wire is_stype;
+assign is_stype = (i_type_signal_lw || s_type_signal || 
                 j_type_signal || i_type_signal_jalr ||
-                csr_type_signal || u_type_signal) ? `ALUOP_ISJTYPE ://lw and sw type
+                csr_type_signal || u_type_signal);
+
+assign alu_op = is_stype ? `ALUOP_ISJTYPE ://lw and sw type
                 (r_type_signal) ? `ALUOP_RTYPE :
                 (i_type_signal_addi) ? `ALUOP_ADTYPE ://branch type
                 2'b11;//calculate type
@@ -83,11 +86,15 @@ assign alu_op = (i_type_signal_lw || s_type_signal ||
 assign control_jump[0] = i_type_signal_jalr;
 assign control_jump[1] = j_type_signal;
 
-assign control_wr_mux = (r_type_signal || i_type_signal_addi
-                        || u_type_signal || l_type_signal) ? 2'b01: //add r-type inst
-                      i_type_signal_lw ? 2'b10: //lw l-type inst
-                      (j_type_signal || i_type_signal_jalr) ? 2'b11: // jal
-                      2'b00;
+wire choose_rtype = (r_type_signal || i_type_signal_addi
+                    || u_type_signal || l_type_signal);
+wire choose_itype = i_type_signal_lw;
+wire choose_jtype = (j_type_signal || i_type_signal_jalr);
+
+assign control_wr_mux =  choose_rtype ? 2'b01: //add r-type inst
+                         choose_itype ? 2'b10: //lw l-type inst
+                         choose_jtype ? 2'b11: // jal
+                         2'b00;
 
 assign control_uart = (i_type_signal_lw == 1) ? 2'b01://lw receiver 2'b01
                       (s_type_signal == 1) ? 2'b10:
@@ -99,20 +106,37 @@ assign control_csr_we = csr_type_signal;
 
 assign control_branch = b_type_signal;
 
+wire forward_pc;
+wire forward_store;
+wire forward_imm;
+wire forward_reg;
+
+assign forward_pc = (opcode == `OPC_JAL || opcode == `OPC_AUIPC);
+assign forward_store = (opcode == `OPC_STORE);
+assign forward_imm = (opcode == `OPC_LOAD || 
+                      opcode == `OPC_ARI_ITYPE ||
+                      opcode == `OPC_JALR || 
+                      opcode == `OPC_LUI);
+assign forward_reg = (opcode == `OPC_BRANCH ||
+                      opcode == `OPC_ARI_RTYPE || 
+                      opcode == `OPC_CSR);
+
+
+
+
 always @(*) begin
-    case(opcode)
-    `OPC_STORE: control_forward = `FORWARD_STORE;
-    `OPC_LOAD: control_forward = `FORWARD_IMM;
-    `OPC_BRANCH: control_forward = `FORWARD_REG;
-    `OPC_JAL: control_forward = `FORWARD_PC1;
-    `OPC_JALR: control_forward = `FORWARD_IMM;
-    `OPC_ARI_RTYPE: control_forward = `FORWARD_REG;
-    `OPC_ARI_ITYPE: control_forward = `FORWARD_IMM;
-    `OPC_LUI: control_forward = `FORWARD_IMM;
-    `OPC_AUIPC: control_forward = `FORWARD_PC1;
-    `OPC_CSR: control_forward = `FORWARD_REG;
-    default: control_forward = `FORWARD_REG;
-    endcase
+    if (forward_pc == 1'b1) begin
+    control_forward = `FORWARD_PC1;
+    end else if (forward_imm == 1'b1) begin
+    control_forward = `FORWARD_IMM;
+    end else if (forward_reg == 1'b1) begin
+    control_forward = `FORWARD_REG;
+    end else if (forward_store == 1'b1) begin
+    control_forward = `FORWARD_STORE;
+    end else begin
+    control_forward = `FORWARD_REG;
+    end
+
 end
 
 assign control_load = (i_type_signal_lw && (funct3_i == `FNC_LB)) ? `DMEM_LB :

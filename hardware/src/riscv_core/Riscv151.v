@@ -1,5 +1,5 @@
-`include "defines.vh"
-`include "Opcode.vh"
+`include "../defines.vh"
+`include "../Opcode.vh"
 module Riscv151
 #(
     parameter CPU_CLOCK_FREQ    = 50_000_000,
@@ -47,7 +47,7 @@ module Riscv151
     wire [`WORD_BUS]    alu_result_reg;
     wire branch_judge;
     //wire [31:0] jal_addr1 = jal_addr<<2;
-    
+    wire [31:0] alu_addr_result_reg;
     mux_pc mux_pc(
         .pc_plus(pc_plus_reg),
         .jal_addr(jal_addr),//remain some questions
@@ -108,7 +108,7 @@ module Riscv151
     wire [31:0] pc_in1 = pc_in>>2;
     assign imem_addrb = alu_result_reg1[13:0];
     assign imem_addra = pc_in1[IMEM_AWIDTH-1:0];
-    assign imem_web = (alu_result_reg[31:29] == 3'b001 && pc_ex[30] == 1'b1)
+    assign imem_web = (alu_addr_result_reg[31:29] == 3'b001 && pc_ex[30] == 1'b1)
                        ? (dmem_wea_reg != 4'b0) : 1'b0;
     // Instruction Memory
     // Synchronous read: read takes one cycle
@@ -349,10 +349,10 @@ module Riscv151
         .control_wb_o(control_wb),
         .branch_judge(branch_judge),
         .inst_exec_i(is_inst_exec),
-        .control_uart_o(control_uart_wb)
+        .control_uart_o(control_uart_wb),
+        .alu_addr_result_o(alu_addr_result_reg)
     );
-
-    assign jal_addr = alu_result_reg;
+    assign jal_addr = alu_addr_result_reg;
 
     wire [31:0] rtype_output;
     wire [1:0] control_data;
@@ -397,9 +397,9 @@ module Riscv151
     
     wire uart_tx_data_in_valid;
 
-    assign uart_rx_data_out_ready = (control_uart_wb[0] == 1'b1) && (alu_result_reg == 32'h80000004);
-    assign uart_tx_data_in_valid = (control_uart_wb[1] == 1'b1) && (alu_result_reg == 32'h80000008);
-   
+    assign uart_rx_data_out_ready = (control_uart_wb[0] == 1'b1) && (alu_addr_result_reg == 32'h80000004);
+    assign uart_tx_data_in_valid = (control_uart_wb[1] == 1'b1) && (alu_addr_result_reg == 32'h80000008);
+
     // UART Receiver
     uart_receiver #(
         .CLOCK_FREQ(CPU_CLOCK_FREQ),
@@ -437,7 +437,8 @@ module Riscv151
 
     assign imem_dinb = mem_write_reg;
     
-    assign alu_result_reg1 = alu_result_reg>>2;
+    assign alu_result_reg1 = alu_addr_result_reg>>2;
+
 
     // Data Memory
     // Synchronous read: read takes one cycle
@@ -602,7 +603,7 @@ module Riscv151
         .clk(clk),
 
         .cont_data_i(mem_write_reg),
-        .cont_addr_i(alu_result_reg),
+        .cont_addr_i(alu_addr_result_reg),
         .cont_data_o(status_read),
         .conv_we_i(dmem_wea_reg),
 
@@ -619,17 +620,17 @@ module Riscv151
     );
     //port a is used for read
 
-assign dmem_dina = (alu_result_reg[31:30] == 2'b00 
-                    && alu_result_reg[28] == 1'b1) ? mem_write_reg : 
+assign dmem_dina = (alu_addr_result_reg[31:30] == 2'b00 
+                    && alu_addr_result_reg[28] == 1'b1) ? mem_write_reg : 
                     32'b0;
 
-assign dmem_addra = (alu_result_reg[31:30] == 2'b00 && alu_result_reg[28] == 1'b1) ?
+assign dmem_addra = (alu_addr_result_reg[31:30] == 2'b00 && alu_addr_result_reg[28] == 1'b1) ?
                     {18'b0, alu_result_reg1[13:0]} : 
                     is_conv_addr ? dmem_addra_conv :
                     32'b0;
 
-assign dmem_wea = (alu_result_reg[31:30] == 2'b00 
-                    && alu_result_reg[28] == 1'b1) ? dmem_wea_reg : 
+  assign dmem_wea = (alu_addr_result_reg[31:30] == 2'b00 
+                    && alu_addr_result_reg[28] == 1'b1) ? dmem_wea_reg : 
                     4'b0;
 
 assign dmem_douta_conv = dmem_douta;

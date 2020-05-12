@@ -5,6 +5,7 @@ module alu(
     input [31:0] aluin1,
     input [31:0] aluin2,
     output [31:0] aluout,
+    output [31:0] alu_addr_out,
     input [3:0] aluCtrl
 );
 
@@ -41,19 +42,34 @@ assign alu_slt = (input_sign1 == 1 && input_sign2 == 0) ? 32'b1 :
                   (input_sign1 == 1 && input_sign2 == 1 && aluin1 >= aluin2) ? 32'b0 :
                   (input_sign1 == 0 && input_sign2 == 0 && aluin1 >= aluin2) ? 32'b0 :
                   32'b1;
-                
-assign aluout = (aluCtrl == `ALUCTRL_ADD) ? alu_add:
-                (aluCtrl == `ALUCTRL_OR) ? alu_or:
-                (aluCtrl == `ALUCTRL_SLL) ? alu_sll:
-                (aluCtrl == `ALUCTRL_SUB) ? alu_sub:
-                (aluCtrl == `ALUCTRL_SLT) ? alu_slt:
-                (aluCtrl == `ALUCTRL_SLTU) ? alu_sltu:
-                (aluCtrl == `ALUCTRL_XOR) ? alu_xor:
-                (aluCtrl == `ALUCTRL_AND) ? alu_and:
-                (aluCtrl == `ALUCTRL_SRL) ? alu_srl:
-                (aluCtrl == `ALUCTRL_SRA) ? alu_sra:
-                (aluCtrl == 4'b1111) ? aluin2 :
-                32'b0;
+
+reg [31:0] aluout1;
+reg [31:0] aluout2;
+
+always @(*) begin
+    aluout1 = 32'b0;
+    case(aluCtrl)
+    `ALUCTRL_ADD: aluout1 = alu_add;
+    `ALUCTRL_OR: aluout1 = alu_or;
+    `ALUCTRL_SLL: aluout1 = alu_sll;
+    `ALUCTRL_SUB: aluout1 = alu_sub;
+    `ALUCTRL_SLT: aluout1 = alu_slt;
+    `ALUCTRL_SLTU: aluout1 = alu_sltu;
+    `ALUCTRL_XOR: aluout1 = alu_xor;
+    `ALUCTRL_AND: aluout1 = alu_and;
+    `ALUCTRL_SRL: aluout1 = alu_srl;
+    `ALUCTRL_SRA: aluout1 = alu_sra;
+    4'b1111: aluout1 = aluin2;
+    default: aluout1 = 32'b0;
+    endcase
+end
+
+always @(*) begin
+    aluout2 <= alu_add;
+end
+
+assign aluout = aluout1;
+assign alu_addr_out = aluout2;
 
 endmodule
 
